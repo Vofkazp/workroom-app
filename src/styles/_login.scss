@@ -1,0 +1,222 @@
+.main-content {
+
+  &.sign-in {
+    padding: 20px 40px 30px;
+    grid-template-columns: 1fr;
+
+    .sign-in-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
+      box-shadow: 0p 6px 58px 0 rgba(196, 203, 214, 0.1);
+
+      .sign-in-info {
+        background-color: rgba(63, 140, 255, 1);
+        border-radius: 24px 0 0 24px;
+        padding: 60px 96px 80px 84px;
+
+        .sign-in-info-row {
+          display: flex;
+          align-items: center;
+          gap: 30px;
+          padding-left: 10px;
+
+          .sign-in-logo {
+            display: block;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+          }
+
+          .sign-in-info-title {
+            color: rgba(255, 255, 255, 1);
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 41px;
+          }
+        }
+
+        .sign-in-info-description {
+          margin-top: 44px;
+          padding-left: 10px;
+          color: rgba(255, 255, 255, 1);
+          font-size: 40px;
+          font-weight: 700;
+          line-height: 56px;
+        }
+
+        .sign-in-info-illustration {
+          display: block;
+          width: auto;
+          height: calc(100vh - 446px);
+          object-fit: contain;
+          margin: 50px auto 0;
+        }
+      }
+
+      .sign-in-form {
+        background: rgba(255, 255, 255, 1);
+        border-radius: 0 24px 24px 0;
+        padding: 115px 138px 204px;
+
+        .sign-in-form-title {
+          color: rgba(10, 22, 41, 1);
+          font-size: 22px;
+          font-weight: 700;
+          line-height: 30px;
+          text-align: center;
+        }
+
+        .sign-in-form-inputs {
+          margin-top: 33px;
+
+          .input-container {
+            margin-top: 10px;
+          }
+
+          .check-box-item label .check-box-label {
+            color: rgba(125, 133, 146, 1);
+          }
+
+          .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+          }
+
+          .btn-primary-icon {
+            margin: 48px auto 0;
+          }
+
+          .primary {
+            margin: 20px auto 0;
+          }
+        }
+      }
+    }
+  }
+
+  &.sign-up {
+    padding: 20px 40px 20px 20px;
+    grid-template-columns: 346px 1fr;
+
+    .sign-up-info {
+      border-radius: 24px;
+      background: rgba(63, 140, 255, 1);
+      padding: 60px 40px;
+
+      .sign-up-logo {
+        display: block;
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        object-fit: cover;
+      }
+
+      .sign-up-info-title {
+        color: rgba(255, 255, 255, 1);
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 49px;
+        margin-top: 60px;
+      }
+
+      .steeps-block {
+        margin-top: 50px;
+      }
+    }
+
+    .sign-up-content-block {
+      display: flex;
+      flex-direction: column;
+
+      .sign-up-content {
+        flex: 1;
+        padding: 75px 0 65px;
+        width: 403px;
+        margin: 0 auto;
+
+        .sign-up-content-steeps {
+          display: block;
+          color: rgba(63, 140, 255, 1);
+          font-size: 14px;
+          font-weight: 700;
+          line-height: 19px;
+          text-align: center;
+        }
+
+        .sign-up-title {
+          color: rgba(10, 22, 41, 1);
+          font-size: 22px;
+          font-weight: 700;
+          line-height: 30px;
+          text-align: center;
+          margin-top: 6px;
+          margin-bottom: 30px;
+        }
+
+        .sms-info {
+          margin: 16px 0 26px;
+          padding: 22px 10px 22px 54px;
+          color: rgba(63, 140, 255, 1);
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 22px;
+          border-radius: 14px;
+          background-color: rgba(244, 249, 253, 1);
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none'%3E%3Cpath d='M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 11C12.5128 11 12.9355 11.386 12.9933 11.8834L13 12L13 16C13 16.5523 12.5523 17 12 17C11.4872 17 11.0645 16.614 11.0067 16.1166L11 16L11 12C11 11.4477 11.4477 11 12 11ZM13.01 8C13.01 7.44772 12.5623 7 12.01 7L11.8834 7.00673C11.386 7.06449 11 7.48716 11 8C11 8.55228 11.4477 9 12 9L12.1266 8.99327C12.624 8.93551 13.01 8.51284 13.01 8Z' fill='rgb(63,140,255)' fill-rule='evenodd'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-size: 24px 24px;
+          background-position: 20px 20px;
+        }
+      }
+
+      .sign-up-content-footer {
+        border-top: 1px solid rgba(228, 230, 232, 1);
+        padding: 18px 40px 18px 56px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .btn-primary-icon {
+          min-width: auto;
+          padding: 12px 16px 12px 20px;
+        }
+      }
+    }
+  }
+
+  &.success {
+    padding: 20px 40px;
+    grid-template-columns: 1fr;
+
+    .success-block {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .success-img {
+        display: block;
+        width: 500px;
+        height: auto;
+        object-fit: cover;
+      }
+
+      .success-title {
+        color: rgba(10, 22, 41, 1);
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 30px;
+        margin-top: 60px;
+      }
+
+      .btn-primary-icon {
+        margin-top: 24px;
+      }
+    }
+  }
+}

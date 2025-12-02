@@ -1,0 +1,43 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type='number'],
+input[type="number"]:hover,
+input[type="number"]:focus {
+  appearance: none;
+  -moz-appearance: textfield;
+}
+
+body {
+  font-family: "NunitoSans", sans-serif;
+  font-weight: 400;
+  background-color: #f4f9fdff;
+}
+
+.main-content {
+  padding: 20px 40px 25px 20px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 200px 1fr;
+  grid-gap: 30px;
+}

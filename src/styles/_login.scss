@@ -58,7 +58,7 @@
       .sign-in-form {
         background: rgba(255, 255, 255, 1);
         border-radius: 0 24px 24px 0;
-        padding: 115px 138px 204px;
+        padding: 115px 138px 50px;
 
         .sign-in-form-title {
           color: rgba(10, 22, 41, 1);
@@ -138,6 +138,14 @@
         width: 403px;
         margin: 0 auto;
 
+        .invited-email {
+          color: rgb(10, 22, 41);
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 22px;
+          margin-bottom: 10px;
+        }
+
         .sign-up-content-steeps {
           display: block;
           color: rgba(63, 140, 255, 1);
@@ -188,6 +196,7 @@
     }
   }
 
+  //
   &.success {
     padding: 20px 40px;
     grid-template-columns: 1fr;

@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
 import SelectItem from "../../components/SelectItem";
-import Button from "../../components/Button";
 import Input from "../../components/Input";
 import PasswordInput from "../../components/PasswordInput";
 import {useAuth} from "../../services/Auth";
@@ -44,9 +43,9 @@ export default function RegisterPageSteep1({
     return () => stopTimer();
   }, []);
 
-  const checkMyPhone = () => {
+  const checkMyPhone = (val: string) => {
     stopTimer();
-    checkPhone("+" + prefixPhone + phone).then(res => {
+    checkPhone("+" + prefixPhone + val).then(res => {
       if (res.status) {
         console.log(res.response);
         startTimer();
@@ -57,7 +56,7 @@ export default function RegisterPageSteep1({
   const saveMyPhone = (value: string) => {
     savePhone(value);
     isCode(false);
-    if(value.length === 11) checkMyPhone();
+    if(value.length === 11) checkMyPhone(value);
   }
 
   const startTimer = () => {

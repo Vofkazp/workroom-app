@@ -27,6 +27,7 @@ export default function PasswordInput({type, title, placeholder, name, value, er
         <label className="label-block">
           <p className="input-label">{title}</p>
           <input name={name} type={newType} value={value} placeholder={placeholder}
+                 autoComplete="off"
                  onInput={(e) => changed(name, (e.target as HTMLInputElement).value)} disabled={disabled}/>
           <Button path="eye" click={hidden}/>
         </label>

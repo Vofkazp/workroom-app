@@ -14,10 +14,10 @@ export default function Select({title, list, name, value, error=false, errorText
 
   return (
       <div className={`input-container ${error && "error"}`}>
-        <label className="label-block">
+        <div className="label-block">
           <p className="input-label">{title}</p>
           <SelectItem list={list} value={value} name={name} selected={(n, value) => changed(n, value)} disabled={disabled}/>
-        </label>
+        </div>
         <span className="error">{errorText}</span>
       </div>
   );

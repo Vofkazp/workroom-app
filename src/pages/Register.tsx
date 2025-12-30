@@ -43,7 +43,7 @@ export default function Register() {
 
   const saveEmail = (emails: string[]) => {
     setEmailsError(false);
-    setForm({...form, emails: emails});
+    setForm(prev => ({...prev, emails}));
   }
 
   const checkForm = () => {
@@ -58,12 +58,9 @@ export default function Register() {
     return isCode && isPhone && isEmail && isPassword;
   }
 
-  const checkEmail = () => {
+  const checkEmail = (email: string = "") => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const email = form.emails[form.emails.length - 1];
-    if (email !== undefined && email.length > 0) {
-      return emailPattern.test(email);
-    } else return email.length === 0;
+    return emailPattern.test(email);
   }
 
   const nextSteep = () => {
@@ -78,11 +75,15 @@ export default function Register() {
         setNameError(true);
       }
     } else if (steep === 4) {
-      if (checkEmail()) {
-        registration();
-      } else {
-        setEmailsError(true);
+      const email = form.emails.at(-1);
+      if (email !== undefined && email !== "") {
+        checkEmail(email) ? registration(form.emails) : setEmailsError(true);
+      } else if (email === "") {
+        const emails = [...form.emails];
+        emails.pop();
+        registration(emails);
       }
+
     }
   }
 
@@ -90,13 +91,17 @@ export default function Register() {
     if (steep > 1) setSteep(prev => prev - 1);
   }
 
-  const registration = async () => {
+  const registration = async (emailsArr: string[]) => {
     try {
       await register("+" + prefixPhone + form.phone, form.email, form.password);
       const user = await getCurrentUser();
-      const company = await createCompany(form.name, businessDirection[form.direction].label, teamSizeList[form.team_size].label, user!.response.id);
-      await updateUser(user!.response.id, whyUse[form.why_use].label, roleList[form.role].label, form.self_employed, company!.response.companyId);
-      await inviteMembers(company!.response.companyId, user!.response.id, form.emails);
+      const business_direction: string = businessDirection.find(el => el.value === form.direction)!.label;
+      const team_size: string = teamSizeList.find(el => el.value === form.team_size)!.label;
+      const company = await createCompany(form.name, business_direction, team_size, user!.response.id);
+      const why_use: string = whyUse.find(el => el.value === form.why_use)!.label;
+      const role: string = roleList.find(el => el.value === form.role)!.label;
+      await updateUser(user!.response.id, why_use, role, form.self_employed, company!.response.companyId);
+      if (emailsArr.length > 0) await inviteMembers(company!.response.companyId, user!.response.id, emailsArr);
       setSteep(steep + 1);
     } catch (error) {
       console.log(error);

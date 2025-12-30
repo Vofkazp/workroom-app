@@ -20,10 +20,10 @@ export function useAuth() {
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, rememberMe: boolean) => {
     try {
       const response: ResponseAxios = await api.post(`/auth/login`, {email, password});
-      if (response.status === 200 && response.data.status) setToken(response.data.response.accessToken, response.data.response.refreshToken);
+      if (response.status === 200 && response.data.status) setToken(response.data.response.accessToken, response.data.response.refreshToken, rememberMe);
       return response.data;
     } catch {
       logout();
@@ -33,7 +33,7 @@ export function useAuth() {
   const register = async (phone: string, email: string, password: string) => {
     try {
       const response: ResponseAxios = await api.post(`/auth/register`, {phone, email, password});
-      if (response.status === 200 && response.data.status) setToken(response.data.response.accessToken, response.data.response.refreshToken);
+      if (response.status === 200 && response.data.status) setToken(response.data.response.accessToken, response.data.response.refreshToken, true);
       return response.data;
     } catch {
       logout();
@@ -85,14 +85,16 @@ export function useAuth() {
     }
   };
 
-  const setToken = (accessToken: string, refreshToken: string) => {
+  const setToken = (accessToken: string, refreshToken: string, rememberMe: boolean) => {
     localStorage.setItem("ACCESS_TOKEN", accessToken);
     localStorage.setItem("REFRESH_TOKEN", refreshToken);
+    localStorage.setItem("REMEMBER_ME", String(rememberMe));
   };
 
   const logout = () => {
     localStorage.removeItem("ACCESS_TOKEN");
     localStorage.removeItem("REFRESH_TOKEN");
+    localStorage.removeItem("REMEMBER_ME");
     navigate("/login");
   };
 

@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ComponentLayout from "./examples-components/ComponentLayout";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -22,6 +23,7 @@ root.render(
           </Route>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
+          <Route path="/components" element={<ComponentLayout/>}/>
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

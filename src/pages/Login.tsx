@@ -31,7 +31,7 @@ export default function Login() {
 
   const loginUser = () => {
     if (checkForm()) {
-      login(form.email, form.password).then(() => {
+      login(form.email, form.password, form.remember_me).then(() => {
         navigate("/");
       });
     }

@@ -1,0 +1,103 @@
+.grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 1fr;
+  grid-gap: 30px;
+  background-color: #dbeddb;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.aside {
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #fdfefd;
+}
+
+.title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 30px;
+  color: #000b00;
+}
+
+.list {
+  margin-top: 20px;
+}
+
+.listItem {
+  margin-top: 20px;
+  border-right-width: 2px;
+  border-right-style: solid;
+  border-right-color: transparent;
+  color: #000b00;
+  cursor: pointer;
+
+  span {
+    color: currentColor;
+  }
+}
+
+.active {
+  border-right-color: #006400;
+  color: #006400;
+}
+
+.LayoutItem {
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #fdfefd;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  gap: 15px;
+}
+
+.headerTitle {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #000b00;
+}
+
+.item {
+  padding: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  border-bottom: 1px solid #003e00;
+}
+
+.itemExample {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.itemCode {
+  border-right: 1px solid #003e00;
+  border-left: 1px solid #003e00;
+  padding: 0 10px;
+}
+
+.itemTitle {
+  padding: 0 20px;
+}
+
+.code {
+  display: block;
+  padding: 10px;
+  background-color: #cecece;
+  color: #000000;
+}
+
+.comment {
+  display: block;
+  color: #000000;
+}

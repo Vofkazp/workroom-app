@@ -7,8 +7,10 @@ import RegisterPageSteep4 from "./fragments/RegisterPageSteep4";
 import {useAuth} from "../services/Auth";
 import {businessDirection, roleList, teamSizeList, whyUse} from "../resurses/SelectList";
 import {useNavigate} from "react-router-dom";
+import {useAuthentication} from "../services/AuthProvider";
 
 export default function Register() {
+  const {saveAuthData} = useAuthentication();
   const navigate = useNavigate();
   const {register, createCompany, getCurrentUser, updateUser, inviteMembers} = useAuth();
   const [steep, setSteep] = useState(1);
@@ -95,14 +97,17 @@ export default function Register() {
     try {
       await register("+" + prefixPhone + form.phone, form.email, form.password);
       const user = await getCurrentUser();
-      const business_direction: string = businessDirection.find(el => el.value === form.direction)!.label;
-      const team_size: string = teamSizeList.find(el => el.value === form.team_size)!.label;
-      const company = await createCompany(form.name, business_direction, team_size, user!.response.id);
-      const why_use: string = whyUse.find(el => el.value === form.why_use)!.label;
-      const role: string = roleList.find(el => el.value === form.role)!.label;
-      await updateUser(user!.response.id, why_use, role, form.self_employed, company!.response.companyId);
-      if (emailsArr.length > 0) await inviteMembers(company!.response.companyId, user!.response.id, emailsArr);
-      setSteep(steep + 1);
+      if(user?.status) {
+        saveAuthData({isAuth: true, user: user.response});
+        const business_direction: string = businessDirection.find(el => el.value === form.direction)!.label;
+        const team_size: string = teamSizeList.find(el => el.value === form.team_size)!.label;
+        const company = await createCompany(form.name, business_direction, team_size, user.response!.id);
+        const why_use: string = whyUse.find(el => el.value === form.why_use)!.label;
+        const role: string = roleList.find(el => el.value === form.role)!.label;
+        await updateUser(user.response!.id, why_use, role, form.self_employed, company!.response.companyId);
+        if (emailsArr.length > 0) await inviteMembers(company!.response.companyId, user.response!.id, emailsArr);
+        setSteep(steep + 1);
+      }
     } catch (error) {
       console.log(error);
     }

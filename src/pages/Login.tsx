@@ -8,7 +8,7 @@ import {useAuth} from "../services/Auth";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({email: "", password: "", remember_me: true});
+  const [form, setForm] = useState({email: "Vofkazp@gmail.com", password: "Qwe123", remember_me: true});
   const [emailError, setEmailError] = useState(false);
   const [passError, setPassError] = useState(false);
   const {login} = useAuth();

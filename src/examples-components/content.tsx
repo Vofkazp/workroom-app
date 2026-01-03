@@ -36,6 +36,11 @@ export const content = [
         }}/>),
         code: '<Button title="Forgot Password?" classList="text-btn secondary" click={() => {}}/>',
         comment: "Коментар"
+      },
+      {
+        example: (<Button click={() => {}} classList="icon-btn" path="notification" />),
+        code: '<Button click={() => {}} classList="icon-btn" path="notification" />',
+        comment: "Коментар"
       }
     ]
   },
@@ -93,6 +98,11 @@ export const content = [
       {
         example: (<Svg path={"eye"}/>),
         code: '<Svg path={"eye"} />',
+        comment: "Коментар"
+      },
+      {
+        example: (<Svg path={"notification"}/>),
+        code: 'const {addNotification} = useNotifications(); const add = () => { addNotification("Test message from page!", "warning"); }',
         comment: "Коментар"
       }
     ]

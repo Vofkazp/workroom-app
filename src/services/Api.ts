@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
+import {Token} from "../interfaces/AuthInterface";
 
 const api = axios.create({
   baseURL: "http://127.0.1.0:5000/api",
@@ -17,20 +18,18 @@ api.interceptors.request.use((config) => {
 
 const tokenRefresh = async (originalRequest: any) => {
   try {
-    const refresh_token = localStorage.getItem("REFRESH_TOKEN");
-
-    const response = await axios.post(
+    const refresh_token: string | null = localStorage.getItem("REFRESH_TOKEN");
+    const response: AxiosResponse<Token> = await axios.post(
         "http://127.0.1.0:5000/api/auth/refresh",
-        {refreshToken: refresh_token}
+        {token: refresh_token}
     );
-
     if (response.status === 200) {
-      localStorage.setItem("ACCESS_TOKEN", response.data.token);
-      localStorage.setItem("REFRESH_TOKEN", response.data.refreshToken);
+      localStorage.setItem("ACCESS_TOKEN", response.data.response.accessToken);
+      localStorage.setItem("REFRESH_TOKEN", response.data.response.refreshToken);
 
-      api.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+      api.defaults.headers.Authorization = `Bearer ${response.data.response.accessToken}`;
 
-      originalRequest.headers.Authorization = `Bearer ${response.data.token}`;
+      originalRequest.headers.Authorization = `Bearer ${response.data.response.accessToken}`;
 
       return api(originalRequest);
     }

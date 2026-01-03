@@ -39,18 +39,8 @@
     align-items: center;
     gap: 24px;
 
-    .notifications {
-      border-radius: 14px;
-      box-shadow: 0 6px 58px 0 rgba(196, 203, 214, 0.1);
-      background-color: #ffffff;
-      padding: 12px;
-      border: none;
-      outline: none;
-      color: #0a1629;
-      cursor: pointer;
-    }
-
     .header-select {
+      min-width: 190px;
       position: relative;
       border-radius: 14px;
       box-shadow: 0 6px 58px 0 rgba(196, 203, 214, 0.1);
@@ -81,6 +71,7 @@
         }
 
         .select-text {
+          flex: 1;
           font-size: 16px;
           font-weight: 700;
           line-height: 24px;

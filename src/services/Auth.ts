@@ -2,10 +2,10 @@ import {useNavigate} from "react-router-dom";
 import api from "./Api";
 import {
   ResponseAxios,
-  ResponseAxiosCompany,
+  ResponseCompany,
   ResponseCheckCode,
-  ResponseCodeAxios,
-  ResponseUser
+  ResponseCode,
+  ResponseUser, Token
 } from "../interfaces/AuthInterface";
 
 export function useAuth() {
@@ -13,7 +13,7 @@ export function useAuth() {
 
   const getCurrentUser = async () => {
     try {
-      const response: ResponseUser = await api.get(`/auth/get_current_user`);
+      const response: ResponseAxios<ResponseUser> = await api.get(`/auth/get_current_user`);
       return response.data;
     } catch {
       logout();
@@ -22,7 +22,7 @@ export function useAuth() {
 
   const login = async (email: string, password: string, rememberMe: boolean) => {
     try {
-      const response: ResponseAxios = await api.post(`/auth/login`, {email, password});
+      const response: ResponseAxios<Token> = await api.post(`/auth/login`, {email, password});
       if (response.status === 200 && response.data.status) setToken(response.data.response.accessToken, response.data.response.refreshToken, rememberMe);
       return response.data;
     } catch {
@@ -32,7 +32,7 @@ export function useAuth() {
 
   const register = async (phone: string, email: string, password: string) => {
     try {
-      const response: ResponseAxios = await api.post(`/auth/register`, {phone, email, password});
+      const response: ResponseAxios<Token> = await api.post(`/auth/register`, {phone, email, password});
       if (response.status === 200 && response.data.status) setToken(response.data.response.accessToken, response.data.response.refreshToken, true);
       return response.data;
     } catch {
@@ -42,7 +42,13 @@ export function useAuth() {
 
   const updateUser = async (id: number, why_use: string, role: string, self_employed: boolean, company_id: number) => {
     try {
-      const response: ResponseCheckCode = await api.put(`/auth/update_user`, {id, why_use, role, self_employed, company_id});
+      const response: ResponseAxios<ResponseCheckCode> = await api.put(`/auth/update_user`, {
+        id,
+        why_use,
+        role,
+        self_employed,
+        company_id
+      });
       return response.data;
     } catch {
       logout();
@@ -51,25 +57,34 @@ export function useAuth() {
 
   const createCompany = async (name: string, direction: string, team_size: string, owner_id: number) => {
     try {
-      const response: ResponseAxiosCompany = await api.post(`/auth/create_company`, {name, direction, team_size, owner_id});
+      const response: ResponseAxios<ResponseCompany> = await api.post(`/auth/create_company`, {
+        name,
+        direction,
+        team_size,
+        owner_id
+      });
       return response.data;
-    } catch(error: any) {
+    } catch (error: any) {
       return error.response.data;
     }
   };
 
   const inviteMembers = async (company_id: number, invited_by: number, emails: string[]) => {
     try {
-      const response: ResponseCheckCode = await api.post(`/auth/invite_members`, {company_id, invited_by, emails});
+      const response: ResponseAxios<ResponseCheckCode> = await api.post(`/auth/invite_members`, {
+        company_id,
+        invited_by,
+        emails
+      });
       return response.data;
-    } catch(error: any) {
+    } catch (error: any) {
       return error.response.data;
     }
   };
 
   const checkPhone = async (phone: string) => {
     try {
-      const response: ResponseCodeAxios = await api.post(`/auth/check_phone`, {phone});
+      const response: ResponseAxios<ResponseCode> = await api.post(`/auth/check_phone`, {phone});
       return response.data;
     } catch (err: any) {
       return err.response.data;
@@ -78,7 +93,7 @@ export function useAuth() {
 
   const checkCode = async (phone: string, code: string) => {
     try {
-      const response: ResponseCheckCode = await api.post(`/auth/check_code`, {phone, code});
+      const response: ResponseAxios<ResponseCheckCode> = await api.post(`/auth/check_code`, {phone, code});
       return response.data;
     } catch (err: any) {
       return err.response.data;

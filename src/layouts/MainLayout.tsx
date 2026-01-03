@@ -1,6 +1,8 @@
 import React, {useEffect} from "react";
 import {Navigate, Outlet} from "react-router-dom";
 import {useAuth} from "../services/Auth";
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 
 export default function MainLayout() {
   const {logout} = useAuth();
@@ -8,7 +10,7 @@ export default function MainLayout() {
   useEffect(() => {
     const handleUnload = () => {
       const isRememberMe = localStorage.getItem("REMEMBER_ME");
-      if(isRememberMe === "false") {
+      if (isRememberMe === "false") {
         logout();
       }
     };
@@ -26,11 +28,11 @@ export default function MainLayout() {
 
   return (
       <div className="main-content">
-        <div>
-          MainLayout
-          <button onClick={logout}>Logout</button>
-        </div>
-        <Outlet/>
+        <Sidebar/>
+        <main className="main">
+          <Header />
+          <Outlet/>
+        </main>
       </div>
   );
 }

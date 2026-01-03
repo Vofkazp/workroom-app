@@ -15,9 +15,14 @@ export const content = [
     title: "Buttons",
     components: [
       {
-        example: (<Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon" click={() => {
+        example: (<Button click={()=>{}} classList="btn-primary btn-primary-icon reverse" path="support" title="Support" />),
+        code: '<Button click={()=>{}} classList="btn-primary btn-primary-icon reverse" path="support" title="Support" />',
+        comment: "Коментар"
+      },
+      {
+        example: (<Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon w-170" click={() => {
         }}/>),
-        code: '<Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon" click={() => {}}/>',
+        code: '<Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon w-170" click={() => {}}/>',
         comment: "Коментар"
       },
       {

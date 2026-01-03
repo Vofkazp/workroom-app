@@ -70,7 +70,7 @@ export default function Login() {
                 <CheckBox name="remember_me" value={form.remember_me} title="Remember me" changed={onSave}/>
                 <Button title="Forgot Password?" classList="text-btn secondary" click={clickBtn}/>
               </div>
-              <Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon" click={loginUser}/>
+              <Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon w-170" click={loginUser}/>
               <Button title="Don’t have an account?" classList="text-btn primary" click={register}/>
             </div>
           </div>

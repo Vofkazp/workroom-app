@@ -39,3 +39,9 @@ export const teamSizeList = [
   {value: 7, label: "51 - 100"},
   {value: 8, label: "101 - 500"}
 ];
+
+export const priorityList = [
+  {value: 1, label: "Low"},
+  {value: 2, label: "Medium"},
+  {value: 3, label: "High"}
+]

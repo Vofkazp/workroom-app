@@ -1,0 +1,200 @@
+.calendar-block {
+
+  .calendar-header {
+    padding: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+
+    .date-title {
+      color: rgba(10, 22, 41, 1);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 26px;
+    }
+  }
+
+  .calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    tr {
+      border-top: 1px solid rgba(230, 235, 245, 1);
+
+      td {
+        height: 128px;
+
+        &:not(:last-child) {
+          border-right: 1px solid rgba(230, 235, 245, 1);
+        }
+
+        .calendar-day-item {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          padding: 8px 12px 8px 8px;
+
+          .day-row {
+            display: flex;
+            align-items: center;
+
+            .calendar-day-name {
+              padding: 3px 8px;
+              color: rgba(125, 133, 146, 1);
+              font-size: 14px;
+              font-weight: 600;
+              line-height: 22px;
+              border-radius: 7px;
+              background: rgba(244, 249, 253, 1);
+            }
+
+            .calendar-day-number {
+              flex: 1;
+              color: rgba(10, 22, 41, 1);
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 28px;
+              text-align: right;
+
+              &.not-this-month {
+                color: rgba(201, 204, 209, 1);
+              }
+            }
+          }
+
+          .event-block {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 28px;
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            grid-template-columns: 1fr;
+            grid-gap: 4px;
+
+            &.lot {
+              grid-template-rows: 30px 30px 1fr;
+              grid-gap: 0;
+
+              &::after {
+                content: attr(data-content);
+                position: absolute;
+                bottom: 0;
+                right: -16px;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: rgba(63, 140, 255, 1);
+                color: rgba(255, 255, 255, 1);
+                font-size: 12px;
+                font-weight: 600;
+                line-height: 24px;
+                text-align: center;
+              }
+
+              .event-item:nth-child(1) {
+                grid-row: 1 / 3;
+                grid-column: 1 / 2;
+              }
+
+              .event-item:nth-child(2) {
+                grid-row: 2 / 4;
+                grid-column: 1 / 2;
+                box-shadow: 0 0 0 2px #ffffff;
+              }
+
+              .event-item:nth-child(3) {
+                grid-row: 3 / 4;
+                grid-column: 1 / 2;
+                box-shadow: 0 0 0 2px #ffffff;
+              }
+            }
+
+            .event-item {
+              position: relative;
+              width: 100%;
+              border-radius: 14px;
+              background: rgba(244, 249, 253, 1);
+              padding: 5px 3px 3px 22px;
+              overflow: hidden;
+
+              &::after {
+                content: '';
+                position: absolute;
+                top: 8px;
+                left: 4px;
+                bottom: 8px;
+                width: 4px;
+                border-radius: 2px;
+              }
+
+              &.low {
+                &::after {
+                  background: rgba(222, 146, 235, 1);
+                }
+
+                .priority-item {
+                  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"%3E%3Cpath d="M12.6129 19.7903L12.7071 19.7071L17.7071 14.7071C18.0976 14.3166 18.0976 13.6834 17.7071 13.2929C17.3466 12.9324 16.7794 12.9047 16.3871 13.2097L16.2929 13.2929L13 16.585L13 5C13 4.44772 12.5523 4 12 4C11.4872 4 11.0645 4.38604 11.0067 4.88338L11 5L11 16.585L7.70711 13.2929C7.34662 12.9324 6.77939 12.9047 6.3871 13.2097L6.29289 13.2929C5.93241 13.6534 5.90468 14.2206 6.2097 14.6129L6.29289 14.7071L11.2929 19.7071C11.6534 20.0676 12.2206 20.0953 12.6129 19.7903Z" fill="rgb(10.1498,200.929,70.7899)" fill-rule="nonzero"/%3E%3C/svg%3E');
+                }
+              }
+
+              &.medium {
+                &::after {
+                  background: rgba(63, 140, 255, 1);
+                }
+
+                .priority-item {
+                  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none'%3E%3Cpath d='M12.6129 4.2097L12.7071 4.29289L17.7071 9.29289C18.0976 9.68342 18.0976 10.3166 17.7071 10.7071C17.3466 11.0676 16.7794 11.0953 16.3871 10.7903L16.2929 10.7071L13 7.415L13 19C13 19.5523 12.5523 20 12 20C11.4872 20 11.0645 19.614 11.0067 19.1166L11 19L11 7.415L7.70711 10.7071C7.34662 11.0676 6.77939 11.0953 6.3871 10.7903L6.29289 10.7071C5.93241 10.3466 5.90468 9.77939 6.2097 9.3871L6.29289 9.29289L11.2929 4.29289C11.6534 3.93241 12.2206 3.90468 12.6129 4.2097Z' fill='rgb(255,189,33)' fill-rule='nonzero'/%3E%3C/svg%3E");
+                }
+              }
+
+              &.high {
+                &::after {
+                  background: rgba(109, 93, 211, 1);
+                }
+
+                .priority-item {
+                  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none'%3E%3Cpath d='M12.6129 4.2097L12.7071 4.29289L17.7071 9.29289C18.0976 9.68342 18.0976 10.3166 17.7071 10.7071C17.3466 11.0676 16.7794 11.0953 16.3871 10.7903L16.2929 10.7071L13 7.415L13 19C13 19.5523 12.5523 20 12 20C11.4872 20 11.0645 19.614 11.0067 19.1166L11 19L11 7.415L7.70711 10.7071C7.34662 11.0676 6.77939 11.0953 6.3871 10.7903L6.29289 10.7071C5.93241 10.3466 5.90468 9.77939 6.2097 9.3871L6.29289 9.29289L11.2929 4.29289C11.6534 3.93241 12.2206 3.90468 12.6129 4.2097Z' fill='rgb(255,189,33)' fill-rule='nonzero'/%3E%3C/svg%3E");
+                }
+              }
+
+              .event-item-name {
+                width: 100%;
+                color: rgba(10, 22, 41, 1);
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 21px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+
+              .event-row {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-top: 3px;
+
+                .event-item-time {
+                  color: rgba(125, 133, 146, 1);
+                  font-size: 12px;
+                  font-weight: 700;
+                  line-height: 16px;
+                }
+
+                .priority-item {
+                  width: 24px;
+                  height: 24px;
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: 24px 24px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

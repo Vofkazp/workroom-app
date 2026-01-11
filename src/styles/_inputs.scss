@@ -18,6 +18,17 @@
         height: 24px;
       }
     }
+
+    .modal-calendar {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+
+      button {
+        position: static;
+      }
+    }
   }
 
   .input-label {

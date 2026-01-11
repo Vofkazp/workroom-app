@@ -1,0 +1,257 @@
+.employees-content {
+  padding-top: 8px;
+
+  .employees-content-list-item {
+    margin-top: 20px;
+    padding: 22px 28px;
+    display: flex;
+
+    .employees-item-user {
+      flex: 2.25;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+
+      .employees-item-user-img {
+        display: block;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .employees-item-user-name {
+        color: rgba(10, 22, 41, 1);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 24px;
+      }
+
+      .employees-item-user-email {
+        color: rgba(145, 146, 158, 1);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 19px;
+        margin-top: 2px;
+      }
+    }
+
+    .employees-item-info {
+      flex: 1;
+
+
+      .employees-item-info-title {
+        color: rgba(145, 146, 158, 1);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 19px;
+      }
+
+      .employees-item-info-value {
+        color: rgba(10, 22, 41, 1);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        margin-top: 4px;
+      }
+    }
+
+    .employees-item-info-level {
+      display: flex;
+      align-items: flex-end;
+      flex: 1;
+
+      .employees-level-name {
+        color: rgba(125, 133, 146, 1);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 12px;
+        padding: 2px 4px;
+        border: 1px solid rgba(125, 133, 146, 1);
+        border-radius: 4px;
+      }
+    }
+
+    .btn-image {
+      margin: auto 0;
+      flex: none;
+    }
+  }
+
+  .paginator-block {
+    margin-top: 28px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .employees-content-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 30px;
+
+    .grid-item {
+      padding: 8px 8px 26px;
+
+      .user-info {
+        border-radius: 24px;
+        background-color: rgba(244, 249, 253, 1);
+        padding: 16px 10px 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &.pause {
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 131 36' xmlns='http://www.w3.org/2000/svg' width='131' height='36' fill='none'%3E%3Cpath d='M6.86198 0.462088C6.65898 0.177625 6.2636 0 5.83333 0L1.16667 0C0.522317 0 0 0.391825 0 0.875C0 1.35818 0.522317 1.75 1.16667 1.75L3.65342 1.75L0.196 5.63964C-0.0427 5.90809 -0.0649833 6.25336 0.138017 6.53791C0.341017 6.82237 0.7364 7 1.16667 7L5.83333 7C6.47768 7 7 6.60817 7 6.125C7 5.64183 6.47768 5.25 5.83333 5.25L3.34658 5.25L6.804 1.36036C7.0427 1.09191 7.06498 0.746638 6.86198 0.462088Z' fill='rgb(253,199,72)' fill-rule='nonzero' transform='matrix(0.994522,0.104528,-0.104528,0.994522,113.385,22.6533)'/%3E%3Cpath d='M4.90142 0.330063C4.75642 0.126875 4.474 0 4.16667 0L0.833333 0C0.373083 0 0 0.279875 0 0.625C0 0.970125 0.373083 1.25 0.833333 1.25L2.60958 1.25L0.14 4.02831C-0.0305 4.22006 -0.0464167 4.46669 0.0985833 4.66994C0.243583 4.87313 0.526 5 0.833333 5L4.16667 5C4.62692 5 5 4.72013 5 4.375C5 4.02987 4.62692 3.75 4.16667 3.75L2.39042 3.75L4.86 0.971687C5.0305 0.779938 5.04642 0.533312 4.90142 0.330063Z' fill='rgb(253,199,72)' fill-rule='nonzero' transform='matrix(0.978148,0.207912,-0.207912,0.978148,100.574,10.5349)'/%3E%3Cpath d='M9.80283 0.660125C9.51283 0.25375 8.948 0 8.33333 0L1.66667 0C0.746167 0 0 0.55975 0 1.25C0 1.94025 0.746167 2.5 1.66667 2.5L5.21917 2.5L0.28 8.05663C-0.061 8.44013 -0.0928333 8.93338 0.197167 9.33988C0.487167 9.74625 1.052 10 1.66667 10L8.33333 10C9.25383 10 10 9.44025 10 8.75C10 8.05975 9.25383 7.5 8.33333 7.5L4.78083 7.5L9.72 1.94337C10.061 1.55988 10.0928 1.06662 9.80283 0.660125Z' fill='rgb(253,199,72)' fill-rule='nonzero' transform='matrix(0.997564,0.0697565,-0.0697565,0.997564,120.361,4.66333)'/%3E%3Cpath d='M6.86198 0.462088C6.65898 0.177625 6.2636 0 5.83333 0L1.16667 0C0.522317 0 0 0.391825 0 0.875C0 1.35818 0.522317 1.75 1.16667 1.75L3.65342 1.75L0.196 5.63964C-0.0427 5.90809 -0.0649833 6.25336 0.138017 6.53791C0.341017 6.82237 0.7364 7 1.16667 7L5.83333 7C6.47768 7 7 6.60817 7 6.125C7 5.64183 6.47768 5.25 5.83333 5.25L3.34658 5.25L6.804 1.36036C7.0427 1.09191 7.06498 0.746638 6.86198 0.462088Z' fill='rgb(253,199,72)' fill-rule='nonzero' transform='matrix(0.994522,0.104528,-0.104528,0.994522,1.38501,18.6533)'/%3E%3Cpath d='M4.90142 0.330063C4.75642 0.126875 4.474 0 4.16667 0L0.833333 0C0.373083 0 0 0.279875 0 0.625C0 0.970125 0.373083 1.25 0.833333 1.25L2.60958 1.25L0.14 4.02831C-0.0305 4.22006 -0.0464167 4.46669 0.0985833 4.66994C0.243583 4.87313 0.526 5 0.833333 5L4.16667 5C4.62692 5 5 4.72013 5 4.375C5 4.02987 4.62692 3.75 4.16667 3.75L2.39042 3.75L4.86 0.971687C5.0305 0.779938 5.04642 0.533312 4.90142 0.330063Z' fill='rgb(253,199,72)' fill-rule='nonzero' transform='matrix(0.978148,0.207912,-0.207912,0.978148,23.5745,29.5349)'/%3E%3Cpath d='M9.80283 0.660125C9.51283 0.25375 8.948 0 8.33333 0L1.66667 0C0.746167 0 0 0.55975 0 1.25C0 1.94025 0.746167 2.5 1.66667 2.5L5.21917 2.5L0.28 8.05663C-0.061 8.44013 -0.0928333 8.93338 0.197167 9.33988C0.487167 9.74625 1.052 10 1.66667 10L8.33333 10C9.25383 10 10 9.44025 10 8.75C10 8.05975 9.25383 7.5 8.33333 7.5L4.78083 7.5L9.72 1.94337C10.061 1.55988 10.0928 1.06662 9.80283 0.660125Z' fill='rgb(253,199,72)' fill-rule='nonzero' transform='matrix(0.997564,0.0697565,-0.0697565,0.997564,11.3608,0.66333)'/%3E%3C/svg%3E");
+          background-color: rgba(253, 199, 72, 0.14);
+          background-repeat: no-repeat;
+          background-position: center 11px;
+          background-size: 131px 36px;
+        }
+
+        .item-avatar {
+          position: relative;
+          width: 60px;
+          height: 60px;
+
+          &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            top: 6px;
+            left: 6px;
+            background-image: var(--avatar);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+          }
+
+          svg {
+            display: block;
+            object-fit: contain;
+
+            .progress {
+              --circumference: 176;
+              stroke-dasharray: var(--circumference);
+              stroke-dashoffset: calc(0 - (var(--circumference) * (1 - var(--progress) / 100)));
+            }
+          }
+        }
+
+        .item-name {
+          margin-top: 15px;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 22px;
+          color: rgba(10, 22, 41, 1);
+        }
+
+        .item-profession {
+          margin-top: 1px;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 21px;
+          color: rgba(10, 22, 41, 1);
+        }
+
+        .item-level {
+          margin-top: 9px;
+          border: 1px solid rgba(125, 133, 146, 1);
+          border-radius: 4px;
+          color: rgba(125, 133, 146, 1);
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 12px;
+          padding: 2px 5px;
+        }
+      }
+
+      .grid-item-details {
+        display: flex;
+        gap: 5px;
+        margin-top: 25px;
+
+        .grid-item-details-item {
+          flex: 1;
+
+          .grid-details-value {
+            color: rgba(10, 22, 41, 1);
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 26px;
+            text-align: center;
+          }
+
+          .grid-details-title {
+            color: rgba(145, 146, 158, 1);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 19px;
+            text-align: center;
+            margin-top: 11px;
+          }
+        }
+      }
+    }
+  }
+
+  .vacations-content-item {
+    margin-top: 20px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+
+    .vacations-content-user-block {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+
+      .vacations-content-avatar {
+        display: block;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .vacations-content-user-name {
+        color: rgba(10, 22, 41, 1);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 24px;
+      }
+
+      .vacations-content-user-email {
+        color: rgba(145, 146, 158, 1);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 19px;
+        margin-top: 2px;
+      }
+    }
+
+    .vacations-content-item-block {
+      min-width: 150px;
+
+      .vacations-content-title {
+        color: rgba(145, 146, 158, 1);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 19px;
+      }
+
+      .vacations-content-value {
+        color: rgba(10, 22, 41, 1);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        margin-top: 4px;
+      }
+    }
+  }
+}

@@ -1,0 +1,462 @@
+.profile-grid {
+
+  .profile-aside {
+    position: relative;
+    padding: 24px 24px 20px;
+
+    .profile-edit {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+    }
+
+    .profile-avatar {
+      position: relative;
+      width: 72px;
+      height: 72px;
+
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        top: 6px;
+        left: 6px;
+        background-image: var(--avatar);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
+
+      svg {
+        display: block;
+        object-fit: contain;
+
+        .progress {
+          --circumference: 176;
+          stroke-dasharray: var(--circumference);
+          stroke-dashoffset: calc(0 - (var(--circumference) * (1 - var(--progress) / 100)));
+        }
+      }
+    }
+
+    .profile-name {
+      color: rgba(10, 22, 41, 1);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 30px;
+      margin-top: 16px;
+    }
+
+    .profile-profession {
+      color: rgba(10, 22, 41, 1);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 21px;
+      margin-top: 5px;
+    }
+
+    .divider {
+      height: 1px;
+      margin: 30px -24px 30px;
+      background: rgba(228, 230, 232, 1);
+    }
+
+    .profile-group-title {
+      color: rgba(10, 22, 41, 1);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 26px;
+      margin-top: 14px;
+      margin-bottom: 12px;
+    }
+  }
+
+  .profile-content {
+
+    .profile-content-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 4px;
+
+      .right-header-block {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+    }
+
+    .workload {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      grid-auto-rows: auto;
+      grid-gap: 30px;
+      margin-top: 20px;
+
+      .item {
+        border-radius: 24px;
+        box-shadow: 0 6px 58px 0 rgba(196, 203, 214, 0.1);
+        background: rgba(255, 255, 255, 1);
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .item-avatar {
+          position: relative;
+          width: 60px;
+          height: 60px;
+
+          &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            top: 6px;
+            left: 6px;
+            background-image: var(--avatar);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+          }
+
+          svg {
+            display: block;
+            object-fit: contain;
+
+            .progress {
+              --circumference: 176;
+              stroke-dasharray: var(--circumference);
+              stroke-dashoffset: calc(0 - (var(--circumference) * (1 - var(--progress) / 100)));
+            }
+          }
+        }
+
+        .item-name {
+          margin-top: 15px;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 22px;
+          color: rgba(10, 22, 41, 1);
+        }
+
+        .item-profession {
+          margin-top: 1px;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 21px;
+          color: rgba(10, 22, 41, 1);
+        }
+
+        .item-level {
+          margin-top: 9px;
+          border: 1px solid rgba(125, 133, 146, 1);
+          border-radius: 4px;
+          color: rgba(125, 133, 146, 1);
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 12px;
+          padding: 2px 5px;
+        }
+      }
+    }
+
+    .vacations {
+      display: grid;
+      grid-template-rows: 1fr;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 30px;
+      margin-top: 20px;
+
+      .vocations-item {
+        padding: 26px 26px 28px;
+
+        .process-vocations-block {
+          position: relative;
+          width: 72px;
+          height: 72px;
+
+          &.vacation {
+            color: rgba(21, 192, 230, 1);
+          }
+
+          &.sick {
+            color: rgba(246, 81, 96, 1);
+          }
+
+          &.remotely {
+            color: rgba(109, 93, 211, 1);
+          }
+
+          &::after {
+            content: attr(data-value);
+            position: absolute;
+            display: block;
+            inset: 0;
+            color: currentColor;
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 72px;
+            text-align: center;
+          }
+
+          svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+
+            .progress {
+              --circumference: 176;
+              stroke-dasharray: var(--circumference);
+              stroke-dashoffset: calc(0 - (var(--circumference) * (1 - var(--value) / var(--full))));
+            }
+          }
+        }
+
+        .vocation-title {
+          color: rgba(10, 22, 41, 1);
+          font-size: 18px;
+          font-weight: 700;
+          line-height: 26px;
+          margin-top: 18px;
+        }
+
+        .vocation-value {
+          color: rgba(145, 146, 158, 1);
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 19px;
+          margin-top: 4px;
+        }
+      }
+    }
+
+    .requests {
+      margin-top: 47px;
+
+      .requests-title {
+        color: rgba(10, 22, 41, 1);
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 30px;
+        margin-bottom: 20px;
+      }
+
+      .requests-item {
+        display: flex;
+        align-items: center;
+        margin-top: 16px;
+        padding: 22px 40px 22px 30px;
+
+        .item {
+          min-width: 140px;
+
+          &:first-child {
+            flex: 1;
+          }
+
+          &:last-child {
+            min-width: 90px;
+          }
+        }
+
+        .request-title {
+          color: rgba(145, 146, 158, 1);
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 19px;
+        }
+
+        .request-value {
+          color: rgba(10, 22, 41, 1);
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 24px;
+          margin-top: 4px;
+
+          &.category {
+            position: relative;
+            font-weight: 700;
+            padding-left: 22px;
+
+            &::after {
+              content: '';
+              position: absolute;
+              left: 0;
+              top: calc(50% - 5px);
+              display: block;
+              width: 10px;
+              height: 10px;
+              border-radius: 50px;
+            }
+
+            &.vacation::after {
+              background-color: rgba(21, 192, 230, 1);
+            }
+
+            &.sick::after {
+              background-color: rgba(246, 81, 96, 1);
+            }
+
+            &.remotely::after {
+              background-color: rgba(109, 93, 211, 1);
+            }
+          }
+        }
+
+        .status {
+          display: inline-block;
+          padding: 7px 15px;
+          border-radius: 10px;
+          color: rgba(255, 255, 255, 1);
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 16px;
+
+          &.approved {
+            background: rgba(0, 208, 151, 1);
+          }
+
+          &.pending {
+            background: rgba(253, 199, 72, 1);
+          }
+        }
+      }
+    }
+
+    .setting-title-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 10px;
+      margin-top: 30px;
+
+      .setting-title {
+        color: rgba(10, 22, 41, 1);
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 30px;
+      }
+    }
+
+    .profile-settings-grid {
+      margin-top: 20px;
+
+      .profile-settings-assign {
+        padding: 22px 0;
+
+        .profile-assign {
+
+          .profile-assign-item {
+            position: relative;
+            padding-left: 8px;
+            padding-right: 12px;
+            cursor: pointer;
+
+            &:after {
+              content: '';
+              display: block;
+              position: absolute;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              width: 4px;
+              border-radius: 2px;
+            }
+
+            &:hover, &.active {
+              .profile-assign-item-row {
+                color: rgba(63, 140, 255, 1);
+                background-color: rgba(63, 140, 255, .1);
+
+                .profile-assign-item-title {
+                  color: rgba(10, 22, 41, 1);
+                }
+              }
+            }
+
+            &.active {
+              &:after {
+                background-color: rgba(63, 140, 255, 1);
+              }
+            }
+
+            .profile-assign-item-row {
+              display: flex;
+              align-items: center;
+              padding: 14px 18px;
+              gap: 16px;
+              color: rgba(125, 133, 146, 1);
+              border-radius: 14px;
+              background: transparent;
+
+              svg {
+                display: block;
+              }
+
+              .profile-assign-item-title {
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 22px;
+                flex: 1;
+              }
+            }
+          }
+        }
+      }
+
+      .profile-settings-content {
+        padding: 34px 24px;
+
+        .profile-content-title {
+          color: rgba(10, 22, 41, 1);
+          font-size: 18px;
+          font-weight: 700;
+          line-height: 26px;
+          padding: 0 8px;
+          margin-bottom: 20px;
+        }
+
+        .profile-content-settings-switch-item {
+          margin-top: 16px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          border-radius: 14px;
+          background: rgba(244, 249, 253, 1);
+          padding: 16px 20px;
+
+          .switch-info-block {
+            flex: 1;
+
+            .profile-content-settings-switch-title {
+              color: rgba(10, 22, 41, 1);
+              font-size: 16px;
+              font-weight: 700;
+              line-height: 24px;
+            }
+
+            .profile-content-settings-switch-description {
+              color: rgba(125, 133, 146, 1);
+              font-size: 14px;
+              font-weight: 600;
+              line-height: 22px;
+              margin-top: 3px;
+            }
+          }
+        }
+
+        .check-box-item {
+          margin-top: 28px;
+          padding: 0 10px;
+        }
+      }
+    }
+  }
+}

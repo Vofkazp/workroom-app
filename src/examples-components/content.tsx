@@ -8,6 +8,7 @@ import InputCode from "../components/InputCode";
 import MaskedInput from "../components/MaskedInput";
 import {whyUse} from "../resurses/SelectList";
 import Select from "../components/Select";
+import TextArea from "../components/TextArea";
 
 export const content = [
   {
@@ -87,6 +88,13 @@ export const content = [
                           errorText="Incorrect data" changed={() => {
         }}/>),
         code: '<Select title="Why will you use the service?" list={whyUse} name="why_use" value={1} errorText="Incorrect data" changed={() => {}}/>',
+        comment: "Коментар"
+      },
+      {
+        example: (<TextArea title="Description" name="description" error={false} errorText="Incorrect data"
+                            placeholder="Add some description of the project" value=""
+                            changed={()=>{}}/>),
+        code: '<TextArea title="Description" name="description" error={false} errorText="Incorrect data" placeholder="Add some description of the project" value="" changed={()=>{}}/>',
         comment: "Коментар"
       }
     ]

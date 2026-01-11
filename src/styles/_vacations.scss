@@ -1,0 +1,262 @@
+.vacations-calendar-block {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: 1fr;
+  margin-top: 20px;
+
+  .vacations-calendar-aside {
+    border-right: 1px solid rgba(230, 235, 245, 1);
+
+    .vacations-calendar-header {
+      border-bottom: 1px solid rgba(230, 235, 245, 1);
+      padding: 27px 16px 21px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .vacations-calendar-header-title {
+        color: rgba(10, 22, 41, 1);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 24px;
+      }
+    }
+
+    .vacations-calendar-user-list {
+      border-bottom: 1px solid rgba(230, 235, 245, 1);
+
+      .vacations-calendar-user-item {
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 53px;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid rgba(230, 235, 245, 1);
+        }
+
+        .vacations-calendar-user-avatar {
+          display: block;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .vacations-calendar-user-name {
+          color: rgba(10, 22, 41, 1);
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 24px;
+        }
+      }
+    }
+  }
+
+  .vacations-calendar-body {
+    overflow: hidden;
+
+    .vacations-calendar-body-header {
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .vacations-calendar-body-month-name {
+        flex: 1;
+        color: rgba(10, 22, 41, 1);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 22px;
+        padding-left: 60px;
+        text-align: center;
+      }
+    }
+
+    .vacations-calendar {
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-behavior: smooth;
+      border-bottom: 1px solid rgba(230, 235, 245, 1);
+
+      .vacations-calendar-days {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 28px;
+        grid-template-rows: 40px;
+        grid-gap: 4px;
+        padding: 0 4px 4px;
+        border-bottom: 1px solid rgba(230, 235, 245, 1);
+
+        .vacations-calendar-days-item {
+          border-radius: 7px;
+          background: rgba(244, 249, 253, 1);
+          padding: 4px 2px 3px;
+
+          .vacations-calendar-days-item-number {
+            color: rgba(125, 133, 147, 1);
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 18px;
+            text-align: center;
+          }
+
+          .vacations-calendar-days-item-name {
+            color: rgba(125, 133, 148, .7);
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 18px;
+            text-align: center;
+            margin-top: -3px;
+          }
+        }
+      }
+
+      .vacations-calendar-user-days {
+        padding: 4px 4px 5px;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 28px;
+        grid-template-rows: 44px;
+        grid-gap: 4px;
+
+        .vacations-calendar-user-days-item {
+          --border: transparent;
+          --background: transparent;
+          position: relative;
+          border-radius: 7px;
+          background: rgba(244, 249, 253, 1);
+
+          &.full::after,
+          &.half::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+            background-color: var(--background);
+          }
+
+          &.full::after {
+            height: 100%;
+          }
+
+          &.half::after {
+            height: 50%;
+          }
+
+          &.sick-approved {
+            --border: rgba(246, 81, 96, 1);
+            --background: rgba(246, 81, 96, 1);
+          }
+
+          &.sick-pending {
+            --border: rgba(246, 81, 96, 1);
+            --background: rgba(246, 81, 96, 0.12);
+          }
+
+          &.work-approved {
+            --border: rgba(109, 93, 211, 1);
+            --background: rgba(109, 93, 211, 1);
+          }
+
+          &.work-pending {
+            --border: rgba(109, 93, 211, 1);
+            --background: rgba(109, 93, 211, 0.14);
+          }
+
+          &.vacation-approved {
+            --border: rgba(21, 192, 230, 1);
+            --background: rgba(21, 192, 230, 1);
+          }
+
+          &.vacation-pending {
+            --border: rgba(21, 192, 230, 1);
+            --background: rgba(21, 192, 230, 0.12);
+          }
+        }
+      }
+    }
+
+    .vacations-calendar-footer {
+      padding: 12px 24px 15px;
+      display: flex;
+      justify-content: space-between;
+
+      .vacations-calendar-footer-item {
+
+        .vacations-calendar-footer-item-title {
+          color: rgba(125, 133, 146, 1);
+          font-size: 14px;
+          font-weight: 700;
+          line-height: 24px;
+        }
+
+        .vacations-calendar-footer-item-content {
+          display: flex;
+          align-items: center;
+          gap: 26px;
+          margin-top: 4px;
+
+          .vacations-status {
+            --background: transparent;
+            --border: transparent;
+            position: relative;
+            color: rgba(10, 22, 41, 1);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            padding-left: 23px;
+
+            &::before {
+              content: '';
+              position: absolute;
+              top: 7px;
+              left: 0;
+              display: block;
+              width: 10px;
+              height: 10px;
+              border: 2px solid var(--border);
+              background-color: var(--background);
+              border-radius: 50%;
+            }
+
+            &.sick-approved {
+              --background: rgba(246, 81, 96, 1);
+              --border: rgba(246, 81, 96, 1);
+            }
+
+            &.sick-pending {
+              --background: rgba(246, 81, 96, 0.12);
+              --border: rgba(246, 81, 96, 1);
+            }
+
+            &.work-approved {
+              --background: rgba(109, 93, 211, 1);
+              --border: rgba(109, 93, 211, 1);
+            }
+
+            &.work-pending {
+              --background: rgba(109, 93, 211, 0.14);
+              --border: rgba(109, 93, 211, 1);
+            }
+
+            &.vocation-approved {
+              --background: rgba(21, 192, 230, 1);
+              --border: rgba(21, 192, 230, 1);
+            }
+
+            &.vocation-pending {
+              --background: rgba(21, 192, 230, 0.12);
+              --border: rgba(21, 192, 230, 1);
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -11,6 +11,9 @@ import ComponentLayout from "./examples-components/ComponentLayout";
 import NotificationProvider from "./services/NitificationProvider";
 import NotificationContainer from "./components/NotificationContainer";
 import AuthProvider from "./services/AuthProvider";
+import ProjectLayout from "./layouts/ProjectLayout";
+import TasksList from "./pages/TasksList";
+import AddProject from "./pages/AddProject";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -24,7 +27,11 @@ root.render(
             <Routes>
               <Route path="/" element={<MainLayout/>}>
                 <Route index element={<Dashboard/>}/>
+                <Route path="/projects" element={<ProjectLayout/>}>
+                  <Route index element={<TasksList/>}/>
+                </Route>
               </Route>
+              <Route path="/add-project" element={<AddProject/>}/>
               <Route path="/login" element={<Login/>}/>
               <Route path="/register" element={<Register/>}/>
               <Route path="/components" element={<ComponentLayout/>}/>

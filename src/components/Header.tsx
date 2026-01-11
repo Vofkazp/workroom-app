@@ -71,7 +71,9 @@ export default function Header() {
           </div>
         </div>
         <Modal isOpen={modal} title="Notifications" classList="filter-modal" onClose={() => setModal(false)}>
-          <div>Notifications</div>
+          <div className="modal-body">
+            <div>Notifications</div>
+          </div>
         </Modal>
       </header>
   );

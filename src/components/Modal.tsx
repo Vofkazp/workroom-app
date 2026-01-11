@@ -19,9 +19,7 @@ export default function Modal({isOpen, title, classList, onClose, children}: Pro
             <h3 className="modal-title">{title}</h3>
             <div className="divider"></div>
           </div>
-          <div className="modal-body">
-            {children}
-          </div>
+          {children}
         </div>
       </div>
   );

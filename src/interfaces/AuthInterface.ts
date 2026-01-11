@@ -52,3 +52,11 @@ export interface Token {
     refreshToken: string;
   }
 }
+
+export interface ResponseFile {
+  status: boolean;
+  response: {
+    publicId: string;
+    url: string;
+  };
+}

@@ -60,3 +60,8 @@ export interface ResponseFile {
     url: string;
   };
 }
+
+export interface ResponseFileResult {
+  status: boolean;
+  response: boolean;
+}

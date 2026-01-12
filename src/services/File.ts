@@ -1,5 +1,5 @@
 import api from "./Api";
-import {ResponseAxios, ResponseFile} from "../interfaces/AuthInterface";
+import {ResponseAxios, ResponseFile, ResponseFileResult} from "../interfaces/AuthInterface";
 
 export function useFile() {
   const UploadImage = async (formData: FormData) => {
@@ -23,5 +23,15 @@ export function useFile() {
 
     }
   }
-  return {UploadImage, getImage};
+
+  const deleteFile = async (publicId: string, type: string) => {
+    try {
+      const response: ResponseAxios<ResponseFileResult> = await api.delete(`/files?publicId=${publicId}&type=${type}`);
+      return response.data;
+    } catch {
+
+    }
+  }
+
+  return {UploadImage, getImage, deleteFile};
 }

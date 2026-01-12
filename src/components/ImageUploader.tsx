@@ -7,16 +7,18 @@ import Button from "./Button";
 type Props = {
   name: string;
   value?: string;
+  classList?: string;
   onChange: (name: string, url: string) => void;
 };
 
-export default function ImageUploader({name, value = "", onChange}: Props) {
-  const {UploadImage, getImage} = useFile();
+export default function ImageUploader({name, value = "", classList, onChange}: Props) {
+  const {UploadImage, getImage, deleteFile} = useFile();
   const [file, setFile] = useState<File | null>(null);
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [url, setUrl] = useState<string | null>(null);
   const [isCropping, setIsCropping] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [publicId, setPublicId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!value) return;
@@ -55,6 +57,7 @@ export default function ImageUploader({name, value = "", onChange}: Props) {
       const res = await UploadImage(formData);
       if (res?.status) {
         setUrl(res.response.url);
+        setPublicId(res.response.publicId);
         onChange(name, res.response.publicId);
       }
     } finally {
@@ -62,17 +65,26 @@ export default function ImageUploader({name, value = "", onChange}: Props) {
     }
   };
 
-  const close = () => {
-    setSelectedImg(null);
-    setUrl(null);
-    onChange(name, "");
+  const close = async () => {
+    if (!publicId) return;
+    try {
+      setLoading(true);
+      const result = await deleteFile(publicId, "image");
+      if (!result?.status) return;
+      setPublicId(null);
+      setSelectedImg(null);
+      setUrl(null);
+      onChange(name, "");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-      <div className="upload-file">
+      <div className={`upload-file ${classList || ""}${url ? " uploaded" : ""}`}>
         {url && <Button click={close} classList="clear-id" path="close" fill="#000"/>}
         <label className="preview-image"
-               style={{backgroundImage: `url(${url || "./images/Preview-image.png"})`}}>
+               style={{backgroundImage: `url(${url || "./images/upload.svg"})`}}>
           <input type="file" accept="image/*" onChange={handleFileChange} disabled={isCropping || loading}/>
           <p className="upload-title">Загрузить...</p>
         </label>

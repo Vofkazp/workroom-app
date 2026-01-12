@@ -27,7 +27,7 @@ type Form = {
   links: Link[];
   isImages: boolean;
   images: Images[];
-  image: string;
+  avatar: string | null;
 }
 
 export default function AddProject() {
@@ -43,9 +43,23 @@ export default function AddProject() {
         links: [{link: "", title: ""}],
         isImages: false,
         images: [{publicId: ""}],
-        image: ""
+        avatar: ""
       }
   );
+
+  const imagesForRadio = [
+    "workroom/resurses/Task1_gixmvg",
+    "workroom/resurses/Task2_hbvptb",
+    "workroom/resurses/Task3_jz6j5z",
+    "workroom/resurses/Task4_cewmet",
+    "workroom/resurses/project1_xeehbh",
+    "workroom/resurses/project2_vc9nju",
+    "workroom/resurses/project3_bwlnch",
+    "workroom/resurses/project4_lypm6h",
+    "workroom/resurses/project5_btpcby",
+    "workroom/resurses/project6_x9usde",
+    "workroom/resurses/project7_edyoif"
+  ];
 
   const addToForm = (name: string, value: string | number) => {
     setForm(prev => ({...prev, [name]: value}));
@@ -100,10 +114,6 @@ export default function AddProject() {
     }));
   }
 
-  const addImage = () => {
-
-  }
-
   return (
       <div className="main-content add-project">
         <div className="add-project-block card">
@@ -133,51 +143,23 @@ export default function AddProject() {
                     Select or upload an avatar for the project (available formats: jpg, png)
                   </p>
                   <div className="select-image-grid">
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/Task1.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/Task2.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/Task3.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/Task4.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/project1.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/project2.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/project3.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/project4.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/project5.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/project6.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <label className="select-image-item">
-                      <input type="radio" name="select-image"/>
-                      <img src="./images/project7.png" alt="image" className="select-image-img"/>
-                    </label>
-                    <Button click={addImage} classList="icon-btn" path="uploadImg" fill="rgb(63,140,255)"/>
+                    {imagesForRadio.map((item, index) =>
+                        <label key={index} className="select-image-item">
+                          <input
+                              type="radio"
+                              name="avatar"
+                              value={item}
+                              onChange={(e) => addToForm("avatar", e.target.value)}
+                              checked={form.avatar === item}
+                          />
+                          <img
+                              alt="image-progect"
+                              className="select-image-img"
+                              src={`https://res.cloudinary.com/dbdkhalab/image/upload/v1768143865/${item}.png`}
+                          />
+                        </label>
+                    )}
+                    <ImageUploader name="avatar" classList="radio-btn" onChange={addToForm}/>
                   </div>
                 </div>
                 {form.isLink &&

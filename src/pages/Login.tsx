@@ -26,7 +26,7 @@ export default function Login() {
     // password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/
   }
 
-  const email = Yup.string().matches(regexp.email, "Должно быть в формате 'example@test.com'").required("Введите email");
+  const email = Yup.string().matches(regexp.email, "Должно быть в формате 'youremail@gmail.com'").required("Введите email");
   const password = Yup.string()
       .matches(regexp.password, "Минимум 8 символов, одна заглавная, одна строчная, цифра и спецсимвол")
       .required("Введите пароль");

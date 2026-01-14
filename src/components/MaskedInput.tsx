@@ -1,22 +1,26 @@
 import React, {useEffect, useRef, useState} from "react";
+import {useFormikContext} from "formik";
 
 type Props = {
   mask: string;
-  value?: string;
-  onChange?: (digits: string) => void;
+  name: string;
 };
 
-export default function MaskedInput({mask, value = "", onChange}: Props) {
+export default function MaskedInput({mask, name}: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [digits, setDigits] = useState<string>(() => {
-    return value.replace(/\D/g, "");
-  });
+  const {setFieldValue, values} = useFormikContext<any>();
+
+  const value: string = values[name] || "";
+  const [digits, setDigits] = useState<string>("");
+
   const buildMasked = (d: string) => {
     let i = 0;
-    return mask.replace(/_/g, () => (d[i++] ?? "_"));
+    return mask.replace(/_/g, () => d[i++] ?? "_");
   };
 
   const masked = buildMasked(digits);
+
+  const maxDigits = (mask.match(/_/g) || []).length;
 
   const placeholderIndexBeforePos = (pos: number) => {
     let count = 0;
@@ -37,48 +41,51 @@ export default function MaskedInput({mask, value = "", onChange}: Props) {
     return mask.length;
   };
 
-  const updateDigits = (newDigits: string, caretAtDigitIndex?: number | null) => {
-    const maxDigits = (mask.match(/_/g) || []).length;
+  const updateDigits = (newDigits: string, caretIndex?: number) => {
     const trimmed = newDigits.slice(0, maxDigits);
     setDigits(trimmed);
-    onChange?.(trimmed);
+    setFieldValue(name, trimmed);
+
     requestAnimationFrame(() => {
-      const idx = caretAtDigitIndex ?? trimmed.length; // по умолчанию — конец введённых цифр
+      const idx = caretIndex ?? trimmed.length;
       const pos = posForDigitIndex(idx);
       inputRef.current?.setSelectionRange(pos, pos);
     });
   };
+
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const el = inputRef.current!;
-    const selectionStart = el.selectionStart ?? 0;
+    const cursor = el.selectionStart ?? 0;
+
     if (/^\d$/.test(e.key)) {
       e.preventDefault();
-      const insertAt = placeholderIndexBeforePos(selectionStart);
-      const newDigits =
-          digits.slice(0, insertAt) + e.key + digits.slice(insertAt);
-      updateDigits(newDigits, insertAt + 1);
+      const index = placeholderIndexBeforePos(cursor);
+      updateDigits(
+          digits.slice(0, index) + e.key + digits.slice(index),
+          index + 1
+      );
       return;
     }
 
     if (e.key === "Backspace") {
       e.preventDefault();
-      const beforeIndex = placeholderIndexBeforePos(selectionStart);
-      if (beforeIndex === 0) {
-        return;
-      }
-      const removeIndex = beforeIndex - 1;
-      const newDigits = digits.slice(0, removeIndex) + digits.slice(removeIndex + 1);
-      updateDigits(newDigits, removeIndex);
+      const index = placeholderIndexBeforePos(cursor) - 1;
+      if (index < 0) return;
+      updateDigits(
+          digits.slice(0, index) + digits.slice(index + 1),
+          index
+      );
       return;
     }
 
     if (e.key === "Delete") {
       e.preventDefault();
-      const atIndex = placeholderIndexBeforePos(selectionStart);
-      if (atIndex >= digits.length) return;
-      const newDigits = digits.slice(0, atIndex) + digits.slice(atIndex + 1);
-      updateDigits(newDigits, atIndex);
-      return;
+      const index = placeholderIndexBeforePos(cursor);
+      if (index >= digits.length) return;
+      updateDigits(
+          digits.slice(0, index) + digits.slice(index + 1),
+          index
+      );
     }
   };
 
@@ -88,21 +95,26 @@ export default function MaskedInput({mask, value = "", onChange}: Props) {
     if (!pasted) return;
 
     const el = inputRef.current!;
-    const pos = el.selectionStart ?? 0;
-    const insertAt = placeholderIndexBeforePos(pos);
-    const newDigits = digits.slice(0, insertAt) + pasted + digits.slice(insertAt);
-    updateDigits(newDigits, insertAt + pasted.length);
+    const cursor = el.selectionStart ?? 0;
+    const index = placeholderIndexBeforePos(cursor);
+
+    updateDigits(
+        digits.slice(0, index) + pasted + digits.slice(index),
+        index + pasted.length
+    );
   };
+
   const onFocus = () => {
     requestAnimationFrame(() => {
-      const firstEmpty = masked.indexOf("_");
-      const pos = firstEmpty === -1 ? mask.length : firstEmpty;
-      inputRef.current?.setSelectionRange(pos, pos);
+      const pos = masked.indexOf("_");
+      inputRef.current?.setSelectionRange(
+          pos === -1 ? mask.length : pos,
+          pos === -1 ? mask.length : pos
+      );
     });
   };
 
   useEffect(() => {
-    if (!value) return;
     const extDigits = value.replace(/\D/g, "");
     if (extDigits !== digits) {
       setDigits(extDigits);
@@ -118,8 +130,7 @@ export default function MaskedInput({mask, value = "", onChange}: Props) {
           onKeyDown={onKeyDown}
           onPaste={onPaste}
           onFocus={onFocus}
-          onChange={() => {
-          }}
+          onChange={() => {}}
           aria-label="phone"
       />
   );

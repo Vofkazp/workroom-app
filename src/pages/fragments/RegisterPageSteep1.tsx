@@ -6,34 +6,51 @@ import {useAuth} from "../../services/Auth";
 import MaskedInput from "../../components/MaskedInput";
 import InputCode from "../../components/InputCode";
 import {phonePrefix} from "../../resurses/phonePrefix";
+import * as Yup from "yup";
+import {Form, Formik} from "formik";
+import Button from "../../components/Button";
+import PhoneAutoCheck from "../../components/PhoneAutoCheck";
+import {useNotifications} from "../../services/NitificationProvider";
 
-export default function RegisterPageSteep1({
-                                             prefixPhone,
-                                             savePhonePrefix,
-                                             phone,
-                                             phoneError,
-                                             savePhone,
-                                             isCode,
-                                             email,
-                                             emailError,
-                                             saveEmail,
-                                             password,
-                                             passError,
-                                             savePass
-                                           }: {
-  prefixPhone: number,
-  savePhonePrefix: (value: number) => void,
-  phone: string,
-  phoneError: boolean,
-  savePhone: (value: string) => void,
-  isCode: (value: boolean) => void,
-  email: string,
-  emailError: boolean,
-  saveEmail: (name: string, value: string) => void,
-  password: string,
-  passError: boolean,
-  savePass: (name: string, value: string) => void,
-}) {
+type Props = {
+  phonePref: number;
+  phoneNumber: string;
+  emailString: string;
+  passwordString: string;
+}
+
+export default function RegisterPageSteep1({phonePref, phoneNumber, emailString, passwordString}: Props) {
+  const {addNotification} = useNotifications();
+
+  const initialValues = {
+    phone_prefix: phonePref,
+    phone: phoneNumber,
+    email: emailString,
+    password: passwordString,
+    isCode: false,
+    smsCode: ""
+  };
+
+  const regexp = {
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/
+  }
+
+  const phone_prefix = Yup.number();
+  const phone = Yup.string().length(11, "Неправильный номер");
+  const email = Yup.string().matches(regexp.email, "Должно быть в формате 'youremail@gmail.com'").required("Введите email");
+  const password = Yup.string()
+      .matches(regexp.password, "Минимум 8 символов, одна заглавная, одна строчная, цифра и спецсимвол")
+      .required("Введите пароль");
+  const isCode = Yup.boolean().oneOf([true], "Код не подтверждён");
+  const smsCode = Yup.string()
+      .length(4, "Введите 4-значный код");
+
+  const schemas = {
+    custom: Yup.object().shape({
+      phone_prefix, phone, email, password, isCode, smsCode
+    })
+  }
 
   const {checkPhone, checkCode} = useAuth();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -42,22 +59,6 @@ export default function RegisterPageSteep1({
   useEffect(() => {
     return () => stopTimer();
   }, []);
-
-  const checkMyPhone = (val: string) => {
-    stopTimer();
-    checkPhone("+" + prefixPhone + val).then(res => {
-      if (res.status) {
-        console.log(res.response);
-        startTimer();
-      }
-    });
-  }
-
-  const saveMyPhone = (value: string) => {
-    savePhone(value);
-    isCode(false);
-    if(value.length === 11) checkMyPhone(value);
-  }
 
   const startTimer = () => {
     let time = 5 * 60;
@@ -81,47 +82,76 @@ export default function RegisterPageSteep1({
     }
   }
 
-  const sendCode = (code: string) => {
-    checkCode("+" + prefixPhone + phone, code).then(res => {
-      if (res.status) {
-        stopTimer();
-      }
-      isCode(res.status);
-    })
+  const nextSteep = (values: any) => {
+    console.log(values);
   }
 
   return (
-      <>
-        <span className="sign-up-content-steeps">Step 1/4</span>
-        <h2 className="sign-up-title">Valid your phone</h2>
-        <div className={`input-container ${phoneError && "error"}`}>
-          <label className="label-block">
-            <p className="input-label">Mobile Number</p>
-            <div className="inputs-row-elements">
-              {/*<SelectItem value={prefixPhone} name={"phone_prefix"} list={phonePrefix}*/}
-              {/*            selected={(name, value) => savePhonePrefix(value)}/>*/}
-              <MaskedInput
-                  mask="_ (___) ___-__-__"
-                  value={phone}
-                  onChange={saveMyPhone}
-              />
-            </div>
-          </label>
-          <span className="error">Невірний формат телефону</span>
-        </div>
-        <InputCode sendCode={sendCode}/>
-        <p className="sms-info">
-          SMS was sent to your number +{prefixPhone}{phone}<br/>
-          It will be valid for {timer}
-        </p>
-        {/*<Input type="text" name="email" value={email} title="Email Address"*/}
-        {/*       placeholder="youremail@gmail.com"*/}
-        {/*       error={emailError}*/}
-        {/*       errorText="Невірний формат Email" changed={saveEmail}/>*/}
-        {/*<PasswordInput type="password" name="password" value={password} title="Create Password"*/}
-        {/*               placeholder="Your password"*/}
-        {/*               error={passError}*/}
-        {/*               errorText="Невірний формат" changed={savePass}/>*/}
-      </>
+      <div className="sign-up-content-block card">
+        <Formik initialValues={initialValues} validationSchema={schemas.custom} onSubmit={nextSteep}>
+          {({values, errors, setFieldValue}) => {
+            const sendCode = (code: string) => {
+
+              checkCode("+" + values.phone_prefix + values.phone, code).then(res => {
+                setFieldValue("isCode", res.status);
+                if (res.status) {
+                  stopTimer();
+                } else {
+                  addNotification(res.message, "warning");
+                }
+              });
+            }
+
+            const checkMyPhone = (phone: string) => {
+              stopTimer();
+              checkPhone(phone).then(res => {
+                if (res?.status) {
+                  console.log(res.response);
+                  startTimer();
+                } else {
+                  addNotification(res.message, "warning");
+                }
+              })
+            }
+
+            return (
+                <Form>
+                  <PhoneAutoCheck onCheck={checkMyPhone}/>
+                  <div className="sign-up-content">
+                    <span className="sign-up-content-steeps">Step 1/4</span>
+                    <h2 className="sign-up-title">Valid your phone</h2>
+                    <div className="input-container">
+                      <label className="label-block">
+                        <p className="input-label">Mobile Number</p>
+                        <div className="inputs-row-elements">
+                          <SelectItem name="phone_prefix" list={phonePrefix}/>
+                          <MaskedInput
+                              mask="_ (___) ___-__-__"
+                              name="phone"
+                          />
+                        </div>
+                      </label>
+                      {errors.phone && <span className="error">{errors.phone}</span>}
+                    </div>
+                    <InputCode sendCode={sendCode}/>
+                    <p className="sms-info">
+                      SMS was sent to your number +{values.phone_prefix}{values.phone}<br/>
+                      It will be valid for {timer}
+                    </p>
+                    <Input name="email" title="Email Address" placeholder="youremail@gmail.com"/>
+                    <PasswordInput name="password" title="Create Password" placeholder="Your password"/>
+                  </div>
+                  <div className="sign-up-content-footer">
+                    <div>
+                      {/*{steep > 1 && <Button title="Previous" path="back" classList="back" click={prevSteep}/>}*/}
+                    </div>
+                    <Button type="submit" title="Next Step" path="arrowRight"
+                            classList="btn-primary btn-primary-icon"/>
+                  </div>
+                </Form>
+            )
+          }}
+        </Formik>
+      </div>
   );
 }

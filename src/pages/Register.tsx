@@ -14,7 +14,6 @@ export default function Register() {
   const navigate = useNavigate();
   const {register, createCompany, getCurrentUser, updateUser, inviteMembers} = useAuth();
   const [steep, setSteep] = useState(1);
-  const [prefixPhone, setPrefixPhone] = useState<number>(3);
   const [form, setForm] = useState({
     phone: "80",
     email: "",
@@ -28,76 +27,12 @@ export default function Register() {
     emails: [""]
   });
 
-  const [emailError, setEmailError] = useState(false);
-  const [emailsError, setEmailsError] = useState(false);
-  const [phoneError, setPhoneError] = useState(false);
-  const [passError, setPassError] = useState(false);
-  const [nameError, setNameError] = useState(false);
-  const [isCode, setIsCode] = useState(false);
-
-  const onSave = (name: string, value: string | number) => {
-    setPhoneError(false);
-    setEmailError(false);
-    setPassError(false);
-    setNameError(false);
-    setForm(prev => ({...prev, [name]: value}));
-  }
-
-  const saveEmail = (emails: string[]) => {
-    setEmailsError(false);
-    setForm(prev => ({...prev, emails}));
-  }
-
-  const checkForm = () => {
-    const isPhone = form.phone.length === 11;
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
-    const isEmail = emailPattern.test(form.email);
-    const isPassword = passwordPattern.test(form.password);
-    setPhoneError(!isPhone);
-    setEmailError(!isEmail);
-    setPassError(!isPassword);
-    return isCode && isPhone && isEmail && isPassword;
-  }
-
-  const checkEmail = (email: string = "") => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-  }
-
-  const nextSteep = () => {
-    if (steep === 1 && checkForm()) {
-      setSteep(steep + 1);
-    } else if (steep === 2) {
-      setSteep(steep + 1);
-    } else if (steep === 3) {
-      if (form.name.length > 1) {
-        setSteep(steep + 1);
-      } else {
-        setNameError(true);
-      }
-    } else if (steep === 4) {
-      const email = form.emails.at(-1);
-      if (email !== undefined && email !== "") {
-        checkEmail(email) ? registration(form.emails) : setEmailsError(true);
-      } else if (email === "") {
-        const emails = [...form.emails];
-        emails.pop();
-        registration(emails);
-      }
-
-    }
-  }
-
-  const prevSteep = () => {
-    if (steep > 1) setSteep(prev => prev - 1);
-  }
 
   const registration = async (emailsArr: string[]) => {
     try {
-      await register("+" + prefixPhone + form.phone, form.email, form.password);
+      // await register("+" + prefixPhone + form.phone, form.email, form.password);
       const user = await getCurrentUser();
-      if(user?.status) {
+      if (user?.status) {
         saveAuthData({isAuth: true, user: user.response});
         const business_direction: string = businessDirection.find(el => el.value === form.direction)!.label;
         const team_size: string = teamSizeList.find(el => el.value === form.team_size)!.label;
@@ -140,35 +75,22 @@ export default function Register() {
         </li>
       </ul>
     </div>
-    <div className="sign-up-content-block card">
-      <div className="sign-up-content">
-        {steep === 1 && <RegisterPageSteep1
-            prefixPhone={prefixPhone}
-            savePhonePrefix={setPrefixPhone}
-            phone={form.phone}
-            phoneError={phoneError}
-            savePhone={(value) => onSave("phone", value)}
-            email={form.email}
-            emailError={emailError}
-            saveEmail={onSave}
-            password={form.password}
-            passError={passError}
-            savePass={onSave}
-            isCode={setIsCode}
-        />}
-        {steep === 2 && <RegisterPageSteep2 why_use={form.why_use} role={form.role} self_employed={form.self_employed}
-                                            onSave={onSave}/>}
-        {steep === 3 && <RegisterPageSteep3 name={form.name} nameError={nameError} direction={form.direction}
-                                            team_size={form.team_size} onSave={onSave}/>}
-        {steep === 4 && <RegisterPageSteep4 emails={form.emails} error={emailsError} saveEmails={saveEmail}/>}
-      </div>
-      <div className="sign-up-content-footer">
-        <div>
-          {steep > 1 && <Button title="Previous" path="back" classList="back" click={prevSteep}/>}
-        </div>
-        <Button title="Next Step" path="arrowRight" classList="btn-primary btn-primary-icon" click={nextSteep}/>
-      </div>
-    </div>
+    {/*<div className="sign-up-content-block card">*/}
+    {/*  <div className="sign-up-content">*/}
+    {steep === 1 && <RegisterPageSteep1 phonePref={3} phoneNumber="80" emailString="" passwordString=""/>}
+    {/*{steep === 2 && <RegisterPageSteep2 why_use={form.why_use} role={form.role} self_employed={form.self_employed}*/}
+    {/*                                    onSave={onSave}/>}*/}
+    {/*{steep === 3 && <RegisterPageSteep3 name={form.name} nameError={nameError} direction={form.direction}*/}
+    {/*                                    team_size={form.team_size} onSave={onSave}/>}*/}
+    {/*{steep === 4 && <RegisterPageSteep4 emails={form.emails} error={emailsError} saveEmails={saveEmail}/>}*/}
+    {/*  </div>*/}
+    {/*  <div className="sign-up-content-footer">*/}
+    {/*    <div>*/}
+    {/*      {steep > 1 && <Button title="Previous" path="back" classList="back" click={prevSteep}/>}*/}
+    {/*    </div>*/}
+    {/*    <Button title="Next Step" path="arrowRight" classList="btn-primary btn-primary-icon" click={nextSteep}/>*/}
+    {/*  </div>*/}
+    {/*</div>*/}
   </div>;
 
   const finish = <div className="main-content success">

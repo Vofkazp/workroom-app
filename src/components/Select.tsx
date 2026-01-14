@@ -1,24 +1,20 @@
 import React, {JSX} from "react";
 import SelectItem from "./SelectItem";
+import {ErrorMessage} from "formik";
 
-export default function Select({title, list, name, value, error=false, errorText, disabled = false, changed}: {
+export default function Select({title, list, name}: {
   title: string;
   list: { value: number; label: string }[];
   name: string;
-  value: number;
-  error?: boolean;
-  errorText: string;
-  disabled?: boolean;
-  changed: (name: string, value: number) => void
 }): JSX.Element {
 
   return (
-      <div className={`input-container ${error && "error"}`}>
+      <div className="input-container">
         <div className="label-block">
           <p className="input-label">{title}</p>
-          <SelectItem list={list} value={value} name={name} selected={(n, value) => changed(n, value)} disabled={disabled}/>
+          <SelectItem list={list} name={name}/>
         </div>
-        <span className="error">{errorText}</span>
+        <ErrorMessage name={name}>{(msg) => <span className="error">{msg}</span>}</ErrorMessage>
       </div>
   );
 }

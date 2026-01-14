@@ -13,12 +13,12 @@ export default function RegisterPageSteep2({why_use, role, self_employed, onSave
       <>
         <span className="sign-up-content-steeps">Step 2/4</span>
         <h2 className="sign-up-title">Tell about yourself</h2>
-        <Select title="Why will you use the service?" list={whyUse} name="why_use" value={why_use}
-                errorText="Incorrect data"
-                changed={onSave}/>
-        <Select title="What describes you best?" list={roleList} name="role" value={role}
-                errorText="Incorrect data"
-                changed={onSave}/>
+        {/*<Select title="Why will you use the service?" list={whyUse} name="why_use" value={why_use}*/}
+        {/*        errorText="Incorrect data"*/}
+        {/*        changed={onSave}/>*/}
+        {/*<Select title="What describes you best?" list={roleList} name="role" value={role}*/}
+        {/*        errorText="Incorrect data"*/}
+        {/*        changed={onSave}/>*/}
         <div className="input-container input-radio">
           <p className="input-label">Are you self-employed?</p>
           <label>

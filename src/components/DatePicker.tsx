@@ -1,31 +1,33 @@
 import React, {useState} from "react";
 import Calendar from "./Calendar";
+import {Field, FieldProps} from "formik";
 
-export default function DatePicker({value, name, title, placeholder, onChange}: {
-  value: string,
+export default function DatePicker({name, title, placeholder}: {
   name: string,
   title: string,
-  placeholder: string,
-  onChange: (name: string, date: string) => void
+  placeholder: string
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentDate, setCurrentDate] = useState(value ? new Date(value) : null);
-  const selectedDate = (date: Date) => {
-    setCurrentDate(date);
-    setIsOpen(false);
-    onChange(name, date.toISOString());
-  };
 
   return (
-      <div className="input-container">
-        <div className="label-block">
-          <p className="input-label">{title}</p>
-          <input readOnly name={name}
-                 value={currentDate ? currentDate.toLocaleDateString() : ""}
-                 onClick={() => setIsOpen(!isOpen)} type="text" placeholder={placeholder}/>
-          {isOpen && (<Calendar value={currentDate} onChange={selectedDate} setOpen={setIsOpen}/>)}
-        </div>
-        <span className="error">Incorrect data</span>
-      </div>
+      <Field name={name}>
+        {({field, form, meta}: FieldProps) => {
+          const selectedDate = (date: Date) => {
+            form.setFieldValue(name, date.toISOString());
+            setIsOpen(false);
+          };
+          return (<div className="input-container">
+            <div className="label-block">
+              <p className="input-label">{title}</p>
+              <input {...field} readOnly placeholder={placeholder}
+                     value={field.value ? new Date(field.value).toLocaleDateString() : ""}
+                     onClick={() => setIsOpen((v) => !v)}/>
+              {isOpen && (<Calendar value={field.value ? new Date(field.value) : new Date()} onChange={selectedDate}
+                                    setOpen={setIsOpen}/>)}
+            </div>
+            {meta.touched && meta.error && <span className="error">{meta.error}</span>}
+          </div>);
+        }}
+      </Field>
   );
 }

@@ -1,37 +1,26 @@
 import React, {JSX} from "react";
 import Button from "./Button";
+import {ErrorMessage, Field} from "formik";
 
-export default function PasswordInput({type, title, placeholder, name, value, error, errorText, disabled = false, changed}: {
-  type: string;
+export default function PasswordInput({title, placeholder, name}: {
   title: string;
   placeholder: string;
   name: string;
-  value: string;
-  error: boolean;
-  errorText: string;
-  disabled?: boolean;
-  changed: (name: string, value: string) => void
 }): JSX.Element {
-  const [newType, setNewType] = React.useState<string>(type);
+  const [type, setType] = React.useState<string>("password");
 
   const hidden = () => {
-    if (newType === "password") {
-      setNewType("text");
-    } else {
-      setNewType("password");
-    }
+    setType(type === "password" ? "text" : "password");
   }
 
   return (
-      <div className={`input-container ${error && "error"}`}>
+      <div className="input-container">
         <label className="label-block">
           <p className="input-label">{title}</p>
-          <input name={name} type={newType} value={value} placeholder={placeholder}
-                 autoComplete="off"
-                 onInput={(e) => changed(name, (e.target as HTMLInputElement).value)} disabled={disabled}/>
+          <Field type={type} name={name} placeholder={placeholder} autoComplete="off"/>
           <Button path="eye" click={hidden}/>
         </label>
-        <span className="error">{errorText}</span>
+        <ErrorMessage name={name}>{(msg) => <span className="error">{msg}</span>}</ErrorMessage>
       </div>
   );
 }

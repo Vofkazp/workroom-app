@@ -3,53 +3,45 @@ import {useFile} from "../services/File";
 import ImageCropper from "./ImageCropper";
 import Loader from "./Loader";
 import Button from "./Button";
+import {useField} from "formik";
 
-type Props = {
-  name: string;
-  value?: string;
-  classList?: string;
-  onChange: (name: string, url: string) => void;
-};
-
-export default function ImageUploader({name, value = "", classList, onChange}: Props) {
+export default function ImageUploader({name, classList}: { name: string; classList?: string; }) {
   const {UploadImage, getImage, deleteFile} = useFile();
+  const [field, , helpers] = useField<string>(name);
+  const [url, setUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
-  const [url, setUrl] = useState<string | null>(null);
   const [isCropping, setIsCropping] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [publicId, setPublicId] = useState<string | null>(null);
+  const [publicId, setPublicId] = useState("");
 
   useEffect(() => {
-    if (!value) return;
+    if (!field.value) return;
+    setPublicId(field.value);
     (async () => {
-      const res = await getImage(value, "image");
+      const res = await getImage(field.value, "image");
       if (res?.status) setUrl(res.response.url);
     })();
-  }, [value]);
+  }, [field.value]);
 
   useEffect(() => {
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setSelectedImg(url);
-    return () => {
-      URL.revokeObjectURL(url);
-    };
+    const preview = URL.createObjectURL(file);
+    setSelectedImg(preview);
+    return () => URL.revokeObjectURL(preview);
   }, [file]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
-    if (f) {
-      setFile(null);
-      setIsCropping(true);
-      setTimeout(() => setFile(f), 0);
-    }
+    if (!f) return;
+    setIsCropping(true);
+    setFile(f);
   };
 
   const upload = async (blob: Blob | null) => {
-    if (!blob) return;
     setIsCropping(false);
     setSelectedImg(null);
+    if (!blob) return;
     setLoading(true);
     const formData = new FormData();
     formData.append("file", blob, "crop.jpg");
@@ -58,7 +50,7 @@ export default function ImageUploader({name, value = "", classList, onChange}: P
       if (res?.status) {
         setUrl(res.response.url);
         setPublicId(res.response.publicId);
-        onChange(name, res.response.publicId);
+        helpers.setValue(res.response.publicId);
       }
     } finally {
       setLoading(false);
@@ -71,10 +63,10 @@ export default function ImageUploader({name, value = "", classList, onChange}: P
       setLoading(true);
       const result = await deleteFile(publicId, "image");
       if (!result?.status) return;
-      setPublicId(null);
+      setPublicId("");
       setSelectedImg(null);
       setUrl(null);
-      onChange(name, "");
+      helpers.setValue("");
     } finally {
       setLoading(false);
     }
@@ -88,16 +80,7 @@ export default function ImageUploader({name, value = "", classList, onChange}: P
           <input type="file" accept="image/*" onChange={handleFileChange} disabled={isCropping || loading}/>
           <p className="upload-title">Загрузить...</p>
         </label>
-        {isCropping && selectedImg && (
-            <ImageCropper
-                src={selectedImg}
-                onCrop={(blob) => {
-                  upload(blob);
-                  setIsCropping(false);
-                  setSelectedImg(null);
-                }}
-            />
-        )}
+        {isCropping && selectedImg && (<ImageCropper src={selectedImg} onCrop={upload}/>)}
         {loading && <Loader size="mini" speed="slow"/>}
       </div>
   );

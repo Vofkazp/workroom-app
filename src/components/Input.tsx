@@ -1,25 +1,19 @@
 import React, {JSX} from "react";
+import {Field, ErrorMessage} from "formik";
 
-export default function Input({type, title, placeholder, name, value, error, errorText, disabled = false, changed}: {
-  type: string;
+export default function Input({title, placeholder, name}: {
   title: string;
   placeholder: string;
   name: string;
-  value: string;
-  error: boolean;
-  errorText: string;
-  disabled?: boolean;
-  changed: (name: string, value: string) => void
 }): JSX.Element {
 
   return (
-      <div className={`input-container ${error && "error"}`}>
+      <div className="input-container">
         <label className="label-block">
           <p className="input-label">{title}</p>
-          <input name={name} type={type} value={value} placeholder={placeholder} autoComplete="off"
-                 onInput={(e) => changed(name, (e.target as HTMLInputElement).value)} disabled={disabled}/>
+          <Field name={name} placeholder={placeholder}/>
         </label>
-        <span className="error">{errorText}</span>
+        <ErrorMessage name={name}>{(msg) => <span className="error">{msg}</span>}</ErrorMessage>
       </div>
   );
 }

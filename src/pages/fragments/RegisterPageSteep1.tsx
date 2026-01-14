@@ -98,8 +98,8 @@ export default function RegisterPageSteep1({
           <label className="label-block">
             <p className="input-label">Mobile Number</p>
             <div className="inputs-row-elements">
-              <SelectItem value={prefixPhone} name={"phone_prefix"} list={phonePrefix}
-                          selected={(name, value) => savePhonePrefix(value)}/>
+              {/*<SelectItem value={prefixPhone} name={"phone_prefix"} list={phonePrefix}*/}
+              {/*            selected={(name, value) => savePhonePrefix(value)}/>*/}
               <MaskedInput
                   mask="_ (___) ___-__-__"
                   value={phone}
@@ -114,14 +114,14 @@ export default function RegisterPageSteep1({
           SMS was sent to your number +{prefixPhone}{phone}<br/>
           It will be valid for {timer}
         </p>
-        <Input type="text" name="email" value={email} title="Email Address"
-               placeholder="youremail@gmail.com"
-               error={emailError}
-               errorText="Невірний формат Email" changed={saveEmail}/>
-        <PasswordInput type="password" name="password" value={password} title="Create Password"
-                       placeholder="Your password"
-                       error={passError}
-                       errorText="Невірний формат" changed={savePass}/>
+        {/*<Input type="text" name="email" value={email} title="Email Address"*/}
+        {/*       placeholder="youremail@gmail.com"*/}
+        {/*       error={emailError}*/}
+        {/*       errorText="Невірний формат Email" changed={saveEmail}/>*/}
+        {/*<PasswordInput type="password" name="password" value={password} title="Create Password"*/}
+        {/*               placeholder="Your password"*/}
+        {/*               error={passError}*/}
+        {/*               errorText="Невірний формат" changed={savePass}/>*/}
       </>
   );
 }

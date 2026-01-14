@@ -1,48 +1,59 @@
-import React, {useState} from "react";
+import React from "react";
 import Input from "../components/Input";
 import CheckBox from "../components/CheckBox";
 import Button from "../components/Button";
 import {useNavigate} from "react-router-dom";
 import PasswordInput from "../components/PasswordInput";
 import {useAuth} from "../services/Auth";
+import * as Yup from "yup";
+import {Form, Formik} from "formik";
+import {useNotifications} from "../services/NitificationProvider";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({email: "Vofkazp@gmail.com", password: "Qwe123", remember_me: true});
-  const [emailError, setEmailError] = useState(false);
-  const [passError, setPassError] = useState(false);
+  const {addNotification} = useNotifications();
   const {login} = useAuth();
 
-  const onSave = (name: string, value: string | boolean) => {
-    setEmailError(false);
-    setPassError(false);
-    setForm(prev => ({...prev, [name]: value}));
+  const initialValues = {
+    email: "vofkazp@gmail.com",
+    password: "Qwe123",
+    remember_me: true
+  };
+
+  const regexp = {
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    password: /[a-zA-Z0-9]{2,15}/,
+    // password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/
   }
 
-  const checkForm = () => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
-    const isEmail = emailPattern.test(form.email);
-    const isPassword = passwordPattern.test(form.password);
-    setEmailError(!isEmail);
-    setPassError(!isPassword);
-    return isEmail && isPassword;
+  const email = Yup.string().matches(regexp.email, "Должно быть в формате 'example@test.com'").required("Введите email");
+  const password = Yup.string()
+      .matches(regexp.password, "Минимум 8 символов, одна заглавная, одна строчная, цифра и спецсимвол")
+      .required("Введите пароль");
+  const remember_me = Yup.boolean();
+
+  const schemas = {
+    custom: Yup.object().shape({
+      email, remember_me, password
+    })
   }
 
-  const loginUser = () => {
-    if (checkForm()) {
-      login(form.email, form.password, form.remember_me).then(() => {
+  const loginUser = (values: any) => {
+    login(values.email, values.password, values.remember_me).then((result) => {
+      if (result) {
         navigate("/");
-      });
-    }
+      } else {
+        addNotification("Неправильный логин или пароль!", "warning");
+      }
+    });
   }
 
   const register = () => {
     navigate("/register");
   }
 
-  const clickBtn = () => {
-    console.log('click');
+  const forgotPassword = () => {
+    console.log('forgotPassword');
   }
 
   return (
@@ -57,22 +68,22 @@ export default function Login() {
             <img src="/images/Illustration.png" alt="illustration" className="sign-in-info-illustration"/>
           </div>
           <div className="sign-in-form">
-            <h2 className="sign-in-form-title">Sign In to Woorkroom</h2>
-            <div className="sign-in-form-inputs">
-              <Input type="text" name="email" value={form.email} title="Email Address" placeholder="youremail@gmail.com"
-                     error={emailError}
-                     errorText="Невірний формат Email" changed={onSave}/>
-              <PasswordInput type="password" name="password" value={form.password} title="Password"
-                             placeholder="Your password"
-                             error={passError}
-                             errorText="Невірний формат" changed={onSave}/>
-              <div className="row">
-                <CheckBox name="remember_me" value={form.remember_me} title="Remember me" changed={onSave}/>
-                <Button title="Forgot Password?" classList="text-btn secondary" click={clickBtn}/>
-              </div>
-              <Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon w-170" click={loginUser}/>
-              <Button title="Don’t have an account?" classList="text-btn primary" click={register}/>
-            </div>
+            <Formik initialValues={initialValues} validationSchema={schemas.custom} onSubmit={loginUser}>
+              <Form>
+                <h2 className="sign-in-form-title">Sign In to Woorkroom</h2>
+                <div className="sign-in-form-inputs">
+                  <Input name="email" title="Email Address" placeholder="youremail@gmail.com"/>
+                  <PasswordInput name="password" title="Password" placeholder="Your password"/>
+                  <div className="row">
+                    <CheckBox name="remember_me" title="Remember me"/>
+                    <Button title="Forgot Password?" classList="text-btn secondary" click={forgotPassword}/>
+                  </div>
+                  <Button type="submit" title="Sign In" path="arrowRight"
+                          classList="btn-primary btn-primary-icon w-170"/>
+                  <Button title="Don’t have an account?" classList="text-btn primary" click={register}/>
+                </div>
+              </Form>
+            </Formik>
           </div>
         </div>
       </div>

@@ -9,6 +9,7 @@ import MaskedInput from "../components/MaskedInput";
 import {whyUse} from "../resurses/SelectList";
 import Select from "../components/Select";
 import TextArea from "../components/TextArea";
+import CheckBoxButton from "../components/CheckBoxButton";
 
 export const content = [
   {
@@ -16,32 +17,35 @@ export const content = [
     title: "Buttons",
     components: [
       {
-        example: (<Button click={()=>{}} classList="btn-primary btn-primary-icon reverse" path="support" title="Support" />),
-        code: '<Button click={()=>{}} classList="btn-primary btn-primary-icon reverse" path="support" title="Support" />',
+        example: (<Button classList="btn-primary btn-primary-icon reverse" path="support" title="Support"/>),
+        code: '<Button classList="btn-primary btn-primary-icon reverse" path="support" title="Support"/>',
         comment: "Коментар"
       },
       {
-        example: (<Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon w-170" click={() => {
-        }}/>),
-        code: '<Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon w-170" click={() => {}}/>',
+        example: (
+            <Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon w-170"/>),
+        code: '<Button title="Sign In" path="arrowRight" classList="btn-primary btn-primary-icon w-170"/>',
         comment: "Коментар"
       },
       {
-        example: (<Button title="Don’t have an account?" classList="text-btn primary" click={() => {
-        }}/>),
-        code: '<Button title="Don’t have an account?" classList="text-btn primary" click={() => {}}/>',
+        example: (<Button title="Don’t have an account?" classList="text-btn primary" />),
+        code: '<Button title="Don’t have an account?" classList="text-btn primary"/>',
         comment: "Коментар"
       },
       {
-        example: (<Button title="Forgot Password?" classList="text-btn secondary" click={() => {
-        }}/>),
-        code: '<Button title="Forgot Password?" classList="text-btn secondary" click={() => {}}/>',
+        example: (<Button title="Forgot Password?" classList="text-btn secondary" />),
+        code: '<Button title="Forgot Password?" classList="text-btn secondary"/>',
         comment: "Коментар"
       },
       {
-        example: (<Button click={() => {}} classList="icon-btn" path="notification" />),
-        code: '<Button click={() => {}} classList="icon-btn" path="notification" />',
+        example: (<Button classList="icon-btn" path="notification"/>),
+        code: '<Button classList="icon-btn" path="notification" />',
         comment: "Коментар"
+      },
+      {
+        example: (<CheckBoxButton name="isLink" path="addLink" classList="green"/>),
+        code: '<CheckBoxButton name="isLink" path="addLink" classList="green"/>',
+        comment: "const isLink = Yup.boolean();"
       }
     ]
   },
@@ -51,51 +55,43 @@ export const content = [
     components: [
       {
         example: (
-            <Input type="text" name="email" value={""} title="Email Address" placeholder="youremail@gmail.com"
-                   error={false} errorText="Невірний формат Email" changed={() => {
-            }}/>),
-        code: '<Input type="text" name="email" value={"value"} title="Email Address" placeholder="youremail@gmail.com" error={false} errorText="Невірний формат Email" changed={()=>{}}/>',
-        comment: "Коментар"
+            <Input name="email" title="Email Address" placeholder="youremail@gmail.com"/>),
+        code: '<Input name="email" title="Email Address" placeholder="youremail@gmail.com"/>',
+        comment: "const email = Yup.string().matches(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Должно быть в формате 'example@test.com'\").required(\"Введите название\");"
       },
       {
-        example: (<PasswordInput type="password" name="password" value={"Password"} title="Password"
-                                 placeholder="Your password"
-                                 error={false} errorText="Невірний формат" changed={() => {
-        }}/>),
-        code: '<PasswordInput type="password" name="password" value={"Password"} title="Password" placeholder="Your password" error={false} errorText="Невірний формат" changed={()=>{}}/>',
-        comment: "Коментар"
+        example: (<PasswordInput name="password" title="Password" placeholder="Your password"/>),
+        code: '<PasswordInput name="password" title="Password" placeholder="Your password"/>',
+        comment: "const password = Yup.string()\n" +
+            "      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,}$/, \"Минимум 8 символов, одна заглавная, одна строчная, цифра и спецсимвол\")\n" +
+            "      .required(\"Введите пароль\");"
       },
       {
-        example: (<CheckBox name="remember_me" value={true} title="Remember me" changed={() => {
-        }}/>),
-        code: '<CheckBox name="remember_me" value={true} title="Remember me" changed={()=>{}}/>',
-        comment: "Коментар"
+        example: (<CheckBox name="remember_me" title="Remember me"/>),
+        code: '<CheckBox name="remember_me" title="Remember me"/>',
+        comment: "const remember_me = Yup.boolean();"
+      },
+      // {
+      //   example: (<InputCode sendCode={() => {
+      //   }}/>),
+      //   code: '<InputCode sendCode={()=>{}}/>',
+      //   comment: "Коментар"
+      // },
+      // {
+      //   example: (<div className='input-container'><MaskedInput mask="+38 (___) ___-__-__" value={""} onChange={() => {
+      //   }}/></div>),
+      //   code: '<div className="input-container"><MaskedInput mask="+38 (___) ___-__-__" value={""} onChange={() => {}}/></div>',
+      //   comment: "Коментар"
+      // },
+      {
+        example: (<Select title="Why will you use the service?" list={whyUse} name="why_use"/>),
+        code: '<Select title="Why will you use the service?" list={whyUse} name="why_use"/>',
+        comment: "const why_use = Yup.number().required(\"Выберете...\");"
       },
       {
-        example: (<InputCode sendCode={() => {
-        }}/>),
-        code: '<InputCode sendCode={()=>{}}/>',
-        comment: "Коментар"
-      },
-      {
-        example: (<div className='input-container'><MaskedInput mask="+38 (___) ___-__-__" value={""} onChange={() => {
-        }}/></div>),
-        code: '<div className="input-container"><MaskedInput mask="+38 (___) ___-__-__" value={""} onChange={() => {}}/></div>',
-        comment: "Коментар"
-      },
-      {
-        example: (<Select title="Why will you use the service?" list={whyUse} name="why_use" value={1}
-                          errorText="Incorrect data" changed={() => {
-        }}/>),
-        code: '<Select title="Why will you use the service?" list={whyUse} name="why_use" value={1} errorText="Incorrect data" changed={() => {}}/>',
-        comment: "Коментар"
-      },
-      {
-        example: (<TextArea title="Description" name="description" error={false} errorText="Incorrect data"
-                            placeholder="Add some description of the project" value=""
-                            changed={()=>{}}/>),
-        code: '<TextArea title="Description" name="description" error={false} errorText="Incorrect data" placeholder="Add some description of the project" value="" changed={()=>{}}/>',
-        comment: "Коментар"
+        example: (<TextArea title="Description" name="description" placeholder="Add some description of the project"/>),
+        code: '<TextArea title="Description" name="description" placeholder="Add some description of the project"/>',
+        comment: "const description = Yup.string().matches(/^[а-яА-Яa-zA-Z0-9,.!?@#$%^&*()_+=\\-*/ ]{10,500}$/, \"Количество символов от 10 до 500\").required(\"Введите описание\");"
       }
     ]
   },

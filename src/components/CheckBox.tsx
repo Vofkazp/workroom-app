@@ -1,15 +1,14 @@
 import React from 'react';
+import {Field} from "formik";
 
-export default function CheckBox({name, value, title, changed}: {
+export default function CheckBox({name, title}: {
   name: string,
-  value: boolean,
-  title: string,
-  changed: (name: string, value: boolean) => void
+  title: string
 }) {
   return (
       <div className="check-box-item">
         <label>
-          <input type="checkbox" className="check-box-input" name={name} checked={value} onChange={(e) => changed(name, e.target.checked)} />
+          <Field type="checkbox" name={name}/>
           <span className="check-box-label">{title}</span>
         </label>
       </div>

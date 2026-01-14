@@ -1565,12 +1565,19 @@
   }
 
   &.btn-image {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 44px;
     height: 44px;
     border-radius: 14px;
+
+    input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      z-index: -1;
+    }
 
     &.black {
       background: rgba(244, 249, 253, 1);

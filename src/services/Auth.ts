@@ -91,6 +91,15 @@ export function useAuth() {
     }
   };
 
+  const checkEmail = async (email: string) => {
+    try {
+      const response: ResponseAxios<ResponseCheckCode> = await api.post(`/auth/check_email`, {email});
+      return response.data;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  };
+
   const checkCode = async (phone: string, code: string) => {
     try {
       const response: ResponseAxios<ResponseCheckCode> = await api.post(`/auth/check_code`, {phone, code});
@@ -113,5 +122,5 @@ export function useAuth() {
     navigate("/login");
   };
 
-  return {login, getCurrentUser, logout, checkPhone, checkCode, register, createCompany, updateUser, inviteMembers};
+  return {login, getCurrentUser, logout, checkPhone, checkEmail, checkCode, register, createCompany, updateUser, inviteMembers};
 }

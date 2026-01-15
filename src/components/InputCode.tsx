@@ -3,6 +3,7 @@ import {useFormikContext} from "formik";
 
 type FormValues = {
   isCode: string;
+  isValidCode: string;
 };
 
 export default function InputCode({sendCode}: { sendCode: (code: string) => void }) {
@@ -53,8 +54,8 @@ export default function InputCode({sendCode}: { sendCode: (code: string) => void
               />
           ))}
         </div>
-        {errors.isCode && (
-            <span className="error">{errors.isCode}</span>
+        {errors.isValidCode && (
+            <span className="error">{errors.isValidCode}</span>
         )}
       </div>
   );

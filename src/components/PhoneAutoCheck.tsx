@@ -12,7 +12,9 @@ export default function PhoneAutoCheck({onCheck}: Props) {
   }>();
 
   useEffect(() => {
-    if (values.phone.length === 11) onCheck("+" + values.phone_prefix + values.phone);
+    if (values.phone.length !== 11) return;
+
+    onCheck("+" + values.phone_prefix + values.phone);
   }, [values.phone, values.phone_prefix]);
 
   return null;

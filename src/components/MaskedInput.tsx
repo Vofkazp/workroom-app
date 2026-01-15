@@ -8,7 +8,7 @@ type Props = {
 
 export default function MaskedInput({mask, name}: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const {setFieldValue, values} = useFormikContext<any>();
+  const {setFieldValue, setFieldTouched, values} = useFormikContext<any>();
 
   const value: string = values[name] || "";
   const [digits, setDigits] = useState<string>("");
@@ -114,6 +114,10 @@ export default function MaskedInput({mask, name}: Props) {
     });
   };
 
+  const onBlur = () => {
+    setFieldTouched(name, true);
+  };
+
   useEffect(() => {
     const extDigits = value.replace(/\D/g, "");
     if (extDigits !== digits) {
@@ -130,7 +134,9 @@ export default function MaskedInput({mask, name}: Props) {
           onKeyDown={onKeyDown}
           onPaste={onPaste}
           onFocus={onFocus}
-          onChange={() => {}}
+          onBlur={onBlur}
+          onChange={() => {
+          }}
           aria-label="phone"
       />
   );

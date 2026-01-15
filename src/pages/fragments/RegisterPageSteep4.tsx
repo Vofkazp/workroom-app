@@ -1,51 +1,84 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import * as Yup from "yup";
+import {FieldArray, Form, Formik, FormikProps} from "formik";
 
-export default function RegisterPageSteep4({emails = [""], error, saveEmails}: {
-  emails: string[],
-  error: boolean,
-  saveEmails: (emails: string[]) => void
-}) {
-  const [emailError, setEmailError] = useState(false);
+type Props = {
+  Emails: string[];
+  onChecked: (emails: { emails: string[] }) => void;
+  prevSteep: () => void;
+}
 
-  useEffect(() => {
-    setEmailError(error);
-  }, [error])
+export default function RegisterPageSteep4({Emails, onChecked, prevSteep}: Props) {
+  const initialValues = {
+    emails: Emails
+  };
 
-  const saveEmail = (name: string, email: string) => {
-    setEmailError(false);
-    const nextEmails = [...emails];
-    nextEmails[nextEmails.length - 1] = email;
-    saveEmails(nextEmails);
+  const regexp = {
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   }
 
-  const checkEmail = () => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isEmail = emailPattern.test(emails[emails.length - 1]);
-    setEmailError(!isEmail);
-    return isEmail;
-  }
+  const schema = Yup.object({
+    emails: Yup.array()
+        .of(
+            Yup.string()
+                .trim()
+                .matches(regexp.email, "Должно быть в формате youremail@gmail.com")
+                .required("Введите email")
+        )
+        .test(
+            "unique",
+            "Email не должны повторяться",
+            (value) => !value || new Set(value).size === value.length
+        )
+        .min(1, "Добавьте хотя бы один email")
+  });
 
-  const addEmail = () => {
-    if (checkEmail()) {
-      const arrEmails = [...emails];
-      arrEmails.push("");
-      saveEmails(arrEmails);
-    }
+  const nextSteep = (values: { emails: string[] }) => {
+    onChecked(values);
   }
 
   return (
-      <>
-        <span className="sign-up-content-steeps">Step 4/4</span>
-        <h2 className="sign-up-title">Invite Team Members</h2>
-        {/*<Input type="text" title="Member’s Email" placeholder="memberemail@gmail.com" name="email"*/}
-        {/*       value={emails[emails.length - 1] ?? ""} error={emailError} errorText="Невірний формат Email"*/}
-        {/*       changed={saveEmail}/>*/}
-        {emails.map((element, index) => (<Fragment key={index}>
-          {index !== emails.length - 1 && <p className="invited-email">{element}</p>}
-        </Fragment>))}
-        <Button title="Add another Member" path="add" classList="back" click={addEmail}/>
-      </>
+      <Formik<{ emails: string[] }> initialValues={initialValues} validationSchema={schema}
+                                    onSubmit={nextSteep}>
+        {({values, errors}: FormikProps<{ emails: string[] }>) => (
+            <Form>
+              <div className="sign-up-content-block card">
+                <div className="sign-up-content">
+                  <span className="sign-up-content-steeps">Step 4/4</span>
+                  <h2 className="sign-up-title">Invite Team Members</h2>
+                  <FieldArray
+                      name="emails"
+                      render={arrayHelpers => (
+                          <>
+                            {values.emails.map((_, index: number) =>
+                                <div key={index} className="row">
+                                  <Input title="Member’s Email" placeholder="memberemail@gmail.com"
+                                         name={`emails.${index}`}/>
+                                  <Button
+                                      click={() => arrayHelpers.remove(index)}
+                                      fill="red"
+                                      path="close"
+                                      style={{marginTop: 15, marginLeft: 10}}
+                                  />
+                                </div>
+                            )}
+                            {typeof errors.emails === "string" && <span className="error-msg">{errors.emails}</span>}
+                            <Button title="Add another Member" path="add" classList="back"
+                                    click={() => arrayHelpers.push('')}/>
+                          </>
+                      )}
+                  />
+                </div>
+                <div className="sign-up-content-footer">
+                  <Button title="Previous" path="back" classList="back" click={prevSteep}/>
+                  <Button type="submit" title="Next Step" path="arrowRight"
+                          classList="btn-primary btn-primary-icon"/>
+                </div>
+              </div>
+            </Form>
+        )}
+      </Formik>
   );
 }

@@ -134,6 +134,7 @@
       height: 100%;
 
       .sign-up-content {
+        position: relative;
         flex: 1;
         padding: 75px 0 65px;
         width: 403px;
@@ -220,7 +221,6 @@
     grid-template-columns: 1fr;
 
     .success-block {
-      position: relative;
       padding: 10px;
       display: flex;
       flex-direction: column;

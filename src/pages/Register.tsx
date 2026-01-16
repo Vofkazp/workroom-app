@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Button from "../components/Button";
 import RegisterPageSteep1, {FormValues} from "./fragments/RegisterPageSteep1";
 import RegisterPageSteep2, {SelectValues} from "./fragments/RegisterPageSteep2";
@@ -8,7 +8,6 @@ import {useAuth} from "../services/Auth";
 import {businessDirection, roleList, teamSizeList, whyUse} from "../resurses/SelectList";
 import {useNavigate} from "react-router-dom";
 import {useAuthentication} from "../services/AuthProvider";
-import Loader from "../components/Loader";
 import {useNotifications} from "../services/NitificationProvider";
 
 type StepPayload = {
@@ -19,6 +18,7 @@ type StepPayload = {
 };
 
 export default function Register() {
+  const [readyToRegister, setReadyToRegister] = useState(false);
   const {saveAuthData} = useAuthentication();
   const {addNotification} = useNotifications();
   const navigate = useNavigate();
@@ -39,21 +39,26 @@ export default function Register() {
     emails: [""]
   });
 
+  useEffect(() => {
+    if (!readyToRegister) return;
+    registration();
+  }, [readyToRegister]);
+
   const saveStep = <S extends keyof StepPayload>(
       step: S,
       value: StepPayload[S]
   ) => {
     setForm(prev => ({...prev, ...value}));
-    if (step === 4) startRegister();
-    setStep(prev => prev + 1);
+
+    if (step === 4) {
+      setReadyToRegister(true);
+    } else {
+      setStep(prev => prev + 1);
+    }
   };
 
-  const startRegister = () => {
-    setLoading(true);
-    setTimeout(registration, 2000);
-  }
-
   const registration = async () => {
+    setLoading(true);
     try {
       await register("+" + form.phone_prefix + form.phone, form.email, form.password);
       const user = await getCurrentUser();
@@ -66,10 +71,10 @@ export default function Register() {
         const role: string = roleList.find(el => el.value === form.role)!.label;
         await updateUser(user.response!.id, why_use, role, Boolean(form.self_employed), company!.response.companyId);
         await inviteMembers(company!.response.companyId, user.response!.id, form.emails);
+        setStep(prev => prev + 1);
       }
     } catch (error: any) {
-      addNotification(error, "warning");
-      console.log(error);
+      addNotification(error?.message || "Unexpected error", "warning");
     } finally {
       setLoading(false);
     }
@@ -111,20 +116,15 @@ export default function Register() {
                                        onChecked={(value) => saveStep(3, value)}
                                        prevSteep={() => setStep(prev => prev - 1)}/>}
     {step === 4 &&
-        <RegisterPageSteep4 Emails={form.emails} onChecked={(value) => saveStep(4, value)}
+        <RegisterPageSteep4 Emails={form.emails} isLoading={loading} onChecked={(value) => saveStep(4, value)}
                             prevSteep={() => setStep(prev => prev - 1)}/>}
   </div>;
 
   const finish = <div className="main-content success">
     <div className="success-block card">
-      {loading ?
-          <Loader size="large" speed="average"/> :
-          <>
-            <img src="/images/success-img.png" alt="success" className="success-img"/>
-            <h5 className="success-title">You are successfully registered!</h5>
-            <Button title="Let's Start" path="arrowRight" classList="btn-primary btn-primary-icon" click={toFinish}/>
-          </>
-      }
+      <img src="/images/success-img.png" alt="success" className="success-img"/>
+      <h5 className="success-title">You are successfully registered!</h5>
+      <Button title="Let's Start" path="arrowRight" classList="btn-primary btn-primary-icon" click={toFinish}/>
     </div>
   </div>;
 

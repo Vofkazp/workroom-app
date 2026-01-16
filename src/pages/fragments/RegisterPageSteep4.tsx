@@ -3,14 +3,16 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import * as Yup from "yup";
 import {FieldArray, Form, Formik, FormikProps} from "formik";
+import Loader from "../../components/Loader";
 
 type Props = {
   Emails: string[];
+  isLoading: boolean;
   onChecked: (emails: { emails: string[] }) => void;
   prevSteep: () => void;
 }
 
-export default function RegisterPageSteep4({Emails, onChecked, prevSteep}: Props) {
+export default function RegisterPageSteep4({Emails, isLoading, onChecked, prevSteep}: Props) {
   const initialValues = {
     emails: Emails
   };
@@ -46,30 +48,34 @@ export default function RegisterPageSteep4({Emails, onChecked, prevSteep}: Props
             <Form>
               <div className="sign-up-content-block card">
                 <div className="sign-up-content">
-                  <span className="sign-up-content-steeps">Step 4/4</span>
-                  <h2 className="sign-up-title">Invite Team Members</h2>
-                  <FieldArray
-                      name="emails"
-                      render={arrayHelpers => (
-                          <>
-                            {values.emails.map((_, index: number) =>
-                                <div key={index} className="row">
-                                  <Input title="Member’s Email" placeholder="memberemail@gmail.com"
-                                         name={`emails.${index}`}/>
-                                  <Button
-                                      click={() => arrayHelpers.remove(index)}
-                                      fill="red"
-                                      path="close"
-                                      style={{marginTop: 15, marginLeft: 10}}
-                                  />
-                                </div>
+                  {isLoading ? <Loader size="large" speed="average"/> :
+                      <>
+                        <span className="sign-up-content-steeps">Step 4/4</span>
+                        <h2 className="sign-up-title">Invite Team Members</h2>
+                        <FieldArray
+                            name="emails"
+                            render={arrayHelpers => (
+                                <>
+                                  {values.emails.map((_, index: number) =>
+                                      <div key={index} className="row">
+                                        <Input title="Member’s Email" placeholder="memberemail@gmail.com"
+                                               name={`emails.${index}`}/>
+                                        <Button
+                                            click={() => arrayHelpers.remove(index)}
+                                            fill="red"
+                                            path="close"
+                                            style={{marginTop: 15, marginLeft: 10}}
+                                        />
+                                      </div>
+                                  )}
+                                  {typeof errors.emails === "string" &&
+                                      <span className="error-msg">{errors.emails}</span>}
+                                  <Button title="Add another Member" path="add" classList="back"
+                                          click={() => arrayHelpers.push('')}/>
+                                </>
                             )}
-                            {typeof errors.emails === "string" && <span className="error-msg">{errors.emails}</span>}
-                            <Button title="Add another Member" path="add" classList="back"
-                                    click={() => arrayHelpers.push('')}/>
-                          </>
-                      )}
-                  />
+                        />
+                      </>}
                 </div>
                 <div className="sign-up-content-footer">
                   <Button title="Previous" path="back" classList="back" click={prevSteep}/>

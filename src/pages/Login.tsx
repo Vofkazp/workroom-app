@@ -16,14 +16,13 @@ export default function Login() {
 
   const initialValues = {
     email: "vofkazp@gmail.com",
-    password: "Qwe123",
+    password: "Qwerty123+",
     remember_me: true
   };
 
   const regexp = {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    password: /[a-zA-Z0-9]{2,15}/,
-    // password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/
+    password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/
   }
 
   const email = Yup.string().matches(regexp.email, "Должно быть в формате 'youremail@gmail.com'").required("Введите email");

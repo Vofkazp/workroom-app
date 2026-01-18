@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Select from "../components/Select";
@@ -12,9 +12,28 @@ import CheckBoxButton from "../components/CheckBoxButton";
 import LinksBlock from "../components/LinksBlock";
 import ImagesBlock from "../components/ImagesBlock";
 import ImagesRadioBlock from "../components/ImagesRadioBlock";
+import {useProject} from "../services/Project";
+import Loader from "../components/Loader";
+import {useNotifications} from "../services/NitificationProvider";
+
+export type ProjectType = {
+  name: string;
+  priority: number;
+  description: string;
+  starts: string;
+  deadLine: string;
+  avatar: string;
+  isLink: boolean;
+  links: { link: string; title: string; }[],
+  isImages: boolean;
+  images: { publicId: string; }[]
+};
 
 export default function AddProject() {
   const navigate = useNavigate();
+  const {createProject} = useProject();
+  const {addNotification} = useNotifications();
+  const [loading, setLoading] = useState(false);
 
   const initialValues = {
     name: "",
@@ -30,7 +49,7 @@ export default function AddProject() {
   };
 
   const regexp = {
-    name: /^[а-яА-Яa-zA-Z]{2,20}$/,
+    name: /^[а-яА-Яa-zA-Z -]{2,20}$/,
     description: /^[а-яА-Яa-zA-Z0-9,.!?@#$%^&*()_+=\-*/ ]{10,500}$/
   }
 
@@ -77,43 +96,54 @@ export default function AddProject() {
     navigate("/projects");
   }
 
-  const saveForm = (values: any) => {
-    console.log(values)
+  const saveForm = (values: ProjectType) => {
+    setLoading(true);
+    createProject(values).then(res => {
+      if (res?.status) {
+        setLoading(false);
+        addNotification("Проєкт створено", "success");
+        navigate("/projects");
+      }
+    }).catch(err => {
+      addNotification(err?.message || "Unexpected error", "warning");
+    })
   }
 
   return (
       <div className="main-content add-project">
         <div className="add-project-block card">
-          <Button click={toProjects} path="close" fill="rgb(10,22,41)" classList="icon"/>
-          <Formik initialValues={initialValues} validationSchema={schemas.custom} onSubmit={saveForm}>
-            <Form>
-              <div className="add-project-content">
-                <h2 className="add-project-title">Add Project</h2>
-                <div className="add-project-form-grid">
-                  <div>
-                    <Input title="Project Name" placeholder="Project Name" name="name"/>
-                    <div className="row">
-                      <DatePicker title="Starts" name="starts" placeholder="Select Date"/>
-                      <DatePicker title="Dead Line" name="deadLine" placeholder="Select Date"/>
+          {loading ? <Loader size="large" speed="average"/> : <>
+            <Button click={toProjects} path="close" fill="rgb(10,22,41)" classList="icon"/>
+            <Formik initialValues={initialValues} validationSchema={schemas.custom} onSubmit={saveForm}>
+              <Form>
+                <div className="add-project-content">
+                  <h2 className="add-project-title">Add Project</h2>
+                  <div className="add-project-form-grid">
+                    <div>
+                      <Input title="Project Name" placeholder="Project Name" name="name"/>
+                      <div className="row">
+                        <DatePicker title="Starts" name="starts" placeholder="Select Date"/>
+                        <DatePicker title="Dead Line" name="deadLine" placeholder="Select Date"/>
+                      </div>
+                      <Select title="Priority" list={priorityList} name="priority"/>
+                      <TextArea title="Description" name="description"
+                                placeholder="Add some description of the project"/>
+                      <LinksBlock/>
+                      <ImagesBlock/>
                     </div>
-                    <Select title="Priority" list={priorityList} name="priority"/>
-                    <TextArea title="Description" name="description"
-                              placeholder="Add some description of the project"/>
-                    <LinksBlock/>
-                    <ImagesBlock/>
-                  </div>
-                  <div>
-                    <ImagesRadioBlock/>
-                    <div className="row">
-                      <CheckBoxButton name="isImages" path="addFile" classList="purple"/>
-                      <CheckBoxButton name="isLink" path="addLink" classList="green"/>
+                    <div>
+                      <ImagesRadioBlock/>
+                      <div className="row">
+                        <CheckBoxButton name="isImages" path="addFile" classList="purple"/>
+                        <CheckBoxButton name="isLink" path="addLink" classList="green"/>
+                      </div>
                     </div>
                   </div>
+                  <Button type="submit" title="Save Project" classList="btn-primary"/>
                 </div>
-                <Button type="submit" title="Save Project" classList="btn-primary"/>
-              </div>
-            </Form>
-          </Formik>
+              </Form>
+            </Formik>
+          </>}
         </div>
       </div>
   );

@@ -49,8 +49,8 @@ export default function AddProject() {
   };
 
   const regexp = {
-    name: /^[а-яА-Яa-zA-Z -]{2,20}$/,
-    description: /^[а-яА-Яa-zA-Z0-9,.!?@#$%^&*()_+=\-*/ ]{10,500}$/
+    name: /^[а-яА-Яa-zA-Z0-9,.!?@#$%^&*()_+=\-/ ]{2,100}$/,
+    description: /^[а-яА-Яa-zA-Z0-9,.!?@#$%^&*()_+=\-/ ]{10,500}$/
   }
 
   const name = Yup.string().matches(regexp.name, "Количество символов от 2 до 20").required("Введите название");
@@ -100,13 +100,12 @@ export default function AddProject() {
     setLoading(true);
     createProject(values).then(res => {
       if (res?.status) {
-        setLoading(false);
         addNotification("Проєкт створено", "success");
         navigate("/projects");
+      } else {
+        addNotification(res?.message || "Unexpected error", "warning");
       }
-    }).catch(err => {
-      addNotification(err?.message || "Unexpected error", "warning");
-    })
+    }).finally(() => setLoading(false));
   }
 
   return (

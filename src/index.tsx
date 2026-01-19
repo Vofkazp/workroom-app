@@ -28,7 +28,9 @@ root.render(
               <Route path="/" element={<MainLayout/>}>
                 <Route index element={<Dashboard/>}/>
                 <Route path="/projects" element={<ProjectLayout/>}>
-                  <Route index element={<TasksList/>}/>
+                  <Route path=":id">
+                    <Route path=":type" element={<TasksList/>}/>
+                  </Route>
                 </Route>
               </Route>
               <Route path="/add-project" element={<AddProject/>}/>

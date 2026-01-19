@@ -2,21 +2,46 @@ import api from "./Api";
 import {ResponseAxios} from "../interfaces/AuthInterface";
 import {ProjectType} from "../pages/AddProject";
 
-interface ResponseCreateProject {
+type ResponseProject<T> = {
   status: boolean;
-  response: ProjectType
+  response: T;
+}
+
+export type ProjectList = {
+  id: number;
+  reporter: number;
+  projectNumber: string;
+  name: string;
+  priority: number;
+  description: string;
+  starts: string;
+  deadLine: string;
+  avatar: string;
+  isLink: boolean;
+  links: { link: string; title: string; }[],
+  isImages: boolean;
+  images: { publicId: string; }[]
 }
 
 export function useProject() {
 
   const createProject = async (data: ProjectType) => {
     try {
-      const response: ResponseAxios<ResponseCreateProject> = await api.post(`/project`, data);
+      const response: ResponseAxios<ResponseProject<ProjectType>> = await api.post(`/project`, data);
       return response.data;
-    } catch {
-
+    } catch(error: any) {
+      return error.data;
     }
   };
 
-  return {createProject};
+  const getProjectsList = async () => {
+    try {
+      const response: ResponseAxios<ResponseProject<ProjectList[]>> = await api.post(`/project/list`);
+      return response.data.response;
+    } catch(error: any) {
+      return error.data;
+    }
+  };
+
+  return {createProject, getProjectsList};
 }

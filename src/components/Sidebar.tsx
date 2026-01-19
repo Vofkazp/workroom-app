@@ -19,7 +19,7 @@ export default function Sidebar() {
   const [path, setPath] = useState(location.pathname);
 
   useEffect(() => {
-    setPath(location.pathname);
+    setPath("/" + location.pathname.split("/")[1]);
   }, [location.pathname]);
 
   const menuList: MenuList[] = [

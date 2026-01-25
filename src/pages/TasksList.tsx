@@ -1,21 +1,35 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import NoProject from "./fragments/NoProject";
+import AddTask from "./fragments/AddTask";
+import {useTask} from "../services/Task";
 
 export default function TasksList() {
   const {id, type} = useParams();
+  const {getTaskList} = useTask();
   const [taskList, setTaskList] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    //Load Tasks
-    //SetTaskList(result);
+    loadTasks(true);
     console.log("project/" + id + "/" + type);
   }, [id, type]);
 
+  const loadTasks = async (status: boolean) => {
+    setIsOpen(false);
+    if (status) {
+      getTaskList(Number(id)).then((res => {
+        console.log(res);
+      }));
+      //SetTaskList(result);
+    }
+  }
+
   return (
       <>
+        {isOpen && <AddTask openModal={isOpen} closeModal={loadTasks}/>}
         {taskList.length === 0 ?
-            <NoProject type="task"/> :
+            <NoProject type="task" openModal={() => setIsOpen(true)}/> :
             <>
               <div className="tasks-list-block">
                 <h4 className="tasks-list-title">Active Tasks</h4>
@@ -36,7 +50,7 @@ export default function TasksList() {
                     <div className="task-item-element">
                       <p className="task-item-title">Assignee</p>
                       <div className="task-item-value">
-                        <img src="./images/avatar5.png" alt="avatar 5" className="user-item"/>
+                        <img src="/images/avatar5.png" alt="avatar 5" className="user-item"/>
                       </div>
                     </div>
                     <div className="task-item-element">
@@ -72,7 +86,7 @@ export default function TasksList() {
                     <div className="task-item-element">
                       <p className="task-item-title">Assignee</p>
                       <div className="task-item-value">
-                        <img src="./images/avatar5.png" alt="avatar 5" className="user-item"/>
+                        <img src="/images/avatar5.png" alt="avatar 5" className="user-item"/>
                       </div>
                     </div>
                     <div className="task-item-element">
@@ -108,7 +122,7 @@ export default function TasksList() {
                     <div className="task-item-element">
                       <p className="task-item-title">Assignee</p>
                       <div className="task-item-value">
-                        <img src="./images/avatar2.png" alt="avatar 2" className="user-item"/>
+                        <img src="/images/avatar2.png" alt="avatar 2" className="user-item"/>
                       </div>
                     </div>
                     <div className="task-item-element">
@@ -144,7 +158,7 @@ export default function TasksList() {
                     <div className="task-item-element">
                       <p className="task-item-title">Assignee</p>
                       <div className="task-item-value">
-                        <img src="./images/avatar1.png" alt="avatar 1" className="user-item"/>
+                        <img src="/images/avatar1.png" alt="avatar 1" className="user-item"/>
                       </div>
                     </div>
                     <div className="task-item-element">
@@ -180,7 +194,7 @@ export default function TasksList() {
                     <div className="task-item-element">
                       <p className="task-item-title">Assignee</p>
                       <div className="task-item-value">
-                        <img src="./images/avatar3.png" alt="avatar 3" className="user-item"/>
+                        <img src="/images/avatar3.png" alt="avatar 3" className="user-item"/>
                       </div>
                     </div>
                     <div className="task-item-element">
@@ -216,7 +230,7 @@ export default function TasksList() {
                     <div className="task-item-element">
                       <p className="task-item-title">Assignee</p>
                       <div className="task-item-value">
-                        <img src="./images/avatar6.png" alt="avatar 6" className="user-item"/>
+                        <img src="/images/avatar6.png" alt="avatar 6" className="user-item"/>
                       </div>
                     </div>
                     <div className="task-item-element">
@@ -257,7 +271,7 @@ export default function TasksList() {
                     <div className="task-item-element">
                       <p className="task-item-title">Assignee</p>
                       <div className="task-item-value">
-                        <img src="./images/avatar7.png" alt="avatar 7" className="user-item"/>
+                        <img src="/images/avatar7.png" alt="avatar 7" className="user-item"/>
                       </div>
                     </div>
                     <div className="task-item-element">
@@ -290,7 +304,7 @@ export default function TasksList() {
                     <div className="task-item-element">
                       <p className="task-item-title">Assignee</p>
                       <div className="task-item-value">
-                        <img src="./images/avatar8.png" alt="avatar 8" className="user-item"/>
+                        <img src="/images/avatar8.png" alt="avatar 8" className="user-item"/>
                       </div>
                     </div>
                     <div className="task-item-element">

@@ -1269,6 +1269,50 @@
 
 .main-content {
 
+  .links-block-container {
+    margin-top: 10px;
+
+    .links-block-item {
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      padding: 10px 5px;
+      display: flex;
+      align-items: flex-start;
+      margin-top: 10px;
+
+      .links-block-input {
+        flex: 1;
+      }
+    }
+
+    .error {
+      display: block;
+      color: rgba(246, 81, 96, 1);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 18px;
+      padding: 0 18px;
+    }
+  }
+
+  .images-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    grid-gap: 10px;
+    margin-bottom: 15px;
+
+    .error {
+      grid-column: 1/4;
+      display: block;
+      color: rgba(246, 81, 96, 1);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 18px;
+      padding: 0 18px;
+    }
+  }
+
   &.add-project {
     grid-template-columns: 1fr;
     padding: 20px;
@@ -1312,32 +1356,6 @@
 
             .input-container {
               flex: 1;
-            }
-          }
-
-          .links-block-container {
-            margin-top: 10px;
-
-            .links-block-item {
-              border: 1px solid #e6e6e6;
-              border-radius: 12px;
-              padding: 10px 5px;
-              display: flex;
-              align-items: flex-start;
-              margin-top: 10px;
-
-              .links-block-input {
-                flex: 1;
-              }
-            }
-
-            .error {
-              display: block;
-              color: rgba(246, 81, 96, 1);
-              font-size: 12px;
-              font-weight: 600;
-              line-height: 18px;
-              padding: 0 18px;
             }
           }
 
@@ -1409,24 +1427,6 @@
               left: 0;
               right: 0;
               bottom: 0;
-              display: block;
-              color: rgba(246, 81, 96, 1);
-              font-size: 12px;
-              font-weight: 600;
-              line-height: 18px;
-              padding: 0 18px;
-            }
-          }
-
-          .images-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: auto;
-            grid-gap: 10px;
-            margin-bottom: 15px;
-
-            .error {
-              grid-column: 1/4;
               display: block;
               color: rgba(246, 81, 96, 1);
               font-size: 12px;

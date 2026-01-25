@@ -44,4 +44,12 @@ export const priorityList = [
   {value: 1, label: "Low"},
   {value: 2, label: "Medium"},
   {value: 3, label: "High"}
-]
+];
+
+export const groupList = [
+  {value: 1, label: "Design"},
+  {value: 2, label: "Development"},
+  {value: 3, label: "Testing / QA"},
+  {value: 4, label: "Research"},
+  {value: 5, label: "Documentation"}
+];

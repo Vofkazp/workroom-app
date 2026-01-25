@@ -2,9 +2,10 @@ import api from "./Api";
 import {ResponseAxios} from "../interfaces/AuthInterface";
 import {ProjectType} from "../pages/AddProject";
 
-type ResponseProject<T> = {
+export type ResponseProject<T> = {
   status: boolean;
   response: T;
+  message?: string;
 }
 
 export type ProjectList = {
@@ -37,7 +38,7 @@ export function useProject() {
   const getProjectsList = async () => {
     try {
       const response: ResponseAxios<ResponseProject<ProjectList[]>> = await api.post(`/project/list`);
-      return response.data.response;
+      return response.data;
     } catch(error: any) {
       return error.data;
     }

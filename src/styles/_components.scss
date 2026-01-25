@@ -867,10 +867,115 @@
   }
 }
 
+.duration-selector {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid rgba(216, 224, 240, 1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 1);
+  z-index: 1000;
+
+  .selector-grid {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    .column-name {
+      color: rgba(125, 133, 146, 1);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 24px;
+      text-align: center;
+    }
+
+    .number-selector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .selector-value {
+        color: rgba(10, 22, 41, 1);
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 21px;
+        text-align: center;
+      }
+
+      svg {
+        position: static;
+      }
+    }
+  }
+
+  .selector-footer {
+    border-top: 1px solid rgba(216, 224, 240, 1);
+    padding: 10px;
+
+    .text-btn {
+      position: static;
+      margin: auto;
+    }
+
+  }
+}
+
 .modal-calendar {
   border: 1px solid rgba(216, 224, 240, 1);
   border-radius: 14px;
   background: rgba(255, 255, 255, 1);
+
+  &.small {
+
+    .modal-calendar-header {
+      padding: 10px;
+
+      .arrow-btn {
+
+        svg {
+          position: static;
+        }
+      }
+    }
+
+    .modal-calendar-body {
+      padding: 0 10px 10px;
+
+      .calendar-table {
+
+        thead {
+          th {
+            padding: 0 2px 5px;
+
+            .day-name {
+              font-size: 12px;
+              font-weight: 500;
+              line-height: 28px;
+            }
+          }
+        }
+
+        tbody {
+          tr {
+
+            td {
+              padding: 2px;
+
+              .day-number {
+                width: 35px;
+                height: 35px;
+                line-height: 35px;
+                border-radius: 8px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   .modal-calendar-header {
     padding: 31px 15px 23px;
@@ -1273,6 +1378,16 @@
   outline: none;
   color: rgba(125, 133, 146, 1);
   cursor: pointer;
+
+  &.chevron-btn {
+    color: rgba(63, 140, 255, 1);
+    padding: 5px;
+
+    &:disabled {
+      color: rgba(178, 184, 194, 1);
+      cursor: auto;
+    }
+  }
 
   svg {
     display: block;

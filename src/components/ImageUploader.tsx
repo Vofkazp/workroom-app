@@ -76,7 +76,7 @@ export default function ImageUploader({name, classList}: { name: string; classLi
       <div className={`upload-file ${classList || ""}${url ? " uploaded" : ""}`}>
         {url && <Button click={close} classList="clear-id" path="close" fill="#000"/>}
         <label className="preview-image"
-               style={{backgroundImage: `url(${url || "./images/upload.svg"})`}}>
+               style={{backgroundImage: `url(${url || "/images/upload.svg"})`}}>
           <input type="file" accept="image/*" onChange={handleFileChange} disabled={isCropping || loading}/>
           <p className="upload-title">Загрузить...</p>
         </label>

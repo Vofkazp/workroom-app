@@ -4,14 +4,14 @@ import Button from "./Button";
 interface Props {
   isOpen: boolean;
   title: string;
-  classList: string;
+  classList?: string;
   onClose: () => void;
   children: React.ReactNode;
 }
 
-export default function Modal({isOpen, title, classList, onClose, children}: Props) {
+export default function Modal({isOpen, title, classList = "", onClose, children}: Props) {
   return (
-      <div className={`modal ${classList} ${isOpen ? "modal-open" : ""}`}>
+      <div className={`modal ${classList}${isOpen ? " modal-open" : ""}`}>
         <div className="modal-background" onClick={() => onClose()}></div>
         <div className="modal-content">
           <div className="modal-header">

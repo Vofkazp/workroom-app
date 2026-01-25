@@ -1,7 +1,11 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Field, FieldProps} from "formik";
 
-export default function SelectItem({list, name}: { list: { value: number; label: string }[]; name: string; }) {
+export default function SelectItem({list, name, placeholder = "Выберите значение"}: {
+  list: { value: number; label: string }[];
+  name: string;
+  placeholder?: string
+}) {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const ref = useRef<HTMLDivElement>(null);
@@ -35,7 +39,7 @@ export default function SelectItem({list, name}: { list: { value: number; label:
                   aria-expanded={open}
               >
                 <div className="select-item-input" onClick={() => setOpen((o) => !o)}>
-                  {list.find((i) => i.value === field.value)?.label ?? "Выберите значение"}
+                  {list.find((i) => i.value === field.value)?.label ?? placeholder}
                 </div>
                 {open && (
                     <ul

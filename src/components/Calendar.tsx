@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState, forwardRef} from "react";
 import Button from "./Button";
 
 type CalendarDay = {
@@ -11,27 +11,22 @@ type CalendarDay = {
 
 type CalendarWeek = CalendarDay[];
 
-export default function Calendar({value, onChange, setOpen}: {value: Date | null, onChange: (date: Date) => void, setOpen: (open: boolean) => void}) {
+interface CalendarProps {
+  value: Date;
+  classList?: string;
+  onChange: (date: Date) => void;
+}
+
+const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({value, classList, onChange}, ref) => {
   const WEEK_DAYS = 7;
-  const ref = useRef<HTMLDivElement>(null);
   const [selectedDate, setSelectedDate] = useState(value || new Date());
   const [currentDate, setCurrentDate] = useState(value || new Date());
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
   const selectDate = (day: number, isCurrent: boolean) => {
-    if(isCurrent) {
+    if (isCurrent) {
       const selected = new Date(year, month, day);
       onChange(selected);
       setCurrentDate(selected);
@@ -83,7 +78,7 @@ export default function Calendar({value, onChange, setOpen}: {value: Date | null
   const weeks: CalendarWeek[] = getCalendarMatrix(year, month);
 
   return (
-      <div className="modal-calendar" ref={ref}>
+      <div className={`modal-calendar${classList ? " " + classList : ""}`} ref={ref}>
         <div className="modal-calendar-header">
           <Button click={() => setCurrentDate(new Date(year, month - 1))} path="arrowLeft" classList="arrow-btn"/>
           <p className="date-title">{currentDate.toLocaleString("uk", {month: "long", year: "numeric"})}</p>
@@ -120,4 +115,6 @@ export default function Calendar({value, onChange, setOpen}: {value: Date | null
         </div>
       </div>
   );
-}
+});
+
+export default Calendar;

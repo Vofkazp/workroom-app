@@ -2,13 +2,15 @@ import React, {useEffect, useState} from "react";
 import {Outlet, useNavigate, useParams} from "react-router-dom";
 import Button from "../components/Button";
 import ProjectMenu from "../components/ProjectMenu";
-import {ProjectList, useProject} from "../services/Project";
+import {ProjectList, ResponseProject, useProject} from "../services/Project";
 import NoProject from "../pages/fragments/NoProject";
 import TaskHeader from "../components/TaskHeader";
+import {useNotifications} from "../services/NitificationProvider";
 
 export type TypePage = "list" | "board" | "timeline";
 
 export default function ProjectLayout() {
+  const {addNotification} = useNotifications();
   const {id, type} = useParams();
   const navigate = useNavigate();
   const {getProjectsList} = useProject();
@@ -17,9 +19,13 @@ export default function ProjectLayout() {
   const [typePage, setTypePage] = useState<TypePage>(type as TypePage || "list");
 
   useEffect(() => {
-    getProjectsList().then(res => {
-      setProjectsList(res);
-      if (!id) setActiveId(res[0].id);
+    getProjectsList().then((res: ResponseProject<ProjectList[]>) => {
+      if (res?.status) {
+        setProjectsList(res.response);
+        if (!id) setActiveId(res.response[0].id);
+      } else {
+        addNotification(res?.message || "Unexpected error", "warning");
+      }
     })
   }, []);
 

@@ -3,10 +3,19 @@
   margin-top: 6px;
   padding-bottom: 19px;
 
+  &.date {
+
+    svg {
+      position: absolute;
+      bottom: 13px;
+      right: 18px;
+    }
+  }
+
   .label-block {
     position: relative;
 
-    button {
+    .password-btn {
       position: absolute;
       right: 18px;
       bottom: 13px;
@@ -201,6 +210,15 @@
         padding: 11px;
         margin-top: 2px;
         cursor: pointer;
+
+        img {
+          display: block;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          float: left;
+          margin-right: 10px;
+        }
 
         span {
           color: rgba(125, 133, 146, 1);

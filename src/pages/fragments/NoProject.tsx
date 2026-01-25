@@ -2,14 +2,14 @@ import React from "react";
 import Button from "../../components/Button";
 import {useNavigate} from "react-router-dom";
 
-export default function NoProject({type}: { type: "project" | "task" }) {
+export default function NoProject({type, openModal}: { type: "project" | "task", openModal?: () => void }) {
   const navigate = useNavigate();
 
   const addItem = () => {
     if (type === "project") {
       navigate("/add-project");
     } else {
-
+      openModal?.();
     }
   }
 

@@ -2,17 +2,18 @@ import React, {JSX} from "react";
 import SelectItem from "./SelectItem";
 import {ErrorMessage} from "formik";
 
-export default function Select({title, list, name}: {
+export default function Select({title, list, name, placeholder}: {
   title: string;
   list: { value: number; label: string }[];
   name: string;
+  placeholder?: string;
 }): JSX.Element {
 
   return (
       <div className="input-container">
         <div className="label-block">
           <p className="input-label">{title}</p>
-          <SelectItem list={list} name={name}/>
+          <SelectItem list={list} name={name} placeholder={placeholder}/>
         </div>
         <ErrorMessage name={name}>{(msg) => <span className="error">{msg}</span>}</ErrorMessage>
       </div>

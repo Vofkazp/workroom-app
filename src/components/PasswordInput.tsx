@@ -18,7 +18,7 @@ export default function PasswordInput({title, placeholder, name}: {
         <label className="label-block">
           <p className="input-label">{title}</p>
           <Field type={type} name={name} placeholder={placeholder} autoComplete="off"/>
-          <Button path="eye" click={hidden}/>
+          <Button path="eye" classList="password-btn" click={hidden}/>
         </label>
         <ErrorMessage name={name}>{(msg) => <span className="error">{msg}</span>}</ErrorMessage>
       </div>

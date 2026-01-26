@@ -1441,6 +1441,15 @@
           margin-top: 37px;
           margin-left: auto;
         }
+
+        &.create-user {
+          margin: 0 auto;
+          width: 600px;
+
+          .create-user-form {
+            margin-top: 20px;
+          }
+        }
       }
     }
   }

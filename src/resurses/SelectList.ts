@@ -53,3 +53,8 @@ export const groupList = [
   {value: 4, label: "Research"},
   {value: 5, label: "Documentation"}
 ];
+
+export const genderList = [
+    {value: 1, label: "Male"},
+    {value: 2, label: "Female"},
+]

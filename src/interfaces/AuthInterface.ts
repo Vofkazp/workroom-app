@@ -3,6 +3,13 @@ export interface ResponseAxios<T> {
   data: T;
 }
 
+export interface ResponseAPI<T> {
+  status: string;
+  response: T;
+  message?: string;
+  error?: string;
+}
+
 export interface ResponseCompany {
   status: boolean;
   response: {

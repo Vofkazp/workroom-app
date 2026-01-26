@@ -14,6 +14,7 @@ import AuthProvider from "./services/AuthProvider";
 import ProjectLayout from "./layouts/ProjectLayout";
 import TasksList from "./pages/TasksList";
 import AddProject from "./pages/AddProject";
+import ConfirmInvite from "./pages/ConfirmInvite";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -36,6 +37,7 @@ root.render(
               <Route path="/add-project" element={<AddProject/>}/>
               <Route path="/login" element={<Login/>}/>
               <Route path="/register" element={<Register/>}/>
+              <Route path="/confirm-invitation" element={<ConfirmInvite/>}/>
               <Route path="/components" element={<ComponentLayout/>}/>
             </Routes>
           </BrowserRouter>

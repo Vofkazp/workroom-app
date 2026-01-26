@@ -80,9 +80,24 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({value, classList, o
   return (
       <div className={`modal-calendar${classList ? " " + classList : ""}`} ref={ref}>
         <div className="modal-calendar-header">
+          <button className="btn arrow-btn" onClick={() => setCurrentDate(new Date(year - 1, month))}>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
+              <path d="M18 7L16 7L11 12L16 17L18 17L13 12L18 7Z" fill="currentColor"
+                    fillRule="evenodd"/>
+              <path d="M13 7L11 7L6 12L11 17L13 17L8 12L13 7Z" fill="currentColor"
+                    fillRule="evenodd"/>
+            </svg>
+          </button>
           <Button click={() => setCurrentDate(new Date(year, month - 1))} path="arrowLeft" classList="arrow-btn"/>
           <p className="date-title">{currentDate.toLocaleString("uk", {month: "long", year: "numeric"})}</p>
           <Button click={() => setCurrentDate(new Date(year, month + 1))} path="arrowRight" classList="arrow-btn"/>
+          <button className="btn arrow-btn" onClick={() => setCurrentDate(new Date(year + 1, month))}>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                 width="24" height="24" fill="none">
+              <path d="M6 17L8 17L13 12L8 7L6 7L11 12L6 17Z" fill="currentColor" fillRule="evenodd"/>
+              <path d="M11 17L13 17L18 12L13 7L11 7L16 12L11 17Z" fill="currentColor" fillRule="evenodd"/>
+            </svg>
+          </button>
         </div>
         <div className="modal-calendar-body">
           <table className="calendar-table">

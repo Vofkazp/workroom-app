@@ -5,7 +5,7 @@ import {
   ResponseCompany,
   ResponseCheckCode,
   ResponseCode,
-  ResponseUser, Token
+  ResponseUser, Token, ResponseAPI
 } from "../interfaces/AuthInterface";
 
 export function useAuth() {
@@ -109,6 +109,24 @@ export function useAuth() {
     }
   };
 
+  const getInviteInfo = async (token: string) => {
+    try {
+      const response: ResponseAxios<ResponseAPI<{id: number, email: string, company_id: string}>> = await api.post(`/auth/get_invite_info`, {token});
+      return response.data;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  };
+
+  const confirmInvite = async (data: any) => {
+    try {
+      const response: ResponseAxios<ResponseAPI<{id: number, email: string, company_id: string}>> = await api.post(`/auth/confirm_invite`, data);
+      return response.data;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  };
+
   const setToken = (accessToken: string, refreshToken: string, rememberMe: boolean) => {
     localStorage.setItem("ACCESS_TOKEN", accessToken);
     localStorage.setItem("REFRESH_TOKEN", refreshToken);
@@ -122,5 +140,5 @@ export function useAuth() {
     navigate("/login");
   };
 
-  return {login, getCurrentUser, logout, checkPhone, checkEmail, checkCode, register, createCompany, updateUser, inviteMembers};
+  return {login, getCurrentUser, logout, checkPhone, checkEmail, checkCode, register, createCompany, updateUser, inviteMembers, getInviteInfo, confirmInvite};
 }

@@ -1,74 +1,68 @@
-export interface ResponseAxios<T> {
-  status: number;
-  data: T;
-}
+import {User} from "../services/User";
 
-export interface ResponseAPI<T> {
-  status: string;
+export type ApiSuccess<T> = {
+  status: true;
   response: T;
-  message?: string;
+};
+
+export type ApiError = {
+  status: false;
+  message: string;
   error?: string;
-}
+};
+
+export type ApiResponse<T> = ApiSuccess<T> | ApiError;
 
 export interface ResponseCompany {
-  status: boolean;
-  response: {
-    companyName: string;
-    companyId: number;
-  }
-}
-
-export interface ResponseCode {
-  status: boolean;
-  code: string;
-}
-
-export interface ResponseCheckCode {
-  status: boolean;
-  response: boolean;
-}
-
-export interface ResponseUser {
-  status: boolean;
-  response: User | null;
-}
-
-export interface User {
-  id: number;
-  first_name: string | null;
-  last_name: string | null;
-  gender: number | null;
-  birthday: string | null;
-  phone: string;
-  email: string;
-  position: string | null;
-  experience: string | null;
-  avatar: string | null;
-  why_use: string;
-  role: string;
-  self_employed: boolean;
-  company_id: number;
-  created_at: string;
-  updated_at: string;
+  companyName: string;
+  companyId: number;
 }
 
 export interface Token {
-  status: boolean;
-  response: {
-    accessToken: string;
-    refreshToken: string;
-  }
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface getInviteInfo {
+  invite_id: number;
+  email: string;
+  company_id: number;
+  company: Company | null,
+  user: User | null
+}
+
+export interface confirmInvite {
+  first_name?: string;
+  last_name?: string;
+  gender?: number;
+  birthday?: string | null;
+  phone?: string;
+  email?: string;
+  password?: string;
+  avatar?: string;
+  user_id?: number;
+  isRegister: boolean;
+  isConfirm: boolean;
+  invite_id: number | null;
+}
+
+export interface Company {
+  id: number,
+  name: string,
+  direction: string,
+  location: string | null,
+  owner_id: number,
+  team_size: string
+  created_at: Date,
 }
 
 export interface ResponseFile {
-  status: boolean;
-  response: {
     publicId: string;
     url: string;
-  };
 }
 
-export interface ResponseFileResult {
-  status: boolean;
-  response: boolean;
+
+export interface ResponseAxios<T> {
+  status: number;
+  data: T;
 }

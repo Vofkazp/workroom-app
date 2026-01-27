@@ -1,7 +1,7 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
-import Calendar from "./Calendar";
+import Calendar from "../Calendar";
 import {Field, FieldProps} from "formik";
-import Svg from "./Svg";
+import Svg from "../Svg";
 
 export default function DatePicker({name, title, placeholder}: {
   name: string,

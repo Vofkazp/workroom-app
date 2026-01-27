@@ -1,12 +1,19 @@
 import api from "./Api";
-import {ResponseAxios} from "../interfaces/AuthInterface";
-import {ProjectType} from "../pages/AddProject";
+import {ApiError, ApiResponse} from "../interfaces/AuthInterface";
+import {useNotifications} from "./NitificationProvider";
 
-export type ResponseProject<T> = {
-  status: boolean;
-  response: T;
-  message?: string;
-}
+export type ProjectType = {
+  name: string;
+  priority: number;
+  description: string;
+  starts: string;
+  deadLine: string;
+  avatar: string;
+  isLink: boolean;
+  links: { link: string; title: string; }[],
+  isImages: boolean;
+  images: { publicId: string; }[]
+};
 
 export type ProjectList = {
   id: number;
@@ -25,22 +32,27 @@ export type ProjectList = {
 }
 
 export function useProject() {
+  const {addNotification} = useNotifications();
 
-  const createProject = async (data: ProjectType) => {
+  const createProject = async (formData: ProjectType) => {
     try {
-      const response: ResponseAxios<ResponseProject<ProjectType>> = await api.post(`/project`, data);
-      return response.data;
-    } catch(error: any) {
-      return error.data;
+      const {data} = await api.post<ApiResponse<boolean>>(`/project`, formData);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const getProjectsList = async () => {
     try {
-      const response: ResponseAxios<ResponseProject<ProjectList[]>> = await api.post(`/project/list`);
-      return response.data;
-    } catch(error: any) {
-      return error.data;
+      const {data} = await api.post<ApiResponse<ProjectList[]>>(`/project/list`);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 

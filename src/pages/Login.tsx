@@ -1,17 +1,15 @@
 import React from "react";
-import Input from "../components/Input";
-import CheckBox from "../components/CheckBox";
+import Input from "../components/inputs/Input";
+import CheckBox from "../components/inputs/CheckBox";
 import Button from "../components/Button";
 import {useNavigate} from "react-router-dom";
-import PasswordInput from "../components/PasswordInput";
+import PasswordInput from "../components/inputs/PasswordInput";
 import {useAuth} from "../services/Auth";
 import * as Yup from "yup";
 import {Form, Formik} from "formik";
-import {useNotifications} from "../services/NitificationProvider";
 
 export default function Login() {
   const navigate = useNavigate();
-  const {addNotification} = useNotifications();
   const {login} = useAuth();
 
   const initialValues = {
@@ -39,11 +37,7 @@ export default function Login() {
 
   const loginUser = (values: any) => {
     login(values.email, values.password, values.remember_me).then((result) => {
-      if (result) {
-        navigate("/");
-      } else {
-        addNotification("Неправильный логин или пароль!", "warning");
-      }
+      if (result?.status) navigate("/");
     });
   }
 

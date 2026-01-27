@@ -1,7 +1,7 @@
 import React from "react";
 import {businessDirection, teamSizeList} from "../../resurses/SelectList";
-import Select from "../../components/Select";
-import Input from "../../components/Input";
+import Select from "../../components/inputs/Select";
+import Input from "../../components/inputs/Input";
 import * as Yup from "yup";
 import Button from "../../components/Button";
 import {Field, Form, Formik, FormikProps} from "formik";
@@ -29,7 +29,7 @@ export default function RegisterPageSteep3({Name, Direction, teamSize, onChecked
   };
 
   const regexp = {
-    name: /^[а-яА-Яa-zA-Z0-9,.!?@#$%^&*()_+=\-*/ ]{2,50}$/
+    name: /^[а-яА-Яa-zA-Z0-9,.!?@#$%^&*()_+=\-/ ]{2,50}$/
   }
 
   const name = Yup.string().matches(regexp.name, "Количество символов от 2 до 50").required("Введите название");

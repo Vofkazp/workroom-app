@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "./Button";
+import Button from "../Button";
 
 export default function NumberSelector({title, inc, value, selected}: { title: string, inc: number, value: number, selected: (value: number) => void }) {
   return (

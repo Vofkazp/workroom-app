@@ -1,6 +1,6 @@
 import React from "react";
 import {Field, useFormikContext} from "formik";
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "../ImageUploader";
 
 export default function ImagesRadioBlock() {
   const {errors} = useFormikContext<{ avatar: string }>();

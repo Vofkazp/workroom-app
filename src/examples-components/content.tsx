@@ -1,15 +1,13 @@
 import React from "react";
 import Button from '../components/Button';
-import Input from "../components/Input";
-import PasswordInput from "../components/PasswordInput";
-import CheckBox from "../components/CheckBox";
+import Input from "../components/inputs/Input";
+import PasswordInput from "../components/inputs/PasswordInput";
+import CheckBox from "../components/inputs/CheckBox";
 import Svg from "../components/Svg";
-import InputCode from "../components/InputCode";
-import MaskedInput from "../components/MaskedInput";
 import {whyUse} from "../resurses/SelectList";
-import Select from "../components/Select";
-import TextArea from "../components/TextArea";
-import CheckBoxButton from "../components/CheckBoxButton";
+import Select from "../components/inputs/Select";
+import TextArea from "../components/inputs/TextArea";
+import CheckBoxButton from "../components/inputs/CheckBoxButton";
 
 export const content = [
   {

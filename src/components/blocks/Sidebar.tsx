@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import Svg from "./Svg";
-import {pathList} from "../resurses/PathList";
+import Svg from "../Svg";
+import {pathList} from "../../resurses/PathList";
 import {useLocation, useNavigate} from "react-router-dom";
-import Button from "./Button";
-import {useAuth} from "../services/Auth";
+import Button from "../Button";
+import {useAuth} from "../../services/Auth";
 
 interface MenuList {
   id: number;

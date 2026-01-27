@@ -1,129 +1,148 @@
 import {useNavigate} from "react-router-dom";
 import api from "./Api";
-import {
-  ResponseAxios,
-  ResponseCompany,
-  ResponseCheckCode,
-  ResponseCode,
-  ResponseUser, Token, ResponseAPI
-} from "../interfaces/AuthInterface";
+import {ResponseCompany, Token, ApiResponse, ApiError, getInviteInfo, confirmInvite} from "../interfaces/AuthInterface";
+import {User} from "./User";
+import {useNotifications} from "./NitificationProvider";
 
 export function useAuth() {
   const navigate = useNavigate();
+  const {addNotification} = useNotifications();
 
   const getCurrentUser = async () => {
     try {
-      const response: ResponseAxios<ResponseUser> = await api.get(`/auth/get_current_user`);
-      return response.data;
-    } catch {
-      logout();
+      const {data} = await api.get<ApiResponse<User>>(`/auth/get_current_user`);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const login = async (email: string, password: string, rememberMe: boolean) => {
     try {
-      const response: ResponseAxios<Token> = await api.post(`/auth/login`, {email, password});
-      if (response.status === 200 && response.data.status) setToken(response.data.response.accessToken, response.data.response.refreshToken, rememberMe);
-      return response.data;
-    } catch {
-      logout();
+      const {data} = await api.post<ApiResponse<Token>>(`/auth/login`, {email, password});
+      if (data.status) setToken(data.response.accessToken, data.response.refreshToken, rememberMe);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const register = async (phone: string, email: string, password: string) => {
     try {
-      const response: ResponseAxios<Token> = await api.post(`/auth/register`, {phone, email, password});
-      if (response.status === 200 && response.data.status) setToken(response.data.response.accessToken, response.data.response.refreshToken, true);
-      return response.data;
-    } catch {
-      logout();
+      const {data} = await api.post<ApiResponse<Token>>(`/auth/register`, {phone, email, password});
+      if (data.status) setToken(data.response.accessToken, data.response.refreshToken, true);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const updateUser = async (id: number, why_use: string, role: string, self_employed: boolean, company_id: number) => {
     try {
-      const response: ResponseAxios<ResponseCheckCode> = await api.put(`/auth/update_user`, {
+      const {data} = await api.put<ApiResponse<boolean>>(`/auth/update_user`, {
         id,
         why_use,
         role,
         self_employed,
         company_id
       });
-      return response.data;
-    } catch {
-      logout();
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const createCompany = async (name: string, direction: string, team_size: string, owner_id: number) => {
     try {
-      const response: ResponseAxios<ResponseCompany> = await api.post(`/auth/create_company`, {
+      const {data} = await api.post<ApiResponse<ResponseCompany>>(`/auth/create_company`, {
         name,
         direction,
         team_size,
         owner_id
       });
-      return response.data;
-    } catch (error: any) {
-      return error.response.data;
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const inviteMembers = async (company_id: number, invited_by: number, emails: string[]) => {
     try {
-      const response: ResponseAxios<ResponseCheckCode> = await api.post(`/auth/invite_members`, {
+      const {data} = await api.post<ApiResponse<boolean>>(`/auth/invite_members`, {
         company_id,
         invited_by,
         emails
       });
-      return response.data;
-    } catch (error: any) {
-      return error.response.data;
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const checkPhone = async (phone: string) => {
     try {
-      const response: ResponseAxios<ResponseCode> = await api.post(`/auth/check_phone`, {phone});
-      return response.data;
-    } catch (err: any) {
-      return err.response.data;
+      const {data} = await api.post<ApiResponse<{ code: string }>>(`/auth/check_phone`, {phone});
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const checkEmail = async (email: string) => {
     try {
-      const response: ResponseAxios<ResponseCheckCode> = await api.post(`/auth/check_email`, {email});
-      return response.data;
-    } catch (err: any) {
-      return err.response.data;
+      const {data} = await api.post<ApiResponse<boolean>>(`/auth/check_email`, {email});
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const checkCode = async (phone: string, code: string) => {
     try {
-      const response: ResponseAxios<ResponseCheckCode> = await api.post(`/auth/check_code`, {phone, code});
-      return response.data;
-    } catch (err: any) {
-      return err.response.data;
+      const {data} = await api.post<ApiResponse<boolean>>(`/auth/check_code`, {phone, code});
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const getInviteInfo = async (token: string) => {
     try {
-      const response: ResponseAxios<ResponseAPI<{id: number, email: string, company_id: string}>> = await api.post(`/auth/get_invite_info`, {token});
-      return response.data;
-    } catch (err: any) {
-      return err.response.data;
+      const {data} = await api.post<ApiResponse<getInviteInfo>>(`/auth/get_invite_info`, {token});
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
-  const confirmInvite = async (data: any) => {
+  const confirmInvite = async (formData: confirmInvite) => {
     try {
-      const response: ResponseAxios<ResponseAPI<{id: number, email: string, company_id: string}>> = await api.post(`/auth/confirm_invite`, data);
-      return response.data;
-    } catch (err: any) {
-      return err.response.data;
+      const {data} = await api.post<ApiResponse<boolean>>(`/auth/confirm_invite`, formData);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
@@ -140,5 +159,18 @@ export function useAuth() {
     navigate("/login");
   };
 
-  return {login, getCurrentUser, logout, checkPhone, checkEmail, checkCode, register, createCompany, updateUser, inviteMembers, getInviteInfo, confirmInvite};
+  return {
+    login,
+    getCurrentUser,
+    logout,
+    checkPhone,
+    checkEmail,
+    checkCode,
+    register,
+    createCompany,
+    updateUser,
+    inviteMembers,
+    getInviteInfo,
+    confirmInvite
+  };
 }

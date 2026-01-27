@@ -1,35 +1,44 @@
 import api from "./Api";
-import {ResponseAxios, ResponseFile, ResponseFileResult} from "../interfaces/AuthInterface";
+import {ApiError, ApiResponse, ResponseFile} from "../interfaces/AuthInterface";
+import {useNotifications} from "./NitificationProvider";
 
 export function useFile() {
+  const {addNotification} = useNotifications();
+
   const UploadImage = async (formData: FormData) => {
     try {
-      const response: ResponseAxios<ResponseFile> = await api.post(`/files`, formData, {
+      const {data} = await api.post<ApiResponse<ResponseFile>>(`/files`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      return response.data;
-    } catch {
-
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   };
 
   const getImage = async (publicId: string, type: string) => {
     try {
-      const response: ResponseAxios<ResponseFile> = await api.get(`/files?publicId=${publicId}&type=${type}`);
-      return response.data;
-    } catch {
-
+      const {data} = await api.get<ApiResponse<ResponseFile>>(`/files?publicId=${publicId}&type=${type}`);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   }
 
   const deleteFile = async (publicId: string, type: string) => {
     try {
-      const response: ResponseAxios<ResponseFileResult> = await api.delete(`/files?publicId=${publicId}&type=${type}`);
-      return response.data;
-    } catch {
-
+      const {data} = await api.delete<ApiResponse<boolean>>(`/files?publicId=${publicId}&type=${type}`);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
     }
   }
 

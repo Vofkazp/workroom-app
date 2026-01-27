@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {ErrorMessage, Field, FieldProps} from "formik";
-import {User} from "../services/User";
+import {User} from "../../services/User";
 
 export default function SelectUser({title, list, name, placeholder}: {
   title: string;
@@ -57,7 +57,7 @@ export default function SelectUser({title, list, name, placeholder}: {
                             ref={listRef}
                             style={{"--i": list.length} as React.CSSProperties}
                         >
-                          {list.map((item, i) => (
+                          {list.map((item) => (
                               <li
                                   key={item.id}
                                   role="option"

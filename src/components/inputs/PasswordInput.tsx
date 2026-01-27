@@ -1,5 +1,5 @@
 import React, {JSX} from "react";
-import Button from "./Button";
+import Button from "../Button";
 import {ErrorMessage, Field} from "formik";
 
 export default function PasswordInput({title, placeholder, name}: {

@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
-import Svg from "./Svg";
-import Modal from "./Modal";
-import Button from "./Button";
-import {useAuthentication} from "../services/AuthProvider";
+import Svg from "../Svg";
+import Modal from "../Modal";
+import Button from "../Button";
+import {useAuthentication} from "../../services/AuthProvider";
 import {useLocation, useNavigate} from "react-router-dom";
 
 export default function Header() {
@@ -43,7 +43,7 @@ export default function Header() {
           <Button click={() => setModal(true)} classList="icon-btn" path="notification"/>
           <div className={`header-select ${openSelect ? "open" : ""}`} ref={ref}>
             <div className="select-block" onClick={() => setOpenSelect(!openSelect)}>
-              <img src={authData.user?.avatar || "/images/userTemplate.png"} alt="avatar" className="avatar-img"/>
+              <img src={authData.user?.avatar?.url || "/images/userTemplate.png"} alt="avatar" className="avatar-img"/>
               <span
                   className="select-text">{authData.user && authData.user.first_name && authData.user.last_name ? `${authData.user?.first_name} ${authData.user?.last_name}` : "No name"}</span>
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">

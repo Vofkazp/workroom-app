@@ -1,7 +1,7 @@
 import React from "react";
 import {Field} from "formik";
-import {pathList} from "../resurses/PathList";
-import Svg from "./Svg";
+import {pathList} from "../../resurses/PathList";
+import Svg from "../Svg";
 
 type PathKey = keyof typeof pathList;
 

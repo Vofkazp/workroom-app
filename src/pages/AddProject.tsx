@@ -1,33 +1,20 @@
 import React, {useState} from "react";
 import Button from "../components/Button";
-import Input from "../components/Input";
-import Select from "../components/Select";
-import TextArea from "../components/TextArea";
+import Input from "../components/inputs/Input";
+import Select from "../components/inputs/Select";
+import TextArea from "../components/inputs/TextArea";
 import {priorityList} from "../resurses/SelectList";
-import DatePicker from "../components/DatePicker";
+import DatePicker from "../components/inputs/DatePicker";
 import {useNavigate} from "react-router-dom";
 import {Form, Formik} from "formik";
 import * as Yup from "yup";
-import CheckBoxButton from "../components/CheckBoxButton";
-import LinksBlock from "../components/LinksBlock";
-import ImagesBlock from "../components/ImagesBlock";
-import ImagesRadioBlock from "../components/ImagesRadioBlock";
-import {useProject} from "../services/Project";
+import CheckBoxButton from "../components/inputs/CheckBoxButton";
+import LinksBlock from "../components/blocks/LinksBlock";
+import ImagesBlock from "../components/blocks/ImagesBlock";
+import ImagesRadioBlock from "../components/blocks/ImagesRadioBlock";
+import {ProjectType, useProject} from "../services/Project";
 import Loader from "../components/Loader";
 import {useNotifications} from "../services/NitificationProvider";
-
-export type ProjectType = {
-  name: string;
-  priority: number;
-  description: string;
-  starts: string;
-  deadLine: string;
-  avatar: string;
-  isLink: boolean;
-  links: { link: string; title: string; }[],
-  isImages: boolean;
-  images: { publicId: string; }[]
-};
 
 export default function AddProject() {
   const navigate = useNavigate();

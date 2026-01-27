@@ -4,16 +4,17 @@ import {useAuth} from "../services/Auth";
 import {useNotifications} from "../services/NitificationProvider";
 import {Form, Formik} from "formik";
 import * as Yup from "yup";
-import Input from "../components/Input";
-import {genderList} from "../resurses/SelectList";
-import Select from "../components/Select";
-import DatePicker from "../components/DatePicker";
-import PasswordInput from "../components/PasswordInput";
+import Input from "../components/inputs/Input";
+import {genderList, phonePrefix} from "../resurses/SelectList";
+import Select from "../components/inputs/Select";
+import DatePicker from "../components/inputs/DatePicker";
+import PasswordInput from "../components/inputs/PasswordInput";
 import ImageUploader from "../components/ImageUploader";
-import SelectItem from "../components/SelectItem";
-import {phonePrefix} from "../resurses/phonePrefix";
-import MaskedInput from "../components/MaskedInput";
+import SelectItem from "../components/inputs/SelectItem";
+import MaskedInput from "../components/inputs/MaskedInput";
 import Button from "../components/Button";
+import {User} from "../services/User";
+import {Company} from "../interfaces/AuthInterface";
 
 export default function ConfirmInvite() {
   const location = useLocation();
@@ -24,28 +25,14 @@ export default function ConfirmInvite() {
   const token = queryParams.get("token");
   const [inviteId, setInviteId] = useState<number | null>(null);
   const [email, setEmail] = useState<string>("");
-  const [company, setCompany] = useState<{
-    id: number,
-    name: string,
-    direction: string,
-    location: string | null,
-    owner_id: number,
-    team_size: string
-    created_at: Date,
-  } | null>(null);
-  const [user, setUser] = useState<{
-    id: number,
-    email: string,
-    first_name: string,
-    last_name: string,
-    avatar: { url: string, publicId: string }
-  } | null>(null);
+  const [company, setCompany] = useState<Company | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const initialValues = {
     first_name: "",
     last_name: "",
     gender: 1,
-    birthday: null,
+    birthday: null as string | null,
     phone_prefix: 3,
     phone: "80",
     password: "",
@@ -102,13 +89,12 @@ export default function ConfirmInvite() {
   useEffect(() => {
     const getInvite = async (token: string) => {
       const invite = await getInviteInfo(token);
+      if (!invite) return;
       if (invite.status) {
         if (invite.response.invite_id) setInviteId(invite.response.invite_id);
         if (invite.response.email) setEmail(invite.response.email);
         if (invite.response.user) setUser(invite.response.user);
         if (invite.response.company) setCompany(invite.response.company);
-      } else {
-        addNotification(invite.message || "Unknown error!", "warning");
       }
     }
     if (token) {

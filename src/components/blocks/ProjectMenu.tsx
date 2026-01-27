@@ -1,6 +1,6 @@
 import React from "react";
-import {ProjectList} from "../services/Project";
-import Button from "./Button";
+import {ProjectList} from "../../services/Project";
+import Button from "../Button";
 
 export default function ProjectMenu({list, active, checkActiveId}: {
   list: ProjectList[],

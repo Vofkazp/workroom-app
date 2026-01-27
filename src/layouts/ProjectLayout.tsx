@@ -1,36 +1,32 @@
 import React, {useEffect, useState} from "react";
 import {Outlet, useNavigate, useParams} from "react-router-dom";
 import Button from "../components/Button";
-import ProjectMenu from "../components/ProjectMenu";
-import {ProjectList, ResponseProject, useProject} from "../services/Project";
+import ProjectMenu from "../components/blocks/ProjectMenu";
+import {ProjectList, useProject} from "../services/Project";
 import NoProject from "../pages/fragments/NoProject";
-import TaskHeader from "../components/TaskHeader";
-import {useNotifications} from "../services/NitificationProvider";
+import TaskHeader from "../components/blocks/TaskHeader";
 
 export type TypePage = "list" | "board" | "timeline";
 
 export default function ProjectLayout() {
-  const {addNotification} = useNotifications();
   const {id, type} = useParams();
   const navigate = useNavigate();
   const {getProjectsList} = useProject();
   const [projectsList, setProjectsList] = useState<ProjectList[]>([]);
-  const [activeId, setActiveId] = useState<number | undefined>(Number(id));
+  const [activeId, setActiveId] = useState<number>(Number(id));
   const [typePage, setTypePage] = useState<TypePage>(type as TypePage || "list");
 
   useEffect(() => {
-    getProjectsList().then((res: ResponseProject<ProjectList[]>) => {
+    getProjectsList().then((res) => {
       if (res?.status) {
         setProjectsList(res.response);
-        if (!id) setActiveId(res.response[0].id);
-      } else {
-        addNotification(res?.message || "Unexpected error", "warning");
+        if (!id) setActiveId(res.response[0]?.id);
       }
     })
   }, []);
 
   useEffect(() => {
-    navigate(`/projects/${activeId}/${typePage}`);
+    navigate(activeId ? `/projects/${activeId}/${typePage}` : "/projects");
   }, [activeId, typePage]);
 
   const addProject = () => {

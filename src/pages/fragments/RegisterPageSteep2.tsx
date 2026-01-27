@@ -1,5 +1,5 @@
 import React from "react";
-import Select from "../../components/Select";
+import Select from "../../components/inputs/Select";
 import {roleList, whyUse} from "../../resurses/SelectList";
 import {Field, Form, Formik} from "formik";
 import Button from "../../components/Button";

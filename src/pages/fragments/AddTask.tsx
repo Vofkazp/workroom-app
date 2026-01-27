@@ -1,48 +1,23 @@
 import React, {useEffect, useState} from "react";
 import Modal from "components/Modal";
 import {Form, Formik} from "formik";
-import Input from "../../components/Input";
+import Input from "../../components/inputs/Input";
 import * as Yup from "yup";
-import Select from "../../components/Select";
+import Select from "../../components/inputs/Select";
 import {groupList, priorityList} from "../../resurses/SelectList";
-import DatePicker from "../../components/DatePicker";
-import TextArea from "../../components/TextArea";
+import DatePicker from "../../components/inputs/DatePicker";
+import TextArea from "../../components/inputs/TextArea";
 import Button from "../../components/Button";
-import CheckBoxButton from "../../components/CheckBoxButton";
-import LinksBlock from "../../components/LinksBlock";
-import ImagesBlock from "../../components/ImagesBlock";
-import DurationPicker from "../../components/DurationPicker";
+import CheckBoxButton from "../../components/inputs/CheckBoxButton";
+import LinksBlock from "../../components/blocks/LinksBlock";
+import ImagesBlock from "../../components/blocks/ImagesBlock";
+import DurationPicker from "../../components/inputs/DurationPicker";
 import {User, useUser} from "../../services/User";
-import SelectUser from "../../components/SelectUser";
-import {useTask} from "../../services/Task";
+import SelectUser from "../../components/inputs/SelectUser";
+import {TaskType, useTask} from "../../services/Task";
 import {useNotifications} from "../../services/NitificationProvider";
 import Loader from "../../components/Loader";
 import {useParams} from "react-router-dom";
-
-type Links = {
-  link: string;
-  title: string;
-}
-
-type Images = {
-  publicId: string;
-}
-
-export type TaskType = {
-  projectId: number;
-  name: string;
-  group: number;
-  estimate: number | null;
-  deadLine: string;
-  priority: number;
-  assignee: number | null;
-  description: string;
-  isLink: boolean;
-  links: Links[];
-  isImages: boolean;
-  images: Images[];
-  status?: number;
-}
 
 export default function AddTask({openModal, closeModal}: { openModal: boolean, closeModal: (status: boolean) => void }) {
   const {id} = useParams();
@@ -54,7 +29,10 @@ export default function AddTask({openModal, closeModal}: { openModal: boolean, c
 
   useEffect(() => {
     getUserList().then(res => {
-      setUsers(res?.response);
+      if (!res) return;
+      if (res.status) {
+        setUsers(res.response);
+      }
     })
   }, []);
 

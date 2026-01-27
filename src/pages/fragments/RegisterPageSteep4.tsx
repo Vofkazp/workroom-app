@@ -1,5 +1,5 @@
 import React from "react";
-import Input from "../../components/Input";
+import Input from "../../components/inputs/Input";
 import Button from "../../components/Button";
 import * as Yup from "yup";
 import {FieldArray, Form, Formik, FormikProps} from "formik";

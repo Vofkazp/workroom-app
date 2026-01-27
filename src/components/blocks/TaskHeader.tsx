@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "./Button";
-import {TypePage} from "../layouts/ProjectLayout";
+import Button from "../Button";
+import {TypePage} from "../../layouts/ProjectLayout";
 
 export default function TaskHeader({type, checkType}: { type: TypePage, checkType: (type: TypePage) => void }) {
 

@@ -8,7 +8,6 @@ import {useAuth} from "../services/Auth";
 import {businessDirection, roleList, teamSizeList, whyUse} from "../resurses/SelectList";
 import {useNavigate} from "react-router-dom";
 import {useAuthentication} from "../services/AuthProvider";
-import {useNotifications} from "../services/NitificationProvider";
 
 type StepPayload = {
   1: FormValues;
@@ -20,7 +19,6 @@ type StepPayload = {
 export default function Register() {
   const [readyToRegister, setReadyToRegister] = useState(false);
   const {saveAuthData} = useAuthentication();
-  const {addNotification} = useNotifications();
   const navigate = useNavigate();
   const {register, createCompany, getCurrentUser, updateUser, inviteMembers} = useAuth();
   const [loading, setLoading] = useState(false);
@@ -62,19 +60,21 @@ export default function Register() {
     try {
       await register("+" + form.phone_prefix + form.phone, form.email, form.password);
       const user = await getCurrentUser();
-      if (user?.status) {
+      if (!user) return;
+      if (user.status) {
         saveAuthData({isAuth: true, user: user.response});
         const business_direction: string = businessDirection.find(el => el.value === form.direction)!.label;
         const team_size: string = teamSizeList.find(el => el.value === Number(form.team_size))!.label;
-        const company = await createCompany(form.name, business_direction, team_size, user.response!.id);
-        const why_use: string = whyUse.find(el => el.value === form.why_use)!.label;
-        const role: string = roleList.find(el => el.value === form.role)!.label;
-        await updateUser(user.response!.id, why_use, role, Boolean(form.self_employed), company!.response.companyId);
-        await inviteMembers(company!.response.companyId, user.response!.id, form.emails);
-        setStep(prev => prev + 1);
+        const company = await createCompany(form.name, business_direction, team_size, user.response.id);
+        if (!company) return;
+        if (company.status) {
+          const why_use: string = whyUse.find(el => el.value === form.why_use)!.label;
+          const role: string = roleList.find(el => el.value === form.role)!.label;
+          await updateUser(user.response.id, why_use, role, Boolean(form.self_employed), company.response.companyId);
+          await inviteMembers(company.response.companyId, user.response.id, form.emails);
+          setStep(prev => prev + 1);
+        }
       }
-    } catch (error: any) {
-      addNotification(error?.message || "Unexpected error", "warning");
     } finally {
       setLoading(false);
     }

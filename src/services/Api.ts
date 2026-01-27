@@ -1,5 +1,28 @@
-import axios, {AxiosResponse} from 'axios';
-import {Token} from "../interfaces/AuthInterface";
+import axios, {AxiosError} from 'axios';
+import {ApiResponse, Token} from "../interfaces/AuthInterface";
+
+declare module "axios" {
+  export interface AxiosRequestConfig {
+    _retry?: boolean;
+  }
+}
+
+type ApiError = {
+  status: false;
+  message: string;
+  error?: string;
+};
+
+let isRefreshing = false;
+let failedQueue: any[] = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach(prom => {
+    if (error) prom.reject(error);
+    else prom.resolve(token);
+  });
+  failedQueue = [];
+};
 
 const api = axios.create({
   baseURL: "http://127.0.1.0:5000/api",
@@ -16,35 +39,78 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-const tokenRefresh = async (originalRequest: any) => {
-  try {
-    const refresh_token: string | null = localStorage.getItem("REFRESH_TOKEN");
-    const response: AxiosResponse<Token> = await api.post("/auth/refresh", {token: refresh_token});
-    if (response.status === 200) {
-      localStorage.setItem("ACCESS_TOKEN", response.data.response.accessToken);
-      localStorage.setItem("REFRESH_TOKEN", response.data.response.refreshToken);
+const tokenRefresh = async (): Promise<string> => {
+  const refresh_token = localStorage.getItem("REFRESH_TOKEN");
+  if (!refresh_token) throw new Error("No refresh token");
 
-      api.defaults.headers.Authorization = `Bearer ${response.data.response.accessToken}`;
-
-      originalRequest.headers.Authorization = `Bearer ${response.data.response.accessToken}`;
-
-      return api(originalRequest);
-    }
-  } catch (e) {
-    Logout();
+  const {data} = await api.post<ApiResponse<Token>>("/auth/refresh", {
+    token: refresh_token,
+  });
+  if (!data || !data.status) {
+    throw new Error(data?.message || "Token refresh failed!");
   }
+  const accessToken = data.response.accessToken;
+  const refreshToken = data.response.refreshToken;
+
+  localStorage.setItem("ACCESS_TOKEN", accessToken);
+  localStorage.setItem("REFRESH_TOKEN", refreshToken);
+
+  api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+
+  return accessToken;
 };
 
+
 api.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      if (error.response?.status === 401 && !error.config._retry) {
-        error.config._retry = true;
-        return tokenRefresh(error.config);
+    response => response,
+    async (error: AxiosError<ApiError>) => {
+      const originalRequest = error.config;
+
+      if (error.response?.status === 401 && originalRequest) {
+        if (originalRequest._retry) {
+          Logout();
+          return Promise.reject(error);
+        }
+
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({
+              resolve: (token: string) => {
+                originalRequest.headers!.Authorization = `Bearer ${token}`;
+                resolve(api(originalRequest));
+              },
+              reject,
+            });
+          });
+        }
+
+        originalRequest._retry = true;
+        isRefreshing = true;
+
+        try {
+          const newToken = await tokenRefresh();
+          processQueue(null, newToken);
+
+          originalRequest.headers!.Authorization = `Bearer ${newToken}`;
+          return api(originalRequest);
+        } catch (err) {
+          processQueue(err, null);
+          Logout();
+          return Promise.reject({
+            status: false,
+            message: "Сесія завершена. Увійдіть знову!",
+          });
+        } finally {
+          isRefreshing = false;
+        }
       }
-      return Promise.reject(error);
+      return Promise.reject({
+        status: false,
+        message: error.response?.data?.message || error.response?.data?.error || "Помилка сервера!",
+      });
     }
 );
+
 
 function Logout() {
   localStorage.removeItem("ACCESS_TOKEN");

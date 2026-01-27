@@ -1,16 +1,16 @@
 import React, {useEffect, useRef, useState} from "react";
-import SelectItem from "../../components/SelectItem";
-import Input from "../../components/Input";
-import PasswordInput from "../../components/PasswordInput";
+import SelectItem from "../../components/inputs/SelectItem";
+import Input from "../../components/inputs/Input";
+import PasswordInput from "../../components/inputs/PasswordInput";
 import {useAuth} from "../../services/Auth";
-import MaskedInput from "../../components/MaskedInput";
-import InputCode from "../../components/InputCode";
-import {phonePrefix} from "../../resurses/phonePrefix";
+import MaskedInput from "../../components/inputs/MaskedInput";
+import InputCode from "../../components/inputs/InputCode";
 import * as Yup from "yup";
 import {Form, Formik, FormikHelpers} from "formik";
 import Button from "../../components/Button";
 import PhoneAutoCheck from "../../components/PhoneAutoCheck";
 import {useNotifications} from "../../services/NitificationProvider";
+import {phonePrefix} from "../../resurses/SelectList";
 
 type Props = {
   phonePref: number;

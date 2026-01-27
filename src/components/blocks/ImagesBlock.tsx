@@ -1,7 +1,7 @@
 import React from "react";
 import {FieldArray, getIn, useFormikContext} from "formik";
-import ImageUploader from "./ImageUploader";
-import Button from "./Button";
+import ImageUploader from "../ImageUploader";
+import Button from "../Button";
 
 export default function ImagesBlock() {
   const {values, errors} = useFormikContext<{

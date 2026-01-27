@@ -1,5 +1,5 @@
 import React, {createContext, ReactNode, useCallback, useContext, useState} from "react";
-import {User} from "../interfaces/AuthInterface";
+import {User} from "./User";
 
 interface UserAuthInfo {
   isAuth: boolean;

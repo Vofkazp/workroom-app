@@ -1,13 +1,14 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Navigate, Outlet} from "react-router-dom";
 import {useAuth} from "../services/Auth";
-import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
+import Sidebar from "../components/blocks/Sidebar";
+import Header from "../components/blocks/Header";
 import {useAuthentication} from "../services/AuthProvider";
 
 export default function MainLayout() {
   const {logout, getCurrentUser} = useAuth();
   const {authData, saveAuthData} = useAuthentication();
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
     const handleUnload = () => {
@@ -22,27 +23,32 @@ export default function MainLayout() {
     };
   }, []);
 
-  const authenticated = async () => {
-    const user = await getCurrentUser();
-    if(user?.status) {
-      saveAuthData({isAuth: true, user: user.response});
-    }
-  }
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem("ACCESS_TOKEN");
+      if (!token) {
+        setChecking(false);
+        return;
+      }
+      const user = await getCurrentUser();
+      if (user?.status) saveAuthData({isAuth: true, user: user.response});
 
-  if(!authData.isAuth) {
-    const token = localStorage.getItem("ACCESS_TOKEN");
-    if (!token) {
-      return <Navigate to="/login" replace/>;
-    } else {
-      authenticated();
+      setChecking(false);
     }
+    checkAuth();
+  }, []);
+
+  if (checking) return null;
+
+  if (!authData.isAuth) {
+    return <Navigate to="/login" replace />;
   }
 
   return (
       <div className="main-content">
         <Sidebar/>
         <main className="main">
-          <Header />
+          <Header/>
           <Outlet/>
         </main>
       </div>

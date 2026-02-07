@@ -1,8 +1,10 @@
 import api from "./Api";
 import {ApiError, ApiResponse} from "../interfaces/AuthInterface";
 import {useNotifications} from "./NitificationProvider";
+import {TaskType} from "./Task";
 
 export type ProjectType = {
+  id?: number;
   name: string;
   priority: number;
   description: string;
@@ -15,6 +17,11 @@ export type ProjectType = {
   images: { publicId: string; }[]
 };
 
+export type Avatar = {
+  url: string;
+  publicId: string;
+}
+
 export type ProjectList = {
   id: number;
   reporter: number;
@@ -24,11 +31,20 @@ export type ProjectList = {
   description: string;
   starts: string;
   deadLine: string;
-  avatar: string;
+  avatar: Avatar;
   isLink: boolean;
   links: { link: string; title: string; }[],
   isImages: boolean;
-  images: { publicId: string; }[]
+  images: { publicId: string; }[];
+  reporterUser: {
+    id: number,
+    first_name: string,
+    last_name: string,
+    avatar: { url: string, publicId: string },
+    phone: string,
+    email: string,
+  },
+  tasks: TaskType[]
 }
 
 export function useProject() {
@@ -37,6 +53,17 @@ export function useProject() {
   const createProject = async (formData: ProjectType) => {
     try {
       const {data} = await api.post<ApiResponse<boolean>>(`/project`, formData);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
+    }
+  };
+
+  const updateProject = async (formData: ProjectType) => {
+    try {
+      const {data} = await api.put<ApiResponse<boolean>>(`/project`, formData);
       return data;
     } catch (error) {
       const err = error as ApiError;
@@ -56,5 +83,16 @@ export function useProject() {
     }
   };
 
-  return {createProject, getProjectsList};
+  const getProjectItem = async (id: number) => {
+    try {
+      const {data} = await api.get<ApiResponse<ProjectList>>(`/project/${id}`);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
+    }
+  };
+
+  return {createProject, getProjectsList, getProjectItem, updateProject};
 }

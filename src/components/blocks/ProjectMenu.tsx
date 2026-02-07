@@ -1,15 +1,22 @@
 import React from "react";
 import {ProjectList} from "../../services/Project";
-import Button from "../Button";
+import Button from "../component/Button";
+import {useNavigate, useParams} from "react-router-dom";
 
-export default function ProjectMenu({list, active, checkActiveId}: {
+export default function ProjectMenu({list, checkActiveId}: {
   list: ProjectList[],
-  active: number | undefined,
-  checkActiveId: (id: number) => void
+  checkActiveId: (id: number) => void,
 }) {
+  const navigate = useNavigate();
+  const {projectId, type} = useParams();
 
   const click = (id: number) => {
     checkActiveId(id);
+  }
+
+  const getToDetails = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/projects/${projectId}/details/${type}`);
   }
 
   return (
@@ -24,12 +31,12 @@ export default function ProjectMenu({list, active, checkActiveId}: {
         </div>
         <ul className="projects-menu-list">
           {list?.map((elem) =>
-              <li key={elem.id} className={`projects-menu-item${active === elem.id ? ' active' : ''}`}
+              <li key={elem.id} className={`projects-menu-item${Number(projectId) === elem.id ? ' active' : ''}`}
                   onClick={() => click(elem.id)}>
                 <div className="projects-item-card">
                   <p className="project-item-number">{elem.projectNumber}</p>
                   <p className="project-item-name">{elem.name}</p>
-                  <Button classList="view-all" path="chevron_btn" title="View details"/>
+                  <Button classList="view-all" path="chevron_btn" title="View details" click={getToDetails}/>
                 </div>
               </li>
           )}

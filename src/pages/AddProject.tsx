@@ -1,11 +1,11 @@
-import React, {useState} from "react";
-import Button from "../components/Button";
+import React, {useEffect, useState} from "react";
+import Button from "../components/component/Button";
 import Input from "../components/inputs/Input";
 import Select from "../components/inputs/Select";
 import TextArea from "../components/inputs/TextArea";
 import {priorityList} from "../resurses/SelectList";
 import DatePicker from "../components/inputs/DatePicker";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Form, Formik} from "formik";
 import * as Yup from "yup";
 import CheckBoxButton from "../components/inputs/CheckBoxButton";
@@ -13,16 +13,16 @@ import LinksBlock from "../components/blocks/LinksBlock";
 import ImagesBlock from "../components/blocks/ImagesBlock";
 import ImagesRadioBlock from "../components/blocks/ImagesRadioBlock";
 import {ProjectType, useProject} from "../services/Project";
-import Loader from "../components/Loader";
+import Loader from "../components/component/Loader";
 import {useNotifications} from "../services/NitificationProvider";
 
 export default function AddProject() {
+  const {projectId} = useParams();
   const navigate = useNavigate();
-  const {createProject} = useProject();
+  const {createProject, getProjectItem, updateProject} = useProject();
   const {addNotification} = useNotifications();
   const [loading, setLoading] = useState(false);
-
-  const initialValues = {
+  const [projectItem, setProjectItem] = useState({
     name: "",
     priority: 1,
     description: "",
@@ -33,7 +33,18 @@ export default function AddProject() {
     links: [{link: "", title: ""}],
     isImages: false,
     images: [{publicId: ""}]
-  };
+  });
+
+  useEffect(() => {
+    if (projectId) {
+      loadProjectItem();
+    }
+  }, []);
+
+  const loadProjectItem = async () => {
+    const result = await getProjectItem(Number(projectId));
+    if (result?.status) setProjectItem({...result.response, avatar: result.response.avatar.publicId});
+  }
 
   const regexp = {
     name: /^[а-яА-Яa-zA-Z0-9,.!?@#$%^&*()_+=\-/ ]{2,100}$/,
@@ -59,7 +70,7 @@ export default function AddProject() {
               title: Yup.string().required("Введите название"),
             })
         ).min(1, "Добавьте хотя бы одну ссылку"),
-    otherwise: (schema) => schema.notRequired(),
+    otherwise: (schema) => schema.strip(),
   });
   const images = Yup.array().when("isImages", {
     is: true,
@@ -69,7 +80,7 @@ export default function AddProject() {
               publicId: Yup.string().required("Загрузите изображение"),
             })
         ).min(1, "Добавьте хотя бы одно изображение"),
-    otherwise: (schema) => schema.notRequired(),
+    otherwise: (schema) => schema.strip(),
   });
 
 
@@ -85,14 +96,25 @@ export default function AddProject() {
 
   const saveForm = (values: ProjectType) => {
     setLoading(true);
-    createProject(values).then(res => {
-      if (res?.status) {
-        addNotification("Проєкт створено", "success");
-        navigate("/projects");
-      } else {
-        addNotification(res?.message || "Unexpected error", "warning");
-      }
-    }).finally(() => setLoading(false));
+    if (projectId) {
+      updateProject({...values, id: Number(projectId)}).then(res => {
+        if (res?.status) {
+          addNotification("Проєкт змінено", "success");
+          navigate("/projects");
+        } else {
+          addNotification(res?.message || "Unexpected error", "warning");
+        }
+      }).finally(() => setLoading(false));
+    } else {
+      createProject(values).then(res => {
+        if (res?.status) {
+          addNotification("Проєкт створено", "success");
+          navigate("/projects");
+        } else {
+          addNotification(res?.message || "Unexpected error", "warning");
+        }
+      }).finally(() => setLoading(false));
+    }
   }
 
   return (
@@ -100,7 +122,8 @@ export default function AddProject() {
         <div className="add-project-block card">
           {loading ? <Loader size="large" speed="average"/> : <>
             <Button click={toProjects} path="close" fill="rgb(10,22,41)" classList="icon"/>
-            <Formik initialValues={initialValues} validationSchema={schemas.custom} onSubmit={saveForm}>
+            <Formik initialValues={projectItem} validationSchema={schemas.custom} onSubmit={saveForm}
+                    enableReinitialize>
               <Form>
                 <div className="add-project-content">
                   <h2 className="add-project-title">Add Project</h2>

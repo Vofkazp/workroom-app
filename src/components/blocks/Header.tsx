@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
-import Svg from "../Svg";
-import Modal from "../Modal";
-import Button from "../Button";
+import Svg from "../component/Svg";
+import Modal from "../component/Modal";
+import Button from "../component/Button";
 import {useAuthentication} from "../../services/AuthProvider";
 import {useLocation, useNavigate} from "react-router-dom";
 

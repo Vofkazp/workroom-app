@@ -221,28 +221,7 @@
     }
 
     .projects-priority {
-      margin-top: 3px;
-      margin-left: -6px;
-
-      .status {
-        display: flex;
-        align-items: center;
-        gap: 3px;
-
-        .status-title {
-          font-size: 14px;
-          font-weight: 600;
-          line-height: 16px;
-
-          &.medium {
-            color: rgba(255, 189, 33, 1);
-          }
-
-          &.low {
-            color: rgba(10, 201, 71, 1);
-          }
-        }
-      }
+      margin-top: 7px;
     }
 
     .projects-dead-line-title {
@@ -409,27 +388,6 @@
               height: 24px;
               object-fit: contain;
               border-radius: 50%;
-            }
-
-
-            .task-priority {
-              font-size: 14px;
-              font-weight: 700;
-              line-height: 16px;
-              background-repeat: no-repeat;
-              background-position: left center;
-              background-size: 12px 16px;
-              padding-left: 21px;
-
-              &.medium {
-                color: rgba(255, 189, 33, 1);
-                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 16' xmlns='http://www.w3.org/2000/svg' width='12' height='16' fill='none'%3E%3Cpath d='M6.6129 0.209705L6.70711 0.292893L11.7071 5.29289C12.0976 5.68342 12.0976 6.31658 11.7071 6.70711C11.3466 7.06759 10.7794 7.09532 10.3871 6.7903L10.2929 6.70711L7 3.415L7 15C7 15.5523 6.55228 16 6 16C5.48716 16 5.06449 15.614 5.00673 15.1166L5 15L5 3.415L1.70711 6.70711C1.34662 7.06759 0.779392 7.09532 0.387101 6.7903L0.292893 6.70711C-0.0675907 6.34662 -0.0953203 5.77939 0.209705 5.3871L0.292893 5.29289L5.29289 0.292893C5.65338 -0.0675907 6.22061 -0.0953203 6.6129 0.209705Z' fill='rgb(255,189,33)' fill-rule='nonzero'/%3E%3C/svg%3E");
-              }
-
-              &.low {
-                color: rgba(10, 201, 71, 1);
-                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 16' xmlns='http://www.w3.org/2000/svg' width='12' height='16' fill='none'%3E%3Cpath d='M6.6129 15.7903L6.70711 15.7071L11.7071 10.7071C12.0976 10.3166 12.0976 9.68342 11.7071 9.29289C11.3466 8.93241 10.7794 8.90468 10.3871 9.2097L10.2929 9.29289L7 12.585L7 1C7 0.447715 6.55228 0 6 0C5.48716 0 5.06449 0.38604 5.00673 0.883379L5 1L5 12.585L1.70711 9.29289C1.34662 8.93241 0.779392 8.90468 0.387101 9.2097L0.292893 9.29289C-0.0675907 9.65338 -0.0953203 10.2206 0.209705 10.6129L0.292893 10.7071L5.29289 15.7071C5.65338 16.0676 6.22061 16.0953 6.6129 15.7903Z' fill='rgb(10.1498,200.929,70.7899)' fill-rule='nonzero'/%3E%3C/svg%3E");
-              }
             }
           }
         }
@@ -952,6 +910,9 @@
             font-size: 14px;
             font-weight: 700;
             line-height: 21px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
 
           .attachment-data {
@@ -960,6 +921,7 @@
             font-weight: 400;
             line-height: 100%;
             margin-top: 2px;
+            text-align: center;
           }
         }
 
@@ -1164,28 +1126,7 @@
     }
 
     .info-status {
-
-      .status {
-        margin-top: 4px;
-        margin-left: -6px;
-        display: flex;
-        align-items: center;
-        gap: 3px;
-
-        .status-title {
-          font-size: 14px;
-          font-weight: 600;
-          line-height: 16px;
-
-          &.medium {
-            color: rgba(255, 189, 33, 1);
-          }
-
-          &.low {
-            color: rgba(10, 201, 71, 1);
-          }
-        }
-      }
+      padding-top: 8px;
     }
 
     .info-details-timer-card {
@@ -1239,7 +1180,7 @@
         }
       }
 
-      .add-btn {
+      .btn-primary {
         margin-top: 24px;
       }
     }

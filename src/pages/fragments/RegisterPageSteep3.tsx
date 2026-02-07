@@ -3,7 +3,7 @@ import {businessDirection, teamSizeList} from "../../resurses/SelectList";
 import Select from "../../components/inputs/Select";
 import Input from "../../components/inputs/Input";
 import * as Yup from "yup";
-import Button from "../../components/Button";
+import Button from "../../components/component/Button";
 import {Field, Form, Formik, FormikProps} from "formik";
 
 type Props = {

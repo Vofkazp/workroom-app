@@ -65,12 +65,10 @@ export default function SelectUser({title, list, name, placeholder}: {
                                   className={`select-list-item ${field.value === item.id ? "selected" : ""}`}
                                   onClick={() => selectedItem(item)}
                               >
-                                {item.avatar && (
-                                    <img
-                                        src={item.avatar.url}
-                                        alt={item.avatar.publicId}
-                                    />
-                                )}
+                                <img
+                                    src={item.avatar?.url || "/images/userTemplate.png"}
+                                    alt={item.avatar?.publicId}
+                                />
                                 <span>{item.first_name + " " + item.last_name}</span>
                               </li>
                           ))}

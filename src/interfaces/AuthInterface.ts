@@ -57,8 +57,11 @@ export interface Company {
 }
 
 export interface ResponseFile {
-    publicId: string;
-    url: string;
+  publicId: string;
+  url: string;
+  name?: string;
+  size?: number;
+  createdAt?: string;
 }
 
 

@@ -1,9 +1,9 @@
 import React from "react";
 import Input from "../../components/inputs/Input";
-import Button from "../../components/Button";
+import Button from "../../components/component/Button";
 import * as Yup from "yup";
 import {FieldArray, Form, Formik, FormikProps} from "formik";
-import Loader from "../../components/Loader";
+import Loader from "../../components/component/Loader";
 
 type Props = {
   Emails: string[];

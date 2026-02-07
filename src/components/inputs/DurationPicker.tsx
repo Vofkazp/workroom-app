@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Field, FieldProps} from "formik";
-import Svg from "../Svg";
+import Svg from "../component/Svg";
 import DurationSelector from "./DurationSelector";
 
 export default function DurationPicker({name, title, placeholder}: {

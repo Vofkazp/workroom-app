@@ -1,6 +1,6 @@
 import React, {JSX} from "react";
 import Svg from "./Svg";
-import {pathList} from "../resurses/PathList";
+import {pathList} from "../../resurses/PathList";
 
 type PathKey = keyof typeof pathList;
 
@@ -13,7 +13,7 @@ export default function Button({title, type = "button", path, fill, classList, s
   fill?: string;
   classList?: string;
   disabled?: boolean;
-  click?: () => void;
+  click?: (e: React.MouseEvent) => void;
   style?: React.CSSProperties;
 }): JSX.Element {
   return (

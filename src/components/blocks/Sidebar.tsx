@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import Svg from "../Svg";
+import Svg from "../component/Svg";
 import {pathList} from "../../resurses/PathList";
 import {useLocation, useNavigate} from "react-router-dom";
-import Button from "../Button";
+import Button from "../component/Button";
 import {useAuth} from "../../services/Auth";
 
 interface MenuList {

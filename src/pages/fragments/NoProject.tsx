@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../components/Button";
+import Button from "../../components/component/Button";
 import {useNavigate} from "react-router-dom";
 
 export default function NoProject({type, openModal}: { type: "project" | "task", openModal?: () => void }) {

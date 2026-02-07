@@ -9,10 +9,10 @@ import {genderList, phonePrefix} from "../resurses/SelectList";
 import Select from "../components/inputs/Select";
 import DatePicker from "../components/inputs/DatePicker";
 import PasswordInput from "../components/inputs/PasswordInput";
-import ImageUploader from "../components/ImageUploader";
+import ImageUploader from "../components/component/ImageUploader";
 import SelectItem from "../components/inputs/SelectItem";
 import MaskedInput from "../components/inputs/MaskedInput";
-import Button from "../components/Button";
+import Button from "../components/component/Button";
 import {User} from "../services/User";
 import {Company} from "../interfaces/AuthInterface";
 

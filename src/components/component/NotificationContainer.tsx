@@ -1,5 +1,5 @@
 import React, {CSSProperties} from "react";
-import {useNotifications} from "../services/NitificationProvider";
+import {useNotifications} from "../../services/NitificationProvider";
 import Button from "./Button";
 
 

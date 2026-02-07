@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useFile} from "../services/File";
+import {useFile} from "../../services/File";
 import ImageCropper from "./ImageCropper";
 import Loader from "./Loader";
 import Button from "./Button";

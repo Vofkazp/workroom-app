@@ -7,8 +7,8 @@ import MaskedInput from "../../components/inputs/MaskedInput";
 import InputCode from "../../components/inputs/InputCode";
 import * as Yup from "yup";
 import {Form, Formik, FormikHelpers} from "formik";
-import Button from "../../components/Button";
-import PhoneAutoCheck from "../../components/PhoneAutoCheck";
+import Button from "../../components/component/Button";
+import PhoneAutoCheck from "../../components/component/PhoneAutoCheck";
 import {useNotifications} from "../../services/NitificationProvider";
 import {phonePrefix} from "../../resurses/SelectList";
 

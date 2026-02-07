@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import Modal from "components/Modal";
+import React, {useEffect, useMemo, useState} from "react";
+import Modal from "../../components/component/Modal";
 import {Form, Formik} from "formik";
 import Input from "../../components/inputs/Input";
 import * as Yup from "yup";
@@ -7,7 +7,7 @@ import Select from "../../components/inputs/Select";
 import {groupList, priorityList} from "../../resurses/SelectList";
 import DatePicker from "../../components/inputs/DatePicker";
 import TextArea from "../../components/inputs/TextArea";
-import Button from "../../components/Button";
+import Button from "../../components/component/Button";
 import CheckBoxButton from "../../components/inputs/CheckBoxButton";
 import LinksBlock from "../../components/blocks/LinksBlock";
 import ImagesBlock from "../../components/blocks/ImagesBlock";
@@ -16,11 +16,14 @@ import {User, useUser} from "../../services/User";
 import SelectUser from "../../components/inputs/SelectUser";
 import {TaskType, useTask} from "../../services/Task";
 import {useNotifications} from "../../services/NitificationProvider";
-import Loader from "../../components/Loader";
+import Loader from "../../components/component/Loader";
 import {useParams} from "react-router-dom";
 
-export default function AddTask({openModal, closeModal}: { openModal: boolean, closeModal: (status: boolean) => void }) {
-  const {id} = useParams();
+export default function AddTask({openModal, closeModal}: {
+  openModal: boolean,
+  closeModal: (status: boolean) => void
+}) {
+  const {projectId} = useParams();
   const {getUserList} = useUser();
   const {createTask} = useTask();
   const {addNotification} = useNotifications();
@@ -28,16 +31,14 @@ export default function AddTask({openModal, closeModal}: { openModal: boolean, c
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getUserList().then(res => {
-      if (!res) return;
-      if (res.status) {
-        setUsers(res.response);
-      }
-    })
+    (async () => {
+      const res = await getUserList();
+      if (res?.status) setUsers(res.response);
+    })();
   }, []);
 
-  const initialValues = {
-    projectId: Number(id),
+  const initialValues = useMemo(() => ({
+    projectId: Number(projectId),
     name: "",
     group: 1,
     estimate: null,
@@ -49,7 +50,7 @@ export default function AddTask({openModal, closeModal}: { openModal: boolean, c
     links: [{link: "", title: ""}],
     isImages: false,
     images: [{publicId: ""}]
-  };
+  }), [projectId]);
 
   const regexp = {
     name: /^[а-яА-Яa-zA-Z0-9,.!?@#$%^&*()_+=\-/ ]{2,50}$/,
@@ -76,7 +77,7 @@ export default function AddTask({openModal, closeModal}: { openModal: boolean, c
               title: Yup.string().required("Введите название"),
             })
         ).min(1, "Добавьте хотя бы одну ссылку"),
-    otherwise: (schema) => schema.notRequired(),
+    otherwise: (schema) => schema.strip(),
   });
   const images = Yup.array().when("isImages", {
     is: true,
@@ -86,7 +87,7 @@ export default function AddTask({openModal, closeModal}: { openModal: boolean, c
               publicId: Yup.string().required("Загрузите изображение"),
             })
         ).min(1, "Добавьте хотя бы одно изображение"),
-    otherwise: (schema) => schema.notRequired(),
+    otherwise: (schema) => schema.strip(),
   });
 
 
@@ -97,23 +98,21 @@ export default function AddTask({openModal, closeModal}: { openModal: boolean, c
   }
 
   const saveForm = (values: TaskType) => {
-    console.log(values);//status
     setLoading(true);
     createTask({...values, status: 1}).then(res => {
       if (res?.status) {
         addNotification("Задачу створено", "success");
         closeModal(true);
-      } else {
-        addNotification(res?.message || "Unexpected error", "warning");
       }
     }).finally(() => setLoading(false));
   }
 
   return (
-      <Modal isOpen={openModal} title="Add Task" onClose={()=> closeModal(false)}>
+      <Modal isOpen={openModal} title="Add Task" onClose={() => closeModal(false)}>
         <div className="modal-body">
           {loading ? <Loader size="large" speed="average"/> :
-              <Formik initialValues={initialValues} validationSchema={schemas.custom} onSubmit={saveForm}>
+              <Formik initialValues={initialValues} validationSchema={schemas.custom} onSubmit={saveForm}
+                      enableReinitialize>
                 <Form className="modal-form">
                   <Input title="Task Name" placeholder="Task Name" name="name"/>
                   <Select title="Task Group" list={groupList} name="group"/>

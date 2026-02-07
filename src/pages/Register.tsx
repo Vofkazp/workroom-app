@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Button from "../components/Button";
+import Button from "../components/component/Button";
 import RegisterPageSteep1, {FormValues} from "./fragments/RegisterPageSteep1";
 import RegisterPageSteep2, {SelectValues} from "./fragments/RegisterPageSteep2";
 import RegisterPageSteep3, {CompanyValues} from "./fragments/RegisterPageSteep3";

@@ -1,5 +1,5 @@
 import React, {forwardRef, useState} from "react";
-import Button from "../Button";
+import Button from "../component/Button";
 import NumberSelector from "./NumberSelector";
 
 type DurationProps = {

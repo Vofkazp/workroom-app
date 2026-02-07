@@ -9,11 +9,28 @@ export type Links = {
 
 export type Images = {
   publicId: string;
+  url?: string;
+  name?: string;
+  size?: number;
+  createdAt?: string;
+}
+
+export type AssigneeUser = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  avatar: {
+    url: string;
+    publicId: string;
+  };
 }
 
 export type TaskType = {
   id?: number;
   projectId: number;
+  taskNumber?: string;
   name: string;
   group: number;
   estimate: number | null;
@@ -26,6 +43,19 @@ export type TaskType = {
   isImages: boolean;
   images: Images[];
   status?: number;
+  assigneeUser?: AssigneeUser;
+  spentTotal?: number | null;
+  reporter?: number;
+  reporterUser?: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    avatar: {
+      url: string;
+      publicId: string;
+    }
+  };
+  createdAt?: string;
 }
 
 export function useTask() {
@@ -53,5 +83,16 @@ export function useTask() {
     }
   };
 
-  return {createTask, getTaskList};
+  const getTaskItem = async (id: number) => {
+    try {
+      const {data} = await api.get<ApiResponse<TaskType>>(`/task/${id}`);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
+    }
+  };
+
+  return {createTask, getTaskList, getTaskItem};
 }

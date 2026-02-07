@@ -1,6 +1,6 @@
 import React from "react";
 import Input from "../inputs/Input";
-import Button from "../Button";
+import Button from "../component/Button";
 import {FieldArray, useFormikContext} from "formik";
 
 type LinkItem = {

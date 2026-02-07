@@ -1,6 +1,6 @@
 import React from "react";
 import {Field, useFormikContext} from "formik";
-import ImageUploader from "../ImageUploader";
+import ImageUploader from "../component/ImageUploader";
 
 export default function ImagesRadioBlock() {
   const {errors} = useFormikContext<{ avatar: string }>();
@@ -11,7 +11,7 @@ export default function ImagesRadioBlock() {
     "workroom/resurses/Task3_jz6j5z",
     "workroom/resurses/Task4_cewmet",
     "workroom/resurses/project1_xeehbh",
-    "workroom/resurses/project2_vc9nju",
+    "workroom/resurses/project2_qnlmnh",
     "workroom/resurses/project3_bwlnch",
     "workroom/resurses/project4_lypm6h",
     "workroom/resurses/project5_btpcby",

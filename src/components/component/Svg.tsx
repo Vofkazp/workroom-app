@@ -1,5 +1,5 @@
 import React, {JSX} from 'react';
-import {pathList} from "../resurses/PathList";
+import {pathList} from "../../resurses/PathList";
 
 type PathKey = keyof typeof pathList;
 

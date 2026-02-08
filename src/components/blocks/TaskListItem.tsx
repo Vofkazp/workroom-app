@@ -3,22 +3,12 @@ import {TaskType} from "../../services/Task";
 import ProgressCircle from "../component/ProgressCircle";
 import {useNavigate, useParams} from "react-router-dom";
 import Status from "../component/Status";
+import {computedEstimate} from "../../services/middleware";
+import StatusInfo from "../component/StatusInfo";
 
 export default function TaskListItem({task}: { task: TaskType }) {
   const navigate = useNavigate();
   const {projectId, type} = useParams();
-
-  const computedEstimate = (duration: number | null) => {
-    if (duration === null || duration === 0) return "";
-    const days = Math.trunc(duration / 1440);
-    const hours = Math.trunc((duration % 1440) / 60);
-    const minutes = duration % 60;
-    const parts: string[] = [];
-    if (days) parts.push(`${days}d`);
-    if (hours) parts.push(`${hours}h`);
-    if (minutes) parts.push(`${minutes}m`);
-    return parts.join(" ");
-  }
 
   const goToTask = (taskId: number | undefined) => {
     if (taskId) navigate(`/projects/${projectId}/task/${taskId}/${type}`);
@@ -36,7 +26,7 @@ export default function TaskListItem({task}: { task: TaskType }) {
         </div>
         <div className="task-item-element">
           <p className="task-item-title">Spent Time</p>
-          <p className="task-item-value">{task.spentTotal || "0h"}</p>
+          <p className="task-item-value">{computedEstimate(task.spentTotal || null) || "0h"}</p>
         </div>
         <div className="task-item-element">
           <p className="task-item-title">Assignee</p>
@@ -51,11 +41,8 @@ export default function TaskListItem({task}: { task: TaskType }) {
             <Status priority={task.priority}/>
           </div>
         </div>
-        {task.spentTotal &&
-            <div className="task-item-status">
-              <p className="item-status done">Done</p>
-            </div>}
-        <ProgressCircle value={0}/>
+        {task.spentTotal && <StatusInfo status={task.status || 1} /> }
+        <ProgressCircle value={(task.spentTotal || 0) / ((task.estimate || 0) / 100)}/>
       </li>
   );
 }

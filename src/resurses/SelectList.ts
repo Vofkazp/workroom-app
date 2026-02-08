@@ -69,4 +69,11 @@ export const groupList = [
 export const genderList = [
     {value: 1, label: "Male"},
     {value: 2, label: "Female"},
-]
+];
+
+export const statusList = [
+  {id: 1, name: "To Do", class: "todo"},
+  {id: 2, name: "In Progress", class: "progress"},
+  {id: 3, name: "In Review", class: "review"},
+  {id: 4, name: "Done", class: "done"}
+];

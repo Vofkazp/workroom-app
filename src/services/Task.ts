@@ -58,6 +58,14 @@ export type TaskType = {
   createdAt?: string;
 }
 
+type TimeTracing = {
+  id?: number;
+  task_id: number;
+  spent_minutes: number;
+  started_at: Date;
+  description: string;
+}
+
 export function useTask() {
   const {addNotification} = useNotifications();
 
@@ -94,5 +102,27 @@ export function useTask() {
     }
   };
 
-  return {createTask, getTaskList, getTaskItem};
+  const editTaskStatus = async (id: number, status: number) => {
+    try {
+      const {data} = await api.put<ApiResponse<boolean>>(`/task/status`, {id, status});
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
+    }
+  };
+
+  const createTimeTrack = async (values: TimeTracing) => {
+    try {
+      const {data} = await api.post<ApiResponse<boolean>>(`/task/time-tracking`, values);
+      return data;
+    } catch (error) {
+      const err = error as ApiError;
+      addNotification(err.message, "warning")
+      return err;
+    }
+  };
+
+  return {createTask, getTaskList, getTaskItem, createTimeTrack, editTaskStatus};
 }

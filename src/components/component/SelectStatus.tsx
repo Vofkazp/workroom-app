@@ -1,11 +1,5 @@
 import React, {JSX, useEffect, useRef, useState} from "react";
-
-const statusList = [
-  {id: 1, name: "To Do", class: "todo"},
-  {id: 2, name: "In Progress", class: "progress"},
-  {id: 3, name: "In Review", class: "review"},
-  {id: 4, name: "Done", class: "done"}
-];
+import {statusList} from "../../resurses/SelectList";
 
 type Selected = {
   id: number;

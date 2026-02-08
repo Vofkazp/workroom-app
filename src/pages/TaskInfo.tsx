@@ -8,16 +8,21 @@ import SelectStatus from "../components/component/SelectStatus";
 import AddTask from "./fragments/AddTask";
 import Status from "../components/component/Status";
 import ProgressCircle from "../components/component/ProgressCircle";
+import TimeTracking from "./fragments/TimeTracking";
+import {computedEstimate} from "../services/middleware";
+import {useNotifications} from "../services/NitificationProvider";
 
 export default function TaskInfo() {
+  const {addNotification} = useNotifications();
   const navigate = useNavigate();
   const {projectId, taskId, type} = useParams();
   const {getProjectItem} = useProject();
-  const {getTaskItem} = useTask();
+  const {getTaskItem, editTaskStatus} = useTask();
   const [projectItem, setProjectItem] = useState<ProjectList | null>(null);
   const [taskItem, setTaskItem] = useState<TaskType | null>(null);
-  const [statusIndex, setStatusIndex] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenTimer, setIsOpenTimer] = useState(false);
+  const [estimate, setEstimate] = useState({original: "0h", logged: "0h", progress: 0});
 
   useEffect(() => {
     loadProjectItem();
@@ -31,7 +36,13 @@ export default function TaskInfo() {
 
   const loadTaskId = async () => {
     const result = await getTaskItem(Number(taskId));
-    if (result?.status) setTaskItem(result.response);
+    if (result?.status) {
+      setTaskItem(result.response);
+      const original = computedEstimate(result.response.estimate || null);
+      const logged = computedEstimate(result.response.spentTotal || null) || "0h";
+      const progress = (result.response.spentTotal || 0) / ((result.response.estimate || 0) / 100)
+      setEstimate({original, logged, progress});
+    }
   }
 
   const attachments = useMemo(() => {
@@ -51,16 +62,17 @@ export default function TaskInfo() {
     if (status) loadTaskId();
   }
 
-  const computedEstimate = (duration: number | null) => {
-    if (duration === null || duration === 0) return "";
-    const days = Math.trunc(duration / 1440);
-    const hours = Math.trunc((duration % 1440) / 60);
-    const minutes = duration % 60;
-    const parts: string[] = [];
-    if (days) parts.push(`${days}d`);
-    if (hours) parts.push(`${hours}h`);
-    if (minutes) parts.push(`${minutes}m`);
-    return parts.join(" ");
+  const addTimer = (status: boolean) => {
+    setIsOpenTimer(false);
+    if (status) loadTaskId();
+  }
+
+  const editStatus = async (status: number) => {
+    const result = await editTaskStatus(Number(taskId), status);
+    if (result?.status) {
+      loadTaskId();
+      addNotification("Статус змінено", "success");
+    }
   }
 
   return (
@@ -90,7 +102,7 @@ export default function TaskInfo() {
                   <h4 className="details-header-number">{taskItem?.taskNumber}</h4>
                   <p className="details-header-name">{taskItem?.name}</p>
                 </div>
-                <SelectStatus status={statusIndex} setStatus={setStatusIndex}/>
+                <SelectStatus status={taskItem?.status || 1} setStatus={editStatus}/>
               </div>
               <p className="task-details-description">{taskItem?.description}</p>
               <div className="task-details-resources">
@@ -175,28 +187,31 @@ export default function TaskInfo() {
               <h5 className="details-title">Task Info</h5>
               <h6 className="info-details-title">Reporter</h6>
               <div className="info-details-user">
-                <img src={taskItem?.reporterUser?.avatar.url || "/images/userTemplate.png"} alt="avatar" className="info-details-avatar"/>
+                <img src={taskItem?.reporterUser?.avatar.url || "/images/userTemplate.png"} alt="avatar"
+                     className="info-details-avatar"/>
                 <p className="info-details-user-name">{taskItem?.reporterUser?.first_name + " " + taskItem?.reporterUser?.last_name}</p>
               </div>
               <h6 className="info-details-title">Assigned</h6>
               <div className="info-details-user">
-                <img src={taskItem?.assigneeUser?.avatar.url || "/images/userTemplate.png"} alt="avatar" className="info-details-avatar"/>
+                <img src={taskItem?.assigneeUser?.avatar.url || "/images/userTemplate.png"} alt="avatar"
+                     className="info-details-avatar"/>
                 <p className="info-details-user-name">{taskItem?.assigneeUser?.first_name + " " + taskItem?.assigneeUser?.last_name}</p>
               </div>
               <h6 className="info-details-title">Priority</h6>
               <div className="info-status">
-                <Status priority={taskItem?.priority!} />
+                <Status priority={taskItem?.priority!}/>
               </div>
               <div className="info-details-timer-card">
                 <h5 className="details-timer-title">Time tracking</h5>
                 <div className="details-timer-info">
-                  <ProgressCircle value={10} size={38}/>
+                  <ProgressCircle value={estimate.progress} size={38}/>
                   <div>
-                    <p className="details-timer-time">{computedEstimate(taskItem?.spentTotal || null) || "0h"} logged</p>
-                    <p className="details-timer-original-time">Original Estimate {computedEstimate(taskItem?.estimate || null)}</p>
+                    <p className="details-timer-time">{estimate.logged} logged</p>
+                    <p className="details-timer-original-time">Original Estimate {estimate.original}</p>
                   </div>
                 </div>
-                <Button path="time_btn" classList="btn-primary btn-primary-icon reverse" title="Log time" />
+                <Button path="time_btn" classList="btn-primary btn-primary-icon reverse" title="Log time"
+                        click={() => setIsOpenTimer(true)}/>
               </div>
               <h6 className="info-details-title">Dead Line</h6>
               <p className="info-details-text">{new Date(taskItem?.deadLine!).toLocaleString("uk-UK", {
@@ -212,6 +227,7 @@ export default function TaskInfo() {
             </div>
           </div>
           {isOpen && <AddTask openModal={isOpen} closeModal={addTask}/>}
+          {isOpenTimer && <TimeTracking openModal={isOpenTimer} closeModal={addTimer} estimate={estimate}/>}
         </div>
       </div>
   );
